@@ -73,6 +73,7 @@ type
     txtFormCode: TEdit;
     Label5: TLabel;
     Label7: TLabel;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnGetPopBillURLClick(Sender: TObject);
     procedure btnJoinClick(Sender: TObject);
@@ -104,6 +105,7 @@ type
     procedure btnUpdateClick(Sender: TObject);
     procedure btnGetDetailInfoClick(Sender: TObject);
     procedure btnCheckMgtKeyInUseClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
 public
   end;
 
@@ -959,5 +961,21 @@ begin
         if InUse then ShowMessage('사용중') else ShowMessage('미 사용중.');
 end;
 
+
+procedure TfrmExample.Button1Click(Sender: TObject);
+var
+  resultURL : String;
+begin
+        try
+                resultURL := statementService.getEPrintURL(txtCorpNum.Text,ItemCode,tbMgtKey.Text, txtUserID.Text);
+        except
+                on le : EPopbillException do begin
+                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        Exit;
+                end;
+        end;
+
+        ShowMessage('ResultURL is ' + #13 + resultURL);
+end;
 
 end.

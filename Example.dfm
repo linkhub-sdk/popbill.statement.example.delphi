@@ -2,7 +2,7 @@ object frmExample: TfrmExample
   Left = 681
   Top = 208
   Width = 655
-  Height = 562
+  Height = 584
   Caption = '팝빌 전자명세서 SDK Example'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -32,7 +32,7 @@ object frmExample: TfrmExample
     Left = 8
     Top = 168
     Width = 633
-    Height = 353
+    Height = 377
     Caption = '전자명세서 관련 API'
     TabOrder = 0
     object Label1: TLabel
@@ -465,7 +465,7 @@ object frmExample: TfrmExample
     Left = 368
     Top = 360
     Width = 161
-    Height = 153
+    Height = 177
     Caption = ' 문서관련 URL기능'
     TabOrder = 2
     object btnGetPopUpURL: TButton
@@ -488,7 +488,7 @@ object frmExample: TfrmExample
     end
     object btnGetPrintsURL: TButton
       Left = 8
-      Top = 80
+      Top = 112
       Width = 145
       Height = 25
       Caption = '대량인쇄 팝업 URL'
@@ -497,12 +497,21 @@ object frmExample: TfrmExample
     end
     object btnGetMailURL: TButton
       Left = 8
-      Top = 112
+      Top = 144
       Width = 145
       Height = 25
       Caption = '이메일의 보기버튼 URL'
       TabOrder = 3
       OnClick = btnGetMailURLClick
+    end
+    object Button1: TButton
+      Left = 8
+      Top = 80
+      Width = 145
+      Height = 25
+      Caption = '수신자 인쇄 팝업 URL'
+      TabOrder = 4
+      OnClick = Button1Click
     end
   end
   object txtCorpNum: TEdit
