@@ -11,7 +11,7 @@ const
         //연동아이디.
         LinkID = 'TESTER';
         // 파트너 통신용 비밀키. 유출 주의.
-        SecretKey = 'gUxhRqBDh7uz0qByAL7ZexcVT8FXdaFFeuGxRAHgCq8=';
+        SecretKey = 'qKmB40H158ymIReBR8JSTpZisLfyRCXgSlN6iNfAZxM=';
 
 type
   TfrmExample = class(TForm)
@@ -228,6 +228,7 @@ begin
         statement.receiverBizType := '공급받는자 업태';
         statement.receiverContactName := '공급받는자 담당자명';
         statement.receiverEmail := 'test@receiver.com';
+        statement.receiverFAX :='010-2222-1111';
 
         statement.supplyCostTotal := '100000';         //필수 공급가액 합계
         statement.taxTotal := '10000';                 //필수 세액 합계
