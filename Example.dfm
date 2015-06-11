@@ -521,7 +521,7 @@ object frmExample: TfrmExample
     Height = 21
     ImeName = 'Microsoft IME 2010'
     TabOrder = 3
-    Text = '1231212312'
+    Text = '1234567890'
   end
   object txtUserID: TEdit
     Left = 304
@@ -530,6 +530,7 @@ object frmExample: TfrmExample
     Height = 21
     ImeName = 'Microsoft IME 2010'
     TabOrder = 4
+    Text = 'testkorea'
   end
   object OpenDialog1: TOpenDialog
     Left = 728

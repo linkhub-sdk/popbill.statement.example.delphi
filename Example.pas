@@ -11,7 +11,7 @@ const
         //연동아이디.
         LinkID = 'TESTER';
         // 파트너 통신용 비밀키. 유출 주의.
-        SecretKey = 'qKmB40H158ymIReBR8JSTpZisLfyRCXgSlN6iNfAZxM=';
+        SecretKey = 'SwWxqU+0TErBXy/9TVjIPEnI0VTUMMSQZtJf3Ed8q3I=';
 
 type
   TfrmExample = class(TForm)
@@ -201,14 +201,14 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20140319';             //필수, 기재상 작성일자
+        statement.writeDate := '20150610';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
         statement.SMSSendYN := false;                   //발행시 문자발송기능 사용시 활용
         statement.AutoAcceptYN := false;                //수신자 승인없이 밸행시에 승인 처리여부.
         statement.MgtKey := tbMgtKey.Text;
 
-        statement.senderCorpNum := '1231212312';
+        statement.senderCorpNum := '1234567890';
         statement.senderTaxRegID := ''; //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.senderCorpName := '공급자 상호';
         statement.senderCEOName := '공급자"" 대표자 성명';
@@ -756,14 +756,14 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20140722';             //필수, 기재상 작성일자
+        statement.writeDate := '20150610';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
         statement.SMSSendYN := true;                   //발행시 문자발송기능 사용시 활용
         statement.AutoAcceptYN := true;                //수신자 승인없이 밸행시에 승인 처리여부.
         statement.MgtKey := tbMgtKey.Text;
 
-        statement.senderCorpNum := '1231212312';
+        statement.senderCorpNum := '1234567890';
         statement.senderTaxRegID := ''; //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.senderCorpName := '공급자 상호';
         statement.senderCEOName := '공급자"" 대표자 성명';
