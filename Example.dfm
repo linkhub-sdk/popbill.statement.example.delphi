@@ -1,8 +1,8 @@
 object frmExample: TfrmExample
   Left = 362
   Top = 177
-  Width = 1245
-  Height = 857
+  Width = 966
+  Height = 694
   Caption = '팝빌 전자명세서 SDK Example'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,9 +17,9 @@ object frmExample: TfrmExample
   object Label3: TLabel
     Left = 16
     Top = 12
-    Width = 123
+    Width = 120
     Height = 13
-    Caption = '팝빌 회원 사업자번호 : '
+    Caption = '팝빌회원 사업자번호 : '
   end
   object Label4: TLabel
     Left = 304
@@ -29,7 +29,7 @@ object frmExample: TfrmExample
     Caption = '팝빌회원 아이디 : '
   end
   object GroupBox1: TGroupBox
-    Left = 8
+    Left = 16
     Top = 224
     Width = 825
     Height = 393
@@ -38,22 +38,25 @@ object frmExample: TfrmExample
     object Label1: TLabel
       Left = 40
       Top = 94
-      Width = 120
+      Width = 129
       Height = 13
+      AutoSize = False
       Caption = '문서관리번호(MgtKey) :'
     end
     object Label5: TLabel
-      Left = 40
+      Left = 48
       Top = 70
-      Width = 108
+      Width = 121
       Height = 13
+      AutoSize = False
       Caption = '양식코드(FormCode) :'
     end
     object Label7: TLabel
-      Left = 40
+      Left = 56
       Top = 38
-      Width = 96
+      Width = 113
       Height = 13
+      AutoSize = False
       Caption = '전자명세서 종류 : '
     end
     object GroupBox2: TGroupBox
@@ -163,7 +166,7 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox3: TGroupBox
-      Left = 8
+      Left = 24
       Top = 192
       Width = 129
       Height = 161
@@ -172,8 +175,9 @@ object frmExample: TfrmExample
       object Label2: TLabel
         Left = 8
         Top = 84
-        Width = 77
+        Width = 89
         Height = 13
+        AutoSize = False
         Caption = '삭제할 파일ID:'
       end
       object btnGetFileList: TButton
@@ -213,7 +217,7 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox5: TGroupBox
-      Left = 152
+      Left = 176
       Top = 192
       Width = 137
       Height = 161
@@ -257,7 +261,7 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox6: TGroupBox
-      Left = 304
+      Left = 328
       Top = 192
       Width = 129
       Height = 161
@@ -294,7 +298,7 @@ object frmExample: TfrmExample
     object tbMgtKey: TEdit
       Left = 168
       Top = 90
-      Width = 121
+      Width = 137
       Height = 21
       ImeName = '한국어 입력 시스템 (IME 2000)'
       TabOrder = 4
@@ -302,14 +306,14 @@ object frmExample: TfrmExample
     object btnCheckMgtKeyInUse: TButton
       Left = 169
       Top = 114
-      Width = 96
+      Width = 160
       Height = 23
-      Caption = '사용여부 확인'
+      Caption = '관리번호 사용여부 확인'
       TabOrder = 5
       OnClick = btnCheckMgtKeyInUseClick
     end
     object GroupBox10: TGroupBox
-      Left = 640
+      Left = 664
       Top = 192
       Width = 145
       Height = 161
@@ -355,7 +359,7 @@ object frmExample: TfrmExample
     object txtFormCode: TEdit
       Left = 168
       Top = 64
-      Width = 121
+      Width = 137
       Height = 21
       ImeName = 'Microsoft IME 2010'
       TabOrder = 8
@@ -419,7 +423,7 @@ object frmExample: TfrmExample
     end
   end
   object GroupBox8: TGroupBox
-    Left = 8
+    Left = 16
     Top = 40
     Width = 929
     Height = 169
@@ -519,15 +523,6 @@ object frmExample: TfrmExample
         TabOrder = 1
         OnClick = btnGetPopBillURLClick
       end
-      object btnGetPopbillURL_CERT: TButton
-        Left = 8
-        Top = 88
-        Width = 137
-        Height = 25
-        Caption = '공인인증서 등록 URL'
-        TabOrder = 2
-        OnClick = btnGetPopBillURLClick
-      end
     end
     object GroupBox4: TGroupBox
       Left = 632
@@ -608,7 +603,7 @@ object frmExample: TfrmExample
     end
   end
   object GroupBox7: TGroupBox
-    Left = 456
+    Left = 488
     Top = 416
     Width = 177
     Height = 193
