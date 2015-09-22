@@ -1,8 +1,8 @@
 object frmExample: TfrmExample
   Left = 362
   Top = 177
-  Width = 966
-  Height = 694
+  Width = 870
+  Height = 672
   Caption = '팝빌 전자명세서 SDK Example'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -182,7 +182,7 @@ object frmExample: TfrmExample
       end
       object btnGetFileList: TButton
         Left = 8
-        Top = 24
+        Top = 56
         Width = 105
         Height = 25
         Caption = '첨부파일 목록'
@@ -191,7 +191,7 @@ object frmExample: TfrmExample
       end
       object btnAttachFile: TButton
         Left = 8
-        Top = 56
+        Top = 24
         Width = 105
         Height = 25
         Caption = '파일 첨부'
@@ -411,6 +411,7 @@ object frmExample: TfrmExample
         Height = 25
         Caption = '취소'
         TabOrder = 1
+        OnClick = btnCancelClick
       end
       object btnDelete_registIssue: TButton
         Left = 112
@@ -419,18 +420,19 @@ object frmExample: TfrmExample
         Height = 25
         Caption = '삭제'
         TabOrder = 2
+        OnClick = btnDelete_registIssueClick
       end
     end
   end
   object GroupBox8: TGroupBox
     Left = 16
     Top = 40
-    Width = 929
+    Width = 825
     Height = 169
     Caption = '팝빌 기본 API'
     TabOrder = 1
     object GroupBox9: TGroupBox
-      Left = 8
+      Left = 16
       Top = 24
       Width = 121
       Height = 129
@@ -438,7 +440,7 @@ object frmExample: TfrmExample
       TabOrder = 0
       object btnJoin: TButton
         Left = 8
-        Top = 24
+        Top = 88
         Width = 105
         Height = 25
         Caption = '회원 가입'
@@ -456,15 +458,16 @@ object frmExample: TfrmExample
       end
       object btnCheckIsMember: TButton
         Left = 8
-        Top = 88
+        Top = 24
         Width = 105
         Height = 25
         Caption = '가입여부확인'
         TabOrder = 2
+        OnClick = btnCheckIsMemberClick
       end
     end
     object GroupBox11: TGroupBox
-      Left = 144
+      Left = 160
       Top = 24
       Width = 145
       Height = 129
@@ -499,7 +502,7 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox12: TGroupBox
-      Left = 464
+      Left = 328
       Top = 24
       Width = 153
       Height = 129
@@ -521,11 +524,11 @@ object frmExample: TfrmExample
         Height = 25
         Caption = '포인트 충전 URL'
         TabOrder = 1
-        OnClick = btnGetPopBillURLClick
+        OnClick = btnGetPopbillURL_CHRGClick
       end
     end
     object GroupBox4: TGroupBox
-      Left = 632
+      Left = 504
       Top = 24
       Width = 145
       Height = 129
@@ -559,29 +562,13 @@ object frmExample: TfrmExample
         OnClick = btnUpdateContactClick
       end
     end
-    object GroupBox13: TGroupBox
-      Left = 304
-      Top = 24
-      Width = 145
-      Height = 129
-      Caption = '공인인증서 관련'
-      TabOrder = 4
-      object btnCertificationExpireDate: TButton
-        Left = 8
-        Top = 24
-        Width = 129
-        Height = 25
-        Caption = '인증서 만료일 확인'
-        TabOrder = 0
-      end
-    end
     object GroupBox14: TGroupBox
-      Left = 784
+      Left = 672
       Top = 24
       Width = 129
       Height = 129
       Caption = '회사정보 관련'
-      TabOrder = 5
+      TabOrder = 4
       object btnGetCorpInfo: TButton
         Left = 8
         Top = 24

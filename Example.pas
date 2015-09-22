@@ -75,12 +75,9 @@ type
     btnCheckID: TButton;
     btnCheckIsMember: TButton;
     btnGetPartnerBalance: TButton;
-    btnGetPopbillURL_CHRG: TButton;
     btnRegistContact: TButton;
     btnListContact: TButton;
     btnUpdateContact: TButton;
-    GroupBox13: TGroupBox;
-    btnCertificationExpireDate: TButton;
     GroupBox14: TGroupBox;
     btnGetCorpInfo: TButton;
     btnUpdateCorpInfo: TButton;
@@ -91,6 +88,7 @@ type
     Shape3: TShape;
     Shape4: TShape;
     Shape5: TShape;
+    btnGetPopbillURL_CHRG: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnGetPopBillURLClick(Sender: TObject);
     procedure btnJoinClick(Sender: TObject);
@@ -130,6 +128,10 @@ type
     procedure btnGetCorpInfoClick(Sender: TObject);
     procedure btnUpdateCorpInfoClick(Sender: TObject);
     procedure btnRegistIssueClick(Sender: TObject);
+    procedure btnGetPopbillURL_CHRGClick(Sender: TObject);
+    procedure btnCheckIsMemberClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
+    procedure btnDelete_registIssueClick(Sender: TObject);
 public
   end;
 
@@ -162,7 +164,7 @@ var
 begin
 
         try
-                resultURL := statementService.getPopbillURL(txtCorpNum.Text,txtUserID.Text,'CERT');
+                resultURL := statementService.getPopbillURL(txtCorpNum.Text,txtUserID.Text,'LOGIN');
         except
                 on le : EPopbillException do begin
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
@@ -420,7 +422,7 @@ begin
         for i := 0 to Length(fileList) -1 do
         begin
             tmp := tmp +  IntToStr(fileList[i].SerialNum) + ' | ' + fileList[i].DisplayName + ' | ' + fileList[i].AttachedFile + ' | ' + fileList[i].RegDT + #13;
-
+            tbFileIndexID.text := fileList[i].AttachedFile;
         end;
 
         ShowMessage(tmp);
@@ -549,9 +551,11 @@ end;
 procedure TfrmExample.btnCancel_IssueClick(Sender: TObject);
 var
         response : TResponse;
+        memo : String;
 begin
-       try
-                response := statementService.Cancel(txtCorpNum.text,ItemCode,tbMgtKey.Text,'발행취소 메모', txtUserID.Text);
+        memo := '발행취소 메모';
+        try
+                response := statementService.Cancel(txtCorpNum.text,ItemCode,tbMgtKey.Text,memo,txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
@@ -565,9 +569,12 @@ end;
 procedure TfrmExample.btnIssueClick(Sender: TObject);
 var
         response : TResponse;
+        memo : String;
 begin
-       try
-                response := statementService.Issue(txtCorpNum.text,ItemCode,tbMgtKey.Text,'발행 메모', txtUserID.Text);
+        memo := '발행 메모';
+        
+        try
+                response := statementService.Issue(txtCorpNum.text,ItemCode,tbMgtKey.Text,memo,txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
@@ -582,9 +589,16 @@ end;
 procedure TfrmExample.btnReSendSMSClick(Sender: TObject);
 var
         response : TResponse;
+        sendNum : String;
+        receiveNum : String;
+        contents : String;
 begin
-       try
-                response := statementService.SendSMS(txtCorpNum.text,ItemCode,tbMgtKey.Text,'011-1111-2222','010-2222-3333','문자메시지 내용' , txtUserID.Text);
+        sendNum := '010-1234-1234';      // 발신번호
+        receivenUm := '010-123-123';     // 수신번호
+        contents := '세금계산서가 발행되었습니다. 메일 확인 바랍니다.';       // 안내문자 내용, 90byte 초과하는 경우 길이가 조정되어 전송됨.
+        
+        try
+                response := statementService.SendSMS(txtCorpNum.text,ItemCode,tbMgtKey.Text,sendNum,receiveNum,contents,txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
@@ -598,9 +612,12 @@ end;
 procedure TfrmExample.btnReSendEmailClick(Sender: TObject);
 var
         response : TResponse;
+        email : String;
 begin
-       try
-                response := statementService.SendEmail(txtCorpNum.text,ItemCode,tbMgtKey.Text,'test@test.com' , txtUserID.Text);
+        email := 'test@test.com';       // 수신 메일주소
+        
+        try
+                response := statementService.SendEmail(txtCorpNum.text,ItemCode,tbMgtKey.Text,email,txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
@@ -614,9 +631,14 @@ end;
 procedure TfrmExample.btnSendInvoiceFaxClick(Sender: TObject);
 var
         response : TResponse;
+        sendNum : String;
+        receiveNum : String;
 begin
-       try
-                response := statementService.SendFAX(txtCorpNum.text,ItemCode,tbMgtKey.Text,'080-1234-2222','090-4321-1234' , txtUserID.Text);
+        sendNum := '080-1234-1234';      // 팩스 발신번호
+        receiveNum := '070-123-123';     // 팩스 수신번호
+
+        try
+                response := statementService.SendFAX(txtCorpNum.text,ItemCode,tbMgtKey.Text,sendNum,receiveNum,txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
@@ -1018,7 +1040,7 @@ var
         response : TResponse;
         joinInfo : TJoinContact;
 begin
-        joinInfo.id := 'userid';                // [필수] 아이디 (6자 이상 20자 미만)
+        joinInfo.id := 'userid';                        // [필수] 아이디 (6자 이상 20자 미만)
         joinInfo.pwd := 'thisispassword';               // [필수] 비밀번호 (6자 이상 20자 미만)
         joinInfo.personName := '담당자성명';            // [필수] 담당자명(한글이나 영문 30자 이내)
         joinInfo.tel := '070-7510-3710';                // [필수] 연락처
@@ -1130,7 +1152,7 @@ begin
         corpInfo := TCorpInfo.Create;
 
         corpInfo.ceoname := '대표자명';         //대표자명
-        corpInfo.corpName := '링크허브_SMS';    // 회사명
+        corpInfo.corpName := '팝빌';            // 회사명
         corpInfo.bizType := '업태';             // 업태
         corpInfo.bizClass := '업종';            // 업종
         corpInfo.addr := '서울특별시 강남구 영동대로 517';  // 주소
@@ -1160,14 +1182,14 @@ begin
         statement.writeDate := '20150918';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
-        statement.SMSSendYN := false;                   //발행시 문자발송기능 사용시 활용
-        statement.AutoAcceptYN := false;                //수신자 승인없이 밸행시에 승인 처리여부.
+        statement.SMSSendYN := false;                  //발행시 문자발송기능 사용시 활용
+        statement.AutoAcceptYN := false;               //수신자 승인없이 밸행시에 승인 처리여부.
         statement.MgtKey := tbMgtKey.Text;
 
         statement.senderCorpNum := '1234567890';
-        statement.senderTaxRegID := ''; //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        statement.senderTaxRegID := '';                //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.senderCorpName := '공급자 상호';
-        statement.senderCEOName := '공급자"" 대표자 성명';
+        statement.senderCEOName := '공급자 대표자 성명';
         statement.senderAddr := '공급자 주소';
         statement.senderBizClass := '공급자 업종';
         statement.senderBizType := '공급자 업태,업태2';
@@ -1210,7 +1232,7 @@ begin
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
         statement.detailList[0].purchaseDT := '20140319';      //거래일자
-        statement.detailList[0].itemName := '품/\목명';
+        statement.detailList[0].itemName := '품목명';
         statement.detailList[0].spec := '규격';
         statement.detailList[0].qty := '1';                    //수량
         statement.detailList[0].unitCost := '100000';          //단가
@@ -1221,7 +1243,7 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;
-        statement.detailList[1].itemName := '품목"명';
+        statement.detailList[1].itemName := '품목명';
 
         setLength(statement.propertyBag,3);
 
@@ -1250,6 +1272,74 @@ begin
 
         ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
 
+end;
+
+procedure TfrmExample.btnGetPopbillURL_CHRGClick(Sender: TObject);
+var
+  resultURL : String;
+begin
+
+        try
+                resultURL := statementService.getPopbillURL(txtCorpNum.Text,txtUserID.Text,'CHRG');
+        except
+                on le : EPopbillException do begin
+                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        Exit;
+                end;
+        end;
+
+        ShowMessage('ResultURL is ' + #13 + resultURL);
+end;
+
+procedure TfrmExample.btnCheckIsMemberClick(Sender: TObject);
+var
+        response : TResponse;
+begin
+        try
+                response := statementService.CheckIsMember(txtCorpNum.text,LinkID);
+        except
+                on le : EPopbillException do begin
+                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        Exit;
+                end;
+        end;
+
+        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+end;
+
+procedure TfrmExample.btnCancelClick(Sender: TObject);
+var
+        response : TResponse;
+        memo : String;
+begin
+        memo := '발행취소 메모';
+        
+        try
+                response := statementService.Cancel(txtCorpNum.text,ItemCode,tbMgtKey.Text,memo,txtUserID.Text);
+        except
+                on le : EPopbillException do begin
+                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        Exit;
+                end;
+        end;
+
+        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+end;
+
+procedure TfrmExample.btnDelete_registIssueClick(Sender: TObject);
+var
+        response : TResponse;
+begin
+       try
+                response := statementService.Delete(txtCorpNum.text,ItemCode,tbMgtKey.Text,txtUserID.Text);
+        except
+                on le : EPopbillException do begin
+                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        Exit;
+                end;
+        end;
+
+        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
 end;
 
 end.
