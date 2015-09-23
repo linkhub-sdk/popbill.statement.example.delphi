@@ -637,7 +637,7 @@ var
         receiveNum : String;
 begin
         sendNum := '080-1234-1234';      // 팩스 발신번호
-        receiveNum := '02-6442-9700';     // 팩스 수신번호
+        receiveNum := '02-111-222';     // 팩스 수신번호
 
         try
                 response := statementService.SendFAX(txtCorpNum.text,ItemCode,tbMgtKey.Text,sendNum,receiveNum,txtUserID.Text);
@@ -1437,7 +1437,7 @@ begin
 
         try
                 sendNum := '07075103710';
-                receiveNum := '0264429700';
+                receiveNum := '02111222';
                 response := statementService.IssueFAX(txtCorpNum.text, statement,sendNum, receiveNum,txtUserID.Text);
         except
                 on le : EPopbillException do begin
