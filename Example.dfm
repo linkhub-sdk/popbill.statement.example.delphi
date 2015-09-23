@@ -294,6 +294,15 @@ object frmExample: TfrmExample
         TabOrder = 2
         OnClick = btnSendInvoiceFaxClick
       end
+      object btnIssueFax: TButton
+        Left = 8
+        Top = 120
+        Width = 113
+        Height = 25
+        Caption = 'ÆÑ½º ¹ßÇà'
+        TabOrder = 3
+        OnClick = btnIssueFaxClick
+      end
     end
     object tbMgtKey: TEdit
       Left = 168
