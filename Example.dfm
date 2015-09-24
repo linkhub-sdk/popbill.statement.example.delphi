@@ -299,7 +299,7 @@ object frmExample: TfrmExample
         Top = 120
         Width = 113
         Height = 25
-        Caption = '팩스 사전 전송'
+        Caption = '선팩스 전송'
         TabOrder = 3
         OnClick = btnIssueFaxClick
       end
