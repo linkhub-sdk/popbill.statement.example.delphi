@@ -1438,7 +1438,7 @@ begin
         try
                 sendNum := '07075103710';
                 receiveNum := '02111222';
-                response := statementService.IssueFAX(txtCorpNum.text, statement,sendNum, receiveNum,txtUserID.Text);
+                response := statementService.FAXSend(txtCorpNum.text, statement,sendNum, receiveNum,txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
