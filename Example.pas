@@ -992,7 +992,7 @@ var
         InUse : boolean;
 begin
         try
-                InUse := statementService.CheckMgtKeyInUse(txtCorpNum.text,ItemCode,tbMgtKey.Text);
+                InUse := statementService.CheckMgtKey(txtCorpNum.text,ItemCode,tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
