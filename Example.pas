@@ -233,8 +233,8 @@ begin
         statement.AutoAcceptYN := false;                //수신자 승인없이 밸행시에 승인 처리여부.
         statement.MgtKey := tbMgtKey.Text;
 
-        statement.senderCorpNum := '1234567890';
-        statement.senderTaxRegID := ''; //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        statement.senderCorpNum := '1234567890';        //공급자 사업자번호
+        statement.senderTaxRegID := '';                 //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.senderCorpName := '공급자 상호';
         statement.senderCEOName := '공급자"" 대표자 성명';
         statement.senderAddr := '공급자 주소';
@@ -245,28 +245,27 @@ begin
         statement.senderTEL := '070-7070-0707';
         statement.senderHP := '010-000-2222';
 
-        statement.receiverCorpNum := '8888888888';
+        statement.receiverCorpNum := '8888888888';       // 공급받는자 사업자번호
         statement.receiverCorpName := '공급받는자 상호';
+        statement.receiverTaxRegID := '';               //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.receiverCEOName := '공급받는자 대표자 성명';
         statement.receiverAddr := '공급받는자 주소';
         statement.receiverBizClass := '공급받는자 업종';
         statement.receiverBizType := '공급받는자 업태';
         statement.receiverContactName := '공급받는자 담당자명';
         statement.receiverEmail := 'test@receiver.com';
-        statement.receiverFAX :='010-2222-1111';
 
         statement.supplyCostTotal := '100000';         //필수 공급가액 합계
         statement.taxTotal := '10000';                 //필수 세액 합계
         statement.totalAmount := '110000';             //필수 합계금액.  공급가액 + 세액
 
-        statement.serialNum := '123';
+        statement.serialNum := '123';                  //기재상 일련번호
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
 
         statement.businessLicenseYN := false; //사업자등록증 이미지 첨부시 설정.
         statement.bankBookYN := false ;        //통장사본 이미지 첨부시 설정.
-        statement.faxsendYN := false;          //발행시 Fax발송시 설정.
 
 
         //상세항목 0~99개 까지 작성가능.
@@ -1200,7 +1199,7 @@ begin
         statement.AutoAcceptYN := true;               //수신자 승인없이 밸행시에 승인 처리여부.
         statement.MgtKey := tbMgtKey.Text;
 
-        statement.senderCorpNum := '1234567890';
+        statement.senderCorpNum := '1234567890';       //공급자 사업자번호
         statement.senderTaxRegID := '';                //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.senderCorpName := '공급자 상호';
         statement.senderCEOName := '공급자 대표자 성명';
@@ -1212,8 +1211,9 @@ begin
         statement.senderTEL := '070-7070-0707';
         statement.senderHP := '010-000-2222';
 
-        statement.receiverCorpNum := '8888888888';
+        statement.receiverCorpNum := '8888888888';    // 공급받는자 사업자번호
         statement.receiverCorpName := '공급받는자 상호';
+        statement.receiverTaxRegID := '';             //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.receiverCEOName := '공급받는자 대표자 성명';
         statement.receiverAddr := '공급받는자 주소';
         statement.receiverBizClass := '공급받는자 업종';
@@ -1227,16 +1227,13 @@ begin
         statement.taxTotal := '10000';                 //필수 세액 합계
         statement.totalAmount := '110000';             //필수 합계금액.  공급가액 + 세액
 
-        statement.serialNum := '123';
+        statement.serialNum := '123';                  // 기재 상 일련번호
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
 
         statement.businessLicenseYN := false; //사업자등록증 이미지 첨부시 설정.
         statement.bankBookYN := false ;        //통장사본 이미지 첨부시 설정.
-        statement.faxsendYN := false;          //발행시 Fax발송시 설정.
-
-
 
         //상세항목 0~99개 까지 작성가능.
         // SerialNum 은 1부터 99까지 순차기재.
