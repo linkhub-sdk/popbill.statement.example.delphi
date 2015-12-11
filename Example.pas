@@ -153,6 +153,10 @@ begin
 
         //연동환경 설정값, true(테스트용), false(상업용)
         statementService.IsTest := true;
+
+        //Exception 처리 설정값, true(기본값)
+        statementService.IsThrowException := false;
+
 end;
 
 function IfThen(condition :bool; trueVal :String ; falseVal : String) : string;
@@ -222,7 +226,7 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20150918';             //필수, 기재상 작성일자
+        statement.writeDate := '20151211';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
         statement.SMSSendYN := false;                   //발행시 문자발송기능 사용시 활용
@@ -265,7 +269,6 @@ begin
         statement.faxsendYN := false;          //발행시 Fax발송시 설정.
 
 
-
         //상세항목 0~99개 까지 작성가능.
         // SerialNum 은 1부터 99까지 순차기재.
         //SetLength로 초기화 한후 기재.
@@ -281,12 +284,19 @@ begin
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
         statement.detailList[0].remark := '품목비고';
+        statement.detailList[0]._unit := '';                   //단위
+        statement.detailList[0].spare1 := '';
+        statement.detailList[0].spare2 := '';
+        statement.detailList[0].spare3 := '';
+        statement.detailList[0].spare4 := '';
+        statement.detailList[0].spare5 := '';        
 
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;
         statement.detailList[1].itemName := '품목"명';
 
+        //추가속성항목, 자세한 사항은 [전자명세서 api 연동매뉴얼 > 5.2. 기본양식 추가속성 테이블] 참조
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
@@ -839,7 +849,6 @@ begin
         statement.faxsendYN := false;          //발행시 Fax발송시 설정.
 
 
-
         //상세항목 0~99개 까지 작성가능.
         // SerialNum 은 1부터 99까지 순차기재.
         //SetLength로 초기화 한후 기재.
@@ -855,12 +864,15 @@ begin
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
         statement.detailList[0].remark := '품목비고';
+        
 
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;
         statement.detailList[1].itemName := '품목"명';
 
+
+        //추가속성항목, 자세한 사항은 [전자명세서 api 연동매뉴얼 > 5.2. 기본양식 추가속성 테이블] 참조
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
@@ -1181,11 +1193,11 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20150918';             //필수, 기재상 작성일자
+        statement.writeDate := '20151211';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
         statement.SMSSendYN := false;                  //발행시 문자발송기능 사용시 활용
-        statement.AutoAcceptYN := false;               //수신자 승인없이 밸행시에 승인 처리여부.
+        statement.AutoAcceptYN := true;               //수신자 승인없이 밸행시에 승인 처리여부.
         statement.MgtKey := tbMgtKey.Text;
 
         statement.senderCorpNum := '1234567890';
@@ -1233,7 +1245,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20140319';      //거래일자
+        statement.detailList[0].purchaseDT := '20151211';      //거래일자
         statement.detailList[0].itemName := '품목명';
         statement.detailList[0].spec := '규격';
         statement.detailList[0].qty := '1';                    //수량
@@ -1241,19 +1253,25 @@ begin
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
         statement.detailList[0].remark := '품목비고';
-
-
+        statement.detailList[0]._unit := '';                   //단위
+        statement.detailList[0].spare1 := '';
+        statement.detailList[0].spare2 := '';
+        statement.detailList[0].spare3 := '';
+        statement.detailList[0].spare4 := '';
+        statement.detailList[0].spare5 := '';
+        
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;
         statement.detailList[1].itemName := '품목명';
 
+        //추가속성항목, 자세한 사항은 [전자명세서 api 연동매뉴얼 > 5.2. 기본양식 추가속성 테이블] 참조
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
         statement.propertyBag[0].name := 'Balance';
         statement.propertyBag[0].value := '10000';
 
-         statement.propertyBag[1] := TProperty.Create;
+        statement.propertyBag[1] := TProperty.Create;
         statement.propertyBag[1].name := 'CBalance';
         statement.propertyBag[1].value := '20000';
 
