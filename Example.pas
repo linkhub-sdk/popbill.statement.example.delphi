@@ -1192,7 +1192,7 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20151211';             //필수, 기재상 작성일자
+        statement.writeDate := '20151215';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
         statement.SMSSendYN := false;                  //발행시 문자발송기능 사용시 활용
