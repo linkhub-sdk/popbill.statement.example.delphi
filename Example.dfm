@@ -220,7 +220,7 @@ object frmExample: TfrmExample
       Left = 176
       Top = 192
       Width = 137
-      Height = 161
+      Height = 185
       Caption = '문서 정보'
       TabOrder = 2
       object btnGetDetailInfo: TButton
@@ -258,6 +258,15 @@ object frmExample: TfrmExample
         Caption = '문서정보(대량)'
         TabOrder = 3
         OnClick = btnGetInfosClick
+      end
+      object btnSearch: TButton
+        Left = 8
+        Top = 152
+        Width = 121
+        Height = 25
+        Caption = '문서목록조회'
+        TabOrder = 4
+        OnClick = btnSearchClick
       end
     end
     object GroupBox6: TGroupBox

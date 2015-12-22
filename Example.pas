@@ -90,6 +90,7 @@ type
     Shape5: TShape;
     btnGetPopbillURL_CHRG: TButton;
     btnIssueFax: TButton;
+    btnSearch: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnGetPopBillURLClick(Sender: TObject);
     procedure btnJoinClick(Sender: TObject);
@@ -134,6 +135,7 @@ type
     procedure btnCancelClick(Sender: TObject);
     procedure btnDelete_registIssueClick(Sender: TObject);
     procedure btnIssueFaxClick(Sender: TObject);
+    procedure btnSearchClick(Sender: TObject);
 public
   end;
 
@@ -1192,7 +1194,7 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20151215';             //필수, 기재상 작성일자
+        statement.writeDate := '20151221';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
         statement.SMSSendYN := false;                  //발행시 문자발송기능 사용시 활용
@@ -1462,6 +1464,79 @@ begin
         end;
 
         ShowMessage('receiptNum : '+ response);
+
+end;
+
+procedure TfrmExample.btnSearchClick(Sender: TObject);
+var
+        DType : String;
+        SDate : String;
+        EDate : String;
+        StateList : Array Of String;
+        ItemCodeList : Array Of Integer;
+        Page : Integer;
+        PerPage : Integer;
+        tmp : String;
+        i : integer;
+        SearchList : TStatementSearchList;
+begin
+
+        DType := 'I';                   // [필수] 일자유형 { R: 등록일자, W:작성일자, I:발행일자 }
+        SDate := '201511011';            // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
+        EDate := '20151221';            // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
+
+        SetLength(StateList, 3);        // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
+        StateList[0] := '1**';
+        StateList[1] := '2**';
+        StateList[2] := '3**';
+
+        SetLength(ItemCodeList, 6);     // 문서종류 코드배열
+        ItemCodeList[0] := 121;         // 거래명세서
+        ItemCodeList[1] := 122;         // 청구서
+        ItemCodeList[2] := 123;         // 견적서
+        ItemCodeList[3] := 124;         // 발주서
+        ItemCodeList[4] := 125;         // 입금표
+        ItemCodeList[5] := 126;         // 영수증
+
+        Page := 1;                      // 페이지 번호, 기본값 1
+        PerPage := 30;                  // 페이지당 검색갯수, 기본값 500, 최대 1000
+                
+        try
+                SearchList := statementService.Search(txtCorpNum.text,DType, SDate, EDate, StateList, ItemCodeList, Page, PerPage);
+        except
+                on le : EPopbillException do begin
+                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        Exit;
+                end;
+        end;
+
+        tmp := 'code : '+IntToStr(SearchList.code) + #13;
+        tmp := tmp + 'total : '+ IntToStr(SearchList.total) + #13;
+        tmp := tmp + 'perPage : '+ IntToStr(SearchList.perPage) + #13;
+        tmp := tmp + 'pageNum : '+ IntToStr(SearchList.pageNum) + #13;
+        tmp := tmp + 'pageCount : '+ IntToStr(SearchList.pageCount) + #13;
+        tmp := tmp + 'message : '+ SearchList.message + #13#13;
+
+        tmp := tmp + 'ItemCode | ItemKey | StateCode | TaxType | WriteDate | SenderCorpName | SenderCorpNum | '
+               + ' ReceiverCorpName | ReceiverCorpNum | SupplyCostTotal | TaxTotal | RegDT' + #13;
+        
+        for i := 0 to Length(SearchList.list) -1 do
+        begin
+            tmp := tmp + IntToStr(SearchList.list[i].ItemCode) + ' | '          // 문서종류 코드
+                + SearchList.list[i].ItemKey + ' | '                            // 아이템코드
+                + IntToStr(SearchList.list[i].StateCode) + ' | '                // 상태코드
+                + SearchList.list[i].TaxType + ' | '                            // 과세형태
+                + SearchList.list[i].WriteDate + ' | '                          // 작성일자
+                + SearchList.list[i].SenderCorpName + ' | '                     // 발신자 상호
+                + SearchList.list[i].SenderCorpNum + ' | '                      // 발신자 사업자번호
+                + SearchList.list[i].ReceiverCorpName + ' | '                   // 수신자 상호
+                + SearchList.list[i].ReceiverCorpNum + ' | '                    // 수신자 사업자번호
+                + SearchList.list[i].SupplyCostTotal + ' | '                    // 공급가액 합계
+                + SearchList.list[i].TaxTotal + ' | '                           // 세액 합계
+                + SearchList.list[i].RegDT + #13;                               // 임시저장 일시 (yyyyMMddHHmmss) 
+        end;
+        
+        ShowMessage(tmp);
 
 end;
 
