@@ -1,8 +1,8 @@
 object frmExample: TfrmExample
   Left = 412
   Top = 185
-  Width = 870
-  Height = 672
+  Width = 954
+  Height = 762
   Caption = '팝빌 전자명세서 SDK Example'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -32,7 +32,7 @@ object frmExample: TfrmExample
     Left = 16
     Top = 224
     Width = 825
-    Height = 393
+    Height = 417
     Caption = '전자명세서 관련 API'
     TabOrder = 0
     object Label1: TLabel
@@ -166,7 +166,7 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox3: TGroupBox
-      Left = 24
+      Left = 16
       Top = 192
       Width = 129
       Height = 161
@@ -217,7 +217,7 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox5: TGroupBox
-      Left = 176
+      Left = 160
       Top = 192
       Width = 137
       Height = 185
@@ -270,16 +270,16 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox6: TGroupBox
-      Left = 328
+      Left = 312
       Top = 192
-      Width = 129
-      Height = 161
+      Width = 153
+      Height = 217
       Caption = '부가서비스'
       TabOrder = 3
       object btnReSendEmail: TButton
         Left = 8
         Top = 24
-        Width = 112
+        Width = 137
         Height = 25
         Caption = '이메일 전송'
         TabOrder = 0
@@ -288,7 +288,7 @@ object frmExample: TfrmExample
       object btnReSendSMS: TButton
         Left = 8
         Top = 56
-        Width = 112
+        Width = 137
         Height = 25
         Caption = '문자 전송'
         TabOrder = 1
@@ -297,7 +297,7 @@ object frmExample: TfrmExample
       object btnSendInvoiceFax: TButton
         Left = 8
         Top = 88
-        Width = 112
+        Width = 137
         Height = 25
         Caption = '팩스 전송'
         TabOrder = 2
@@ -306,11 +306,29 @@ object frmExample: TfrmExample
       object btnIssueFax: TButton
         Left = 8
         Top = 120
-        Width = 113
+        Width = 137
         Height = 25
         Caption = '선팩스 전송'
         TabOrder = 3
         OnClick = btnIssueFaxClick
+      end
+      object btnAttachStatement: TButton
+        Left = 8
+        Top = 152
+        Width = 137
+        Height = 25
+        Caption = '전자명세서 첨부'
+        TabOrder = 4
+        OnClick = btnAttachStatementClick
+      end
+      object btnDetachStatement: TButton
+        Left = 8
+        Top = 184
+        Width = 137
+        Height = 25
+        Caption = '전자명세서 첨부해제'
+        TabOrder = 5
+        OnClick = btnDetachStatementClick
       end
     end
     object tbMgtKey: TEdit
