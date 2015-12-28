@@ -1480,6 +1480,7 @@ var
         ItemCodeList : Array Of Integer;
         Page : Integer;
         PerPage : Integer;
+        Order : String;
         tmp : String;
         i : integer;
         SearchList : TStatementSearchList;
@@ -1504,9 +1505,11 @@ begin
 
         Page := 1;                      // 페이지 번호, 기본값 1
         PerPage := 30;                  // 페이지당 검색갯수, 기본값 500, 최대 1000
-                
+
+        Order := 'D';                   // 'D' : 내림차순 , 'A' : 오름차순
+
         try
-                SearchList := statementService.Search(txtCorpNum.text,DType, SDate, EDate, StateList, ItemCodeList, Page, PerPage);
+                SearchList := statementService.Search(txtCorpNum.text,DType, SDate, EDate, StateList, ItemCodeList, Page, PerPage,Order);
         except
                 on le : EPopbillException do begin
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
