@@ -232,7 +232,7 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20151222';             //필수, 기재상 작성일자
+        statement.writeDate := '20160101';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
         statement.SMSSendYN := false;                   //발행시 문자발송기능 사용시 활용
@@ -479,10 +479,12 @@ begin
                 end;
         end;
 
-        tmp := 'ItemKey | InvoiceNum | StateCode | TaxType | WriteDate | RegDT | OpenYN | OpenDT' + #13;
+        tmp := 'ItemKey | InvoiceNum | StateCode | TaxType | WriteDate | RegDT | OpenYN | OpenDT | SenderPrintYN | ReceiverPrintYN' + #13;
 
         tmp := tmp + statementInfo.ItemKey + ' | ' + statementInfo.InvoiceNum + ' | ' + IntToStr(statementInfo.StateCode) + ' | '
-        + statementInfo.TaxType + ' | ' + statementInfo.WriteDate + ' | ' + statementInfo.RegDT + ' | ' + BoolToStr(statementInfo.OpenYN) + ' | ' + statementInfo.OpenDT+ #13;
+        + statementInfo.TaxType + ' | ' + statementInfo.WriteDate + ' | ' + statementInfo.RegDT + ' | '
+        + BoolToStr(statementInfo.OpenYN) + ' | ' + statementInfo.OpenDT + ' | ' + BoolToStr(statementInfo.SenderPrintYN) + ' | ' 
+        + BoolToStr(statementInfo.ReceiverPrintYN) + #13;
 
         ShowMessage(tmp);
 
@@ -498,7 +500,7 @@ var
 begin
         SetLength(KeyList,2);
         KeyList[0] := '1234';
-        KeyList[1] := '123';
+        KeyList[1] := '20160112-01';
         try
                 InfoList := statementService.getInfos(txtCorpNum.text,ItemCode,KeyList);
         except
@@ -508,12 +510,13 @@ begin
                 end;
         end;
 
-        tmp := 'ItemKey | StateCode | TaxType | WriteDate | RegDT' + #13;
+        tmp := 'ItemKey | StateCode | TaxType | WriteDate | RegDT | SenderPrintYN | ReceiverPrintYN' + #13;
         
         for i := 0 to Length(InfoList) -1 do
         begin
             tmp := tmp + InfoList[i].ItemKey + ' | ' + IntToStr(InfoList[i].StateCode) + ' | '
-        + InfoList[i].TaxType + ' | ' + InfoList[i].WriteDate + ' | ' + InfoList[i].RegDT + #13;
+                + InfoList[i].TaxType + ' | ' + InfoList[i].WriteDate + ' | ' + InfoList[i].RegDT + ' | '
+                + BoolToStr(InfoList[i].senderPrintYN) + ' | ' + BoolToStr(InfoList[i].receiverPrintYN) +  #13;
         end;
 
         ShowMessage(tmp);
@@ -1198,7 +1201,7 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20151221';             //필수, 기재상 작성일자
+        statement.writeDate := '20160101';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
         statement.SMSSendYN := false;                  //발행시 문자발송기능 사용시 활용
@@ -1486,9 +1489,9 @@ var
         SearchList : TStatementSearchList;
 begin
 
-        DType := 'I';                   // [필수] 일자유형 { R: 등록일자, W:작성일자, I:발행일자 }
-        SDate := '20151101';            // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
-        EDate := '20151221';            // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
+        DType := 'R';                   // [필수] 일자유형 { R: 등록일자, W:작성일자, I:발행일자 }
+        SDate := '20160101';            // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
+        EDate := '20160112';            // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
 
         SetLength(StateList, 3);        // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
         StateList[0] := '1**';
@@ -1525,7 +1528,7 @@ begin
         tmp := tmp + 'message : '+ SearchList.message + #13#13;
 
         tmp := tmp + 'ItemCode | ItemKey | StateCode | TaxType | WriteDate | SenderCorpName | SenderCorpNum | '
-               + ' ReceiverCorpName | ReceiverCorpNum | SupplyCostTotal | TaxTotal | RegDT' + #13;
+               + ' ReceiverCorpName | ReceiverCorpNum | SupplyCostTotal | TaxTotal | RegDT | SenderPrintYN | ReceiverPrintYN ' + #13;
         
         for i := 0 to Length(SearchList.list) -1 do
         begin
@@ -1540,7 +1543,9 @@ begin
                 + SearchList.list[i].ReceiverCorpNum + ' | '                    // 수신자 사업자번호
                 + SearchList.list[i].SupplyCostTotal + ' | '                    // 공급가액 합계
                 + SearchList.list[i].TaxTotal + ' | '                           // 세액 합계
-                + SearchList.list[i].RegDT + #13;                               // 임시저장 일시 (yyyyMMddHHmmss) 
+                + SearchList.list[i].RegDT + ' | '                              // 임시저장 일시 (yyyyMMddHHmmss)
+                + BoolToStr(SearchList.list[i].SenderPrintYN) + ' | '           // 발신자 인쇄여부
+                + BoolToStr(SearchList.list[i].receiverPrintYN) + ' | ' + #13   // 수신자 인쇄여부
         end;
         
         ShowMessage(tmp);
