@@ -232,7 +232,7 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20160101';             //필수, 기재상 작성일자
+        statement.writeDate := '20160126';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
         statement.SMSSendYN := false;                   //발행시 문자발송기능 사용시 활용
@@ -325,7 +325,7 @@ begin
                         Exit;
                 end;
         end;
-
+        
         ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
 end;
 
@@ -1201,7 +1201,7 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20160101';             //필수, 기재상 작성일자
+        statement.writeDate := '20160126';             //필수, 기재상 작성일자
         statement.purposeType := '영수';               //필수, {영수, 청구}
         statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
         statement.SMSSendYN := false;                  //발행시 문자발송기능 사용시 활용
@@ -1285,7 +1285,6 @@ begin
         statement.propertyBag[2].name := 'Deposit';
         statement.propertyBag[2].value := '10000';
 
-
         try
                 memo := '즉시발행 메모';
                 response := statementService.RegistIssue(txtCorpNum.text, statement,memo,txtUserID.Text);
@@ -1295,9 +1294,8 @@ begin
                         Exit;
                 end;
         end;
-
+        
         ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
-
 end;
 
 procedure TfrmExample.btnGetPopbillURL_CHRGClick(Sender: TObject);
@@ -1545,9 +1543,10 @@ begin
                 + SearchList.list[i].TaxTotal + ' | '                           // 세액 합계
                 + SearchList.list[i].RegDT + ' | '                              // 임시저장 일시 (yyyyMMddHHmmss)
                 + BoolToStr(SearchList.list[i].SenderPrintYN) + ' | '           // 발신자 인쇄여부
-                + BoolToStr(SearchList.list[i].receiverPrintYN) + ' | ' + #13   // 수신자 인쇄여부
+                + BoolToStr(SearchList.list[i].receiverPrintYN) + ' | ' + #13;   // 수신자 인쇄여부
         end;
-        
+
+
         ShowMessage(tmp);
 
 end;
