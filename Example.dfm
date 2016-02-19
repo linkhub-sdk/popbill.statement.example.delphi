@@ -1,8 +1,8 @@
 object frmExample: TfrmExample
   Left = 412
   Top = 185
-  Width = 954
-  Height = 762
+  Width = 875
+  Height = 708
   Caption = 'ÆËºô ÀüÀÚ¸í¼¼¼­ SDK Example'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
