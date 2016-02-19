@@ -326,8 +326,10 @@ begin
 
         try
                 response := statementService.Register(txtCorpNum.text, statement,txtUserID.Text);
+                statement.Free;
         except
                 on le : EPopbillException do begin
+                        statement.Free;
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
                         Exit;
                 end;
@@ -904,8 +906,10 @@ begin
 
         try
                 response := statementService.Update(txtCorpNum.text,ItemCode,tbMgtKey.Text, statement,txtUserID.Text);
+                statement.Free;
         except
                 on le : EPopbillException do begin
+                        statement.Free;
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
                         Exit;
                 end;
@@ -1295,8 +1299,10 @@ begin
         try
                 memo := '즉시발행 메모';
                 response := statementService.RegistIssue(txtCorpNum.text, statement,memo,txtUserID.Text);
+                statement.Free;
         except
                 on le : EPopbillException do begin
+                        statement.Free;
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
                         Exit;
                 end;
@@ -1553,6 +1559,7 @@ begin
                 + BoolToStr(SearchList.list[i].receiverPrintYN) + ' | ' + #13;   // 수신자 인쇄여부
         end;
 
+        SearchList.Free;
 
         ShowMessage(tmp);
 
