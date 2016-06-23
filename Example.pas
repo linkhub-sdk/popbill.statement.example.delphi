@@ -93,6 +93,7 @@ type
     btnSearch: TButton;
     btnAttachStatement: TButton;
     btnDetachStatement: TButton;
+    btnGetChargeInfo: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action:TCloseAction);
     procedure btnGetPopBillURLClick(Sender: TObject);
@@ -141,6 +142,7 @@ type
     procedure btnSearchClick(Sender: TObject);
     procedure btnAttachStatementClick(Sender: TObject);
     procedure btnDetachStatementClick(Sender: TObject);
+    procedure btnGetChargeInfoClick(Sender: TObject);
 public
   end;
 
@@ -1608,6 +1610,29 @@ begin
 
         ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
 
+
+end;
+
+procedure TfrmExample.btnGetChargeInfoClick(Sender: TObject);
+var
+        chargeInfo : TStatementChargeInfo;
+        tmp : String;
+begin
+
+        try
+                chargeInfo := statementService.GetChargeInfo(txtCorpNum.text,ItemCode);
+        except
+                on le : EPopbillException do begin
+                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        Exit;
+                end;
+        end;
+
+        tmp := 'unitCost (단가) : ' + chargeInfo.unitCost + #13;
+        tmp := tmp + 'chargeMethod (과금유형) : ' + chargeInfo.chargeMethod + #13;
+        tmp := tmp + 'rateSystem (과금제도) : ' + chargeInfo.rateSystem + #13;
+
+        ShowMessage(tmp);
 
 end;
 
