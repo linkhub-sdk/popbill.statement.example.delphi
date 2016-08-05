@@ -503,9 +503,9 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox11: TGroupBox
-      Left = 160
+      Left = 152
       Top = 24
-      Width = 145
+      Width = 151
       Height = 153
       Caption = '포인트 관련'
       TabOrder = 1
@@ -547,16 +547,16 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox12: TGroupBox
-      Left = 328
+      Left = 320
       Top = 24
-      Width = 153
-      Height = 129
+      Width = 192
+      Height = 130
       Caption = '팝빌 기본 URL'
       TabOrder = 2
       object btnGetPopBillURL: TButton
         Left = 8
         Top = 24
-        Width = 137
+        Width = 174
         Height = 25
         Caption = '팝빌 로그인 URL'
         TabOrder = 0
@@ -565,15 +565,24 @@ object frmExample: TfrmExample
       object btnGetPopbillURL_CHRG: TButton
         Left = 8
         Top = 56
-        Width = 137
+        Width = 174
         Height = 25
         Caption = '포인트 충전 URL'
         TabOrder = 1
         OnClick = btnGetPopbillURL_CHRGClick
       end
+      object btnGetPopbillURL_SEAL: TButton
+        Left = 8
+        Top = 88
+        Width = 175
+        Height = 25
+        Caption = '인감 및 첨부문서 등록 URL'
+        TabOrder = 2
+        OnClick = btnGetPopbillURL_SEALClick
+      end
     end
     object GroupBox4: TGroupBox
-      Left = 504
+      Left = 520
       Top = 24
       Width = 145
       Height = 129
@@ -608,7 +617,7 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox14: TGroupBox
-      Left = 672
+      Left = 680
       Top = 24
       Width = 129
       Height = 129

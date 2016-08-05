@@ -94,6 +94,7 @@ type
     btnAttachStatement: TButton;
     btnDetachStatement: TButton;
     btnGetChargeInfo: TButton;
+    btnGetPopbillURL_SEAL: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action:TCloseAction);
     procedure btnGetPopBillURLClick(Sender: TObject);
@@ -143,6 +144,7 @@ type
     procedure btnAttachStatementClick(Sender: TObject);
     procedure btnDetachStatementClick(Sender: TObject);
     procedure btnGetChargeInfoClick(Sender: TObject);
+    procedure btnGetPopbillURL_SEALClick(Sender: TObject);
 public
   end;
 
@@ -1633,6 +1635,24 @@ begin
         tmp := tmp + 'rateSystem (과금제도) : ' + chargeInfo.rateSystem + #13;
 
         ShowMessage(tmp);
+
+end;
+
+procedure TfrmExample.btnGetPopbillURL_SEALClick(Sender: TObject);
+var
+  resultURL : String;
+begin
+
+        try
+                resultURL := statementService.getPopbillURL(txtCorpNum.Text,txtUserID.Text,'SEAL');
+        except
+                on le : EPopbillException do begin
+                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        Exit;
+                end;
+        end;
+
+        ShowMessage('ResultURL is ' + #13 + resultURL);
 
 end;
 
