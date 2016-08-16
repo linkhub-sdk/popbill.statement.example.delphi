@@ -1496,6 +1496,7 @@ var
         EDate : String;
         StateList : Array Of String;
         ItemCodeList : Array Of Integer;
+        QString : String;
         Page : Integer;
         PerPage : Integer;
         Order : String;
@@ -1504,14 +1505,13 @@ var
         SearchList : TStatementSearchList;
 begin
 
-        DType := 'R';                   // [필수] 일자유형 { R: 등록일자, W:작성일자, I:발행일자 }
-        SDate := '20160101';            // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
-        EDate := '20160112';            // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
+        DType := 'W';                   // [필수] 일자유형 { R: 등록일자, W:작성일자, I:발행일자 }
+        SDate := '20160701';            // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
+        EDate := '20160831';            // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
 
-        SetLength(StateList, 3);        // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
-        StateList[0] := '1**';
-        StateList[1] := '2**';
-        StateList[2] := '3**';
+        SetLength(StateList, 2);        // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
+        StateList[0] := '2**';
+        StateList[1] := '3**';
 
         SetLength(ItemCodeList, 6);     // 문서종류 코드배열
         ItemCodeList[0] := 121;         // 거래명세서
@@ -1521,13 +1521,17 @@ begin
         ItemCodeList[4] := 125;         // 입금표
         ItemCodeList[5] := 126;         // 영수증
 
+        QString := '';                  // 거래처 정보, 거래처 상호 또는 거래처 사업자등록번호 기재, 미기재시 전체조회
+        
         Page := 1;                      // 페이지 번호, 기본값 1
         PerPage := 30;                  // 페이지당 검색갯수, 기본값 500, 최대 1000
 
         Order := 'D';                   // 'D' : 내림차순 , 'A' : 오름차순
 
+
+
         try
-                SearchList := statementService.Search(txtCorpNum.text,DType, SDate, EDate, StateList, ItemCodeList, Page, PerPage,Order);
+                SearchList := statementService.Search(txtCorpNum.text,DType, SDate, EDate, StateList, ItemCodeList, QString, Page, PerPage, Order);
         except
                 on le : EPopbillException do begin
                         ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
