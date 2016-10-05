@@ -166,7 +166,7 @@ begin
         statementService.IsTest := true;
 
         //Exception 처리 설정값, true(기본값)
-        statementService.IsThrowException := false;
+        statementService.IsThrowException := true;
 
 end;
 
@@ -296,9 +296,9 @@ begin
         statement.SMSSendYN := false;
 
         // 수신자 승인없이 밸행시에 승인 처리여부.
-        statement.AutoAcceptYN := true;
+        statement.AutoAcceptYN := false;
 
-        // 거래명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
+        // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
         // 사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
 
@@ -665,11 +665,11 @@ begin
         {**********************************************************************}
 
         //전자명세서 문서관리번호 배열, 최대 1000건까지 기재가능
-        SetLength(KeyList,2);
+        SetLength(KeyList,4);
         KeyList[0] := '20161005-01';
-        KeyList[1] := '20160112-02';
-        KeyList[3] := '20160112-03';
-        KeyList[4] := '20160112-04';
+        KeyList[1] := '20161005-02';
+        KeyList[2] := '20161005-03';
+        KeyList[3] := '20161005-04';
         
         try
                 InfoList := statementService.getInfos(txtCorpNum.text, ItemCode, KeyList);
@@ -1018,52 +1018,140 @@ var
         statement : TStatement;
         response : TResponse;
 begin
+        {**********************************************************************}
+        { 전자명세서 수정은 [임시저장]상태인 경우에만 가능합니다.              }
+        {**********************************************************************}
+
         statement := TStatement.Create;
         
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-        statement.writeDate := '20150610';             //필수, 기재상 작성일자
-        statement.purposeType := '영수';               //필수, {영수, 청구}
-        statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
-        statement.SMSSendYN := true;                   //발행시 문자발송기능 사용시 활용
-        statement.AutoAcceptYN := true;                //수신자 승인없이 밸행시에 승인 처리여부.
+         // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
+        statement.itemCode := ItemCode;
+
+        // 맞춤양식코드, 기본값(공백처리)
+        // 별도의 양식으로 전송하고자 하는경우 링크허브로 문의하여 주시면
+        // 맞춤양식을 제작하여 양식코드를 발급하여 드립니다.
+        statement.formCode := txtFormCode.Text;
+
+        // [필수] 작성일자
+        statement.writeDate := '20161005';
+
+        // [필수] {영수, 청구} 중 기재
+        statement.purposeType := '영수';
+
+        // [필수] {과세, 영세, 면세} 중 기재
+        statement.taxType :='과세';
+
+        // 발행시 수신자 알림문자 전송여부
+        statement.SMSSendYN := false;
+
+        // 수신자 승인없이 밸행시에 승인 처리여부.
+        statement.AutoAcceptYN := false;
+
+        // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
+        // 사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
 
+
+        {**********************************************************************}
+        {                             공급자 정보                              }
+        {**********************************************************************}
+
+        // 공급자 사업자번호, '-'제외 10자리
         statement.senderCorpNum := '1234567890';
-        statement.senderTaxRegID := ''; //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
-        statement.senderCorpName := '공급자 상호';
-        statement.senderCEOName := '공급자"" 대표자 성명';
-        statement.senderAddr := '공급자 주소';
-        statement.senderBizClass := '공급자 업종';
+
+        // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        statement.senderTaxRegID := '';
+
+        // 공급자 상호
+        statement.senderCorpName := '공급자 상호_수정';
+
+        // 공급자 대표자 성명
+        statement.senderCEOName := '공급자 대표자 성명_수정';
+
+        // 공급자 주소
+        statement.senderAddr := '공급자 주소_수정';
+
+        // 공급자 종목
+        statement.senderBizClass := '공급자 종목_수정';
+
+        // 공급자 업태 
         statement.senderBizType := '공급자 업태,업태2';
+
+        // 공급자 담당자명
         statement.senderContactName := '공급자 담당자명';
+
+        // 공급자 담당자 메일주소
         statement.senderEmail := 'test@test.com';
+
+        // 공급자 담당자 연락처 
         statement.senderTEL := '070-7070-0707';
+
+        // 공급자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
+
+        {**********************************************************************}
+        {                            공급받는자 정보                           }
+        {**********************************************************************}
+
+        // 공급받는자 사업자번호, '-' 제외 10자리 
         statement.receiverCorpNum := '8888888888';
+
+        // 공급받는자 상호 
         statement.receiverCorpName := '공급받는자 상호';
+
+        //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        statement.receiverTaxRegID := '';
+
+        // 공급받는자 대표자 성명
         statement.receiverCEOName := '공급받는자 대표자 성명';
+
+        // 공급받는자 주소
         statement.receiverAddr := '공급받는자 주소';
+
+        // 공급받는자 종목
         statement.receiverBizClass := '공급받는자 업종';
+
+        // 공급받는자 업태
         statement.receiverBizType := '공급받는자 업태';
+
+        // 공급받는자 담당자명
         statement.receiverContactName := '공급받는자 담당자명';
+
+        // 공급받는자 담당자 메일주소
         statement.receiverEmail := 'test@receiver.com';
 
-        statement.supplyCostTotal := '100000';         //필수 공급가액 합계
-        statement.taxTotal := '10000';                 //필수 세액 합계
-        statement.totalAmount := '110000';             //필수 합계금액.  공급가액 + 세액
+        // 공급받는자 담당자 연락처 
+        statement.receiverTEL := '070-1234-1234';
 
-        statement.serialNum := '123';
+        // 공급받는자 담당자 휴대폰번호
+        statement.receiverHP := '010-111-222';
+
+        
+        //필수 공급가액 합계
+        statement.supplyCostTotal := '200000';
+
+        //필수 세액 합계
+        statement.taxTotal := '20000';
+
+        //필수 합계금액.  공급가액 + 세액
+        statement.totalAmount := '220000';
+
+        // 기재 상 일련번호
+        statement.serialNum := '1';
+        
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
 
-        statement.businessLicenseYN := false; //사업자등록증 이미지 첨부시 설정.
-        statement.bankBookYN := false ;        //통장사본 이미지 첨부시 설정.
-        statement.faxsendYN := false;          //발행시 Fax발송시 설정.
+        // 사업자등록증 첨부여부
+        statement.businessLicenseYN := false;
 
+        // 통장사본 첨부여부
+        statement.bankBookYN := false ;
 
         //상세항목 0~99개 까지 작성가능.
         // SerialNum 은 1부터 99까지 순차기재.
@@ -1072,7 +1160,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20140319';      //거래일자
+        statement.detailList[0].purchaseDT := '20151211';      //거래일자
         statement.detailList[0].itemName := '품목명';
         statement.detailList[0].spec := '규격';
         statement.detailList[0].qty := '1';                    //수량
@@ -1080,28 +1168,45 @@ begin
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
         statement.detailList[0].remark := '품목비고';
+        statement.detailList[0]._unit := '';                   //단위
+        statement.detailList[0].spare1 := '';
+        statement.detailList[0].spare2 := '';
+        statement.detailList[0].spare3 := '';
+        statement.detailList[0].spare4 := '';
+        statement.detailList[0].spare5 := '';
         
-
-
         statement.detailList[1] := TStatementDetail.Create;
-        statement.detailList[1].serialNum := 2;
-        statement.detailList[1].itemName := '품목"명';
+        statement.detailList[1].serialNum := 2;                //일련번호
+        statement.detailList[1].purchaseDT := '20151211';      //거래일자
+        statement.detailList[1].itemName := '품목명';
+        statement.detailList[1].spec := '규격';
+        statement.detailList[1].qty := '1';                    //수량
+        statement.detailList[1].unitCost := '100000';          //단가
+        statement.detailList[1].supplyCost := '100000';        //공급가액
+        statement.detailList[1].tax := '10000';                //세액
+        statement.detailList[1].remark := '품목비고';
+        statement.detailList[1]._unit := '';                   //단위
+        statement.detailList[1].spare1 := '';
+        statement.detailList[1].spare2 := '';
+        statement.detailList[1].spare3 := '';
+        statement.detailList[1].spare4 := '';
+        statement.detailList[1].spare5 := '';
 
-
-        //추가속성항목, 자세한 사항은 [전자명세서 api 연동매뉴얼 > 5.2. 기본양식 추가속성 테이블] 참조
+        //추가속성항목, 자세한 사항은 "[전자명세서 api 연동매뉴얼] > 5.2. 기본양식 추가속성 테이블" 참조
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
         statement.propertyBag[0].name := 'Balance';
         statement.propertyBag[0].value := '10000';
 
-         statement.propertyBag[1] := TProperty.Create;
+        statement.propertyBag[1] := TProperty.Create;
         statement.propertyBag[1].name := 'CBalance';
         statement.propertyBag[1].value := '20000';
 
         statement.propertyBag[2] := TProperty.Create;
-        statement.propertyBag[2].name := 'TestProperty';
-        statement.propertyBag[2].value := '"한글1111임"';
+        statement.propertyBag[2].name := 'Deposit';
+        statement.propertyBag[2].value := '10000';
+
 
         try
                 response := statementService.Update(txtCorpNum.text,ItemCode,tbMgtKey.Text, statement,txtUserID.Text);
@@ -1189,7 +1294,7 @@ begin
         tmp := tmp +'bankBookYN : ' +  IfThen(statement.bankBookYN,'true','false') + #13;
         tmp := tmp +'faxsendYN : ' +  IfThen(statement.fAXSendYN,'true','false') + #13;
 
-        tmp := tmp + '-----상세항목-----' + #13;
+        tmp := tmp + '-----상세항목-----' + #13#13;
 
         for i:= 0 to Length(statement.detailList)-1 do
         begin
@@ -1210,7 +1315,7 @@ begin
 
         end;
 
-        tmp := tmp + '-----추가속성-----' + #13;
+        tmp := tmp + '-----추가속성-----' + #13#13;
 
         for i:= 0 to Length(statement.propertyBag)-1 do
         begin
@@ -1477,9 +1582,9 @@ begin
         statement.SMSSendYN := false;
 
         // 수신자 승인없이 밸행시에 승인 처리여부.
-        statement.AutoAcceptYN := true;
+        statement.AutoAcceptYN := false;
 
-        // 거래명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
+        // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
         // 사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
 
@@ -1960,10 +2065,10 @@ begin
         DType := 'W';
 
         // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
-        SDate := '20160701';
-        
+        SDate := '20160901';
+
         // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
-        EDate := '20160831';
+        EDate := '20161031';
 
         // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
         SetLength(StateList, 2);

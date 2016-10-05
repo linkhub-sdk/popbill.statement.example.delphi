@@ -36,7 +36,7 @@ object frmExample: TfrmExample
     Caption = '전자명세서 관련 API'
     TabOrder = 0
     object Label1: TLabel
-      Left = 40
+      Left = 32
       Top = 94
       Width = 129
       Height = 13
@@ -157,7 +157,7 @@ object frmExample: TfrmExample
       end
       object btnIssue: TButton
         Left = 16
-        Top = 58
+        Top = 66
         Width = 60
         Height = 25
         Caption = '발행'
@@ -464,14 +464,14 @@ object frmExample: TfrmExample
     Left = 16
     Top = 40
     Width = 825
-    Height = 185
+    Height = 189
     Caption = '팝빌 기본 API'
     TabOrder = 1
     object GroupBox9: TGroupBox
       Left = 16
       Top = 24
       Width = 121
-      Height = 129
+      Height = 152
       Caption = '회원 정보'
       TabOrder = 0
       object btnJoin: TButton
@@ -550,7 +550,7 @@ object frmExample: TfrmExample
       Left = 320
       Top = 24
       Width = 192
-      Height = 130
+      Height = 154
       Caption = '팝빌 기본 URL'
       TabOrder = 2
       object btnGetPopBillURL: TButton
@@ -582,10 +582,10 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox4: TGroupBox
-      Left = 520
+      Left = 528
       Top = 24
       Width = 145
-      Height = 129
+      Height = 153
       Caption = '담당자 관련'
       TabOrder = 3
       object btnRegistContact: TButton
@@ -620,7 +620,7 @@ object frmExample: TfrmExample
       Left = 680
       Top = 24
       Width = 129
-      Height = 129
+      Height = 152
       Caption = '회사정보 관련'
       TabOrder = 4
       object btnGetCorpInfo: TButton
