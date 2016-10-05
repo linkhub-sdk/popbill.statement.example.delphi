@@ -162,7 +162,7 @@ begin
         //전자명세서 모듈 초기화.
         statementService := TStatementService.Create(LinkID,SecretKey);
 
-        //연동환경 설정값, true(테스트용), false(상업용)
+        //연동환경 설정값, true(개발용), false(상업용)
         statementService.IsTest := true;
 
         //Exception 처리 설정값, true(기본값)
@@ -186,11 +186,13 @@ var
   resultURL : String;
 begin
 
+        // 반환되는 URL은 보안 정책으로 인해 30초의 유효시간을 갖습니다.
+
         try
-                resultURL := statementService.getPopbillURL(txtCorpNum.Text,txtUserID.Text,'LOGIN');
+                resultURL := statementService.getPopbillURL(txtCorpNum.Text, txtUserID.Text, 'LOGIN');
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -205,32 +207,64 @@ var
         response : TResponse;
         joinInfo : TJoinForm;
 begin
-        joinInfo.LinkID := LinkID;        //링크아이디
-        joinInfo.CorpNum := '1231212312'; //사업자번호 '-' 제외.
+
+        {**********************************************************************}
+        {    파트너의 연동회원으로 회원가입을 요청합니다.                      }
+        {    아이디 중복확인은 btnCheckIDClick 프로시져를 참조하시기 바랍니다. }
+        {**********************************************************************}
+
+        // 링크아이디
+        joinInfo.LinkID := LinkID;
+
+        // 사업자번호 '-' 제외, 10자리
+        joinInfo.CorpNum := '1234567890';
+
+        // 대표자성명, 최대 30자
         joinInfo.CEOName := '대표자성명';
-        joinInfo.CorpName := '상호';
+
+        // 상호명, 최대 70자
+        joinInfo.CorpName := '링크허브';
+
+        // 주소, 최대 300자
         joinInfo.Addr := '주소';
-        joinInfo.ZipCode := '500-100';
+
+        // 업태, 최대 40자
         joinInfo.BizType := '업태';
-        joinInfo.BizClass := '업종';
-        joinInfo.ID     := 'userid';  //6자 이상 20자 미만.
-        joinInfo.PWD    := 'pwd_must_be_long_enough'; //6자 이상 20자 미만.
+
+        // 종목, 최대 40자
+        joinInfo.BizClass := '종목';
+
+        // 아이디, 6자이상 20자 미만
+        joinInfo.ID     := 'userid';
+
+        // 비밀번호, 6자이상 20자 미만
+        joinInfo.PWD    := 'pwd_must_be_long_enough';
+
+        // 담당자명, 최대 30자
         joinInfo.ContactName := '담당자명';
-        joinInfo.ContactTEL :='02-999-9999';
-        joinInfo.ContactHP := '010-1234-5678';
-        joinInfo.ContactFAX := '02-999-9998';
-        joinInfo.ContactEmail := 'test@test.com';
+
+        // 담당자 연락처, 최대 20자
+        joinInfo.ContactTEL :='070-4304-2991';
+
+        // 담당자 휴대폰번호, 최대 20자
+        joinInfo.ContactHP := '010-000-1111';
+
+        // 담당자 팩스번호, 최대 20자
+        joinInfo.ContactFAX := '02-6442-9700';
+
+        // 담당자 메일, 최대 70자
+        joinInfo.ContactEmail := 'code@linkhub.co.kr';
 
         try
                 response := statementService.JoinMember(joinInfo);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 
 end;
 
@@ -240,50 +274,132 @@ var
         response : TResponse;
 begin
         statement := TStatement.Create;
+
+         // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
         statement.itemCode := ItemCode;
+
+        // 맞춤양식코드, 기본값(공백처리)
+        // 별도의 양식으로 전송하고자 하는경우 링크허브로 문의하여 주시면
+        // 맞춤양식을 제작하여 양식코드를 발급하여 드립니다.
         statement.formCode := txtFormCode.Text;
-        
-        statement.writeDate := '20160126';             //필수, 기재상 작성일자
-        statement.purposeType := '영수';               //필수, {영수, 청구}
-        statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
-        statement.SMSSendYN := false;                   //발행시 문자발송기능 사용시 활용
-        statement.AutoAcceptYN := false;                //수신자 승인없이 밸행시에 승인 처리여부.
+
+        // [필수] 작성일자
+        statement.writeDate := '20161005';
+
+        // [필수] {영수, 청구} 중 기재
+        statement.purposeType := '영수';
+
+        // [필수] {과세, 영세, 면세} 중 기재
+        statement.taxType :='과세';
+
+        // 발행시 수신자 알림문자 전송여부
+        statement.SMSSendYN := false;
+
+        // 수신자 승인없이 밸행시에 승인 처리여부.
+        statement.AutoAcceptYN := true;
+
+        // 거래명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
+        // 사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
 
-        statement.senderCorpNum := '1234567890';        //공급자 사업자번호
-        statement.senderTaxRegID := '';                 //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+
+        {**********************************************************************}
+        {                             공급자 정보                              }
+        {**********************************************************************}
+
+        // 공급자 사업자번호, '-'제외 10자리
+        statement.senderCorpNum := '1234567890';
+
+        // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        statement.senderTaxRegID := '';
+
+        // 공급자 상호
         statement.senderCorpName := '공급자 상호';
-        statement.senderCEOName := '공급자"" 대표자 성명';
+
+        // 공급자 대표자 성명
+        statement.senderCEOName := '공급자 대표자 성명';
+
+        // 공급자 주소
         statement.senderAddr := '공급자 주소';
-        statement.senderBizClass := '공급자 업종';
+
+        // 공급자 종목
+        statement.senderBizClass := '공급자 종목';
+
+        // 공급자 업태 
         statement.senderBizType := '공급자 업태,업태2';
+
+        // 공급자 담당자명
         statement.senderContactName := '공급자 담당자명';
+
+        // 공급자 담당자 메일주소
         statement.senderEmail := 'test@test.com';
+
+        // 공급자 담당자 연락처 
         statement.senderTEL := '070-7070-0707';
+
+        // 공급자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
-        statement.receiverCorpNum := '8888888888';       // 공급받는자 사업자번호
+
+        {**********************************************************************}
+        {                            공급받는자 정보                           }
+        {**********************************************************************}
+
+        // 공급받는자 사업자번호, '-' 제외 10자리 
+        statement.receiverCorpNum := '8888888888';
+
+        // 공급받는자 상호 
         statement.receiverCorpName := '공급받는자 상호';
-        statement.receiverTaxRegID := '';               //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+
+        //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        statement.receiverTaxRegID := '';
+
+        // 공급받는자 대표자 성명
         statement.receiverCEOName := '공급받는자 대표자 성명';
+
+        // 공급받는자 주소
         statement.receiverAddr := '공급받는자 주소';
+
+        // 공급받는자 종목
         statement.receiverBizClass := '공급받는자 업종';
+
+        // 공급받는자 업태
         statement.receiverBizType := '공급받는자 업태';
+
+        // 공급받는자 담당자명
         statement.receiverContactName := '공급받는자 담당자명';
+
+        // 공급받는자 담당자 메일주소
         statement.receiverEmail := 'test@receiver.com';
 
-        statement.supplyCostTotal := '100000';         //필수 공급가액 합계
-        statement.taxTotal := '10000';                 //필수 세액 합계
-        statement.totalAmount := '110000';             //필수 합계금액.  공급가액 + 세액
+        // 공급받는자 담당자 연락처 
+        statement.receiverTEL := '070-1234-1234';
 
-        statement.serialNum := '123';                  //기재상 일련번호
+        // 공급받는자 담당자 휴대폰번호
+        statement.receiverHP := '010-111-222';
+
+        
+        //필수 공급가액 합계
+        statement.supplyCostTotal := '200000';
+
+        //필수 세액 합계
+        statement.taxTotal := '20000';
+
+        //필수 합계금액.  공급가액 + 세액
+        statement.totalAmount := '220000';
+
+        // 기재 상 일련번호
+        statement.serialNum := '1';
+        
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
 
-        statement.businessLicenseYN := false; //사업자등록증 이미지 첨부시 설정.
-        statement.bankBookYN := false ;        //통장사본 이미지 첨부시 설정.
+        // 사업자등록증 첨부여부
+        statement.businessLicenseYN := false;
 
+        // 통장사본 첨부여부
+        statement.bankBookYN := false ;
 
         //상세항목 0~99개 까지 작성가능.
         // SerialNum 은 1부터 99까지 순차기재.
@@ -292,8 +408,8 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20140319';      //거래일자
-        statement.detailList[0].itemName := '품/\목명';
+        statement.detailList[0].purchaseDT := '20151211';      //거래일자
+        statement.detailList[0].itemName := '품목명';
         statement.detailList[0].spec := '규격';
         statement.detailList[0].qty := '1';                    //수량
         statement.detailList[0].unitCost := '100000';          //단가
@@ -305,21 +421,33 @@ begin
         statement.detailList[0].spare2 := '';
         statement.detailList[0].spare3 := '';
         statement.detailList[0].spare4 := '';
-        statement.detailList[0].spare5 := '';        
-
-
+        statement.detailList[0].spare5 := '';
+        
         statement.detailList[1] := TStatementDetail.Create;
-        statement.detailList[1].serialNum := 2;
-        statement.detailList[1].itemName := '품목"명';
+        statement.detailList[1].serialNum := 2;                //일련번호
+        statement.detailList[1].purchaseDT := '20151211';      //거래일자
+        statement.detailList[1].itemName := '품목명';
+        statement.detailList[1].spec := '규격';
+        statement.detailList[1].qty := '1';                    //수량
+        statement.detailList[1].unitCost := '100000';          //단가
+        statement.detailList[1].supplyCost := '100000';        //공급가액
+        statement.detailList[1].tax := '10000';                //세액
+        statement.detailList[1].remark := '품목비고';
+        statement.detailList[1]._unit := '';                   //단위
+        statement.detailList[1].spare1 := '';
+        statement.detailList[1].spare2 := '';
+        statement.detailList[1].spare3 := '';
+        statement.detailList[1].spare4 := '';
+        statement.detailList[1].spare5 := '';
 
-        //추가속성항목, 자세한 사항은 [전자명세서 api 연동매뉴얼 > 5.2. 기본양식 추가속성 테이블] 참조
+        //추가속성항목, 자세한 사항은 "[전자명세서 api 연동매뉴얼] > 5.2. 기본양식 추가속성 테이블" 참조
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
         statement.propertyBag[0].name := 'Balance';
         statement.propertyBag[0].value := '10000';
 
-         statement.propertyBag[1] := TProperty.Create;
+        statement.propertyBag[1] := TProperty.Create;
         statement.propertyBag[1].name := 'CBalance';
         statement.propertyBag[1].value := '20000';
 
@@ -334,23 +462,23 @@ begin
         except
                 on le : EPopbillException do begin
                         statement.Free;
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
-        
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnGetBalanceClick(Sender: TObject);
 var
         balance : Double;
 begin
-         try
+        try
                 balance := statementService.GetBalance(txtCorpNum.text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -364,10 +492,10 @@ var
         unitcost : Single;
 begin
         try
-                unitcost := statementService.GetUnitCost(txtCorpNum.text,ItemCode);
+                unitcost := statementService.GetUnitCost(txtCorpNum.text, ItemCode);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -379,11 +507,11 @@ procedure TfrmExample.btnGetPartnerBalanceClick(Sender: TObject);
 var
         balance : Double;
 begin
-         try
+        try
                 balance := statementService.GetPartnerBalance(txtCorpNum.text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -396,16 +524,16 @@ procedure TfrmExample.btnDeleteClick(Sender: TObject);
 var
         response : TResponse;
 begin
-       try
-                response := statementService.Delete(txtCorpNum.text,ItemCode,tbMgtKey.Text,txtUserID.Text);
+        try
+                response := statementService.Delete(txtCorpNum.text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnAttachFileClick(Sender: TObject);
@@ -413,6 +541,11 @@ var
         filePath : string;
         response : TResponse;
 begin
+        {**********************************************************************}
+        { - 첨부파일 등록은 [임시저장] 상태에서만 가능합니다.                  }
+        { - 첨부파일은 최대 5개까지 추가할 수 있습니다.                        }
+        {**********************************************************************}
+
         if OpenDialog1.Execute then begin
               filePath := OpenDialog1.FileName;
         end else begin
@@ -420,15 +553,15 @@ begin
         end;
 
         try
-                response := statementService.AttachFile(txtCorpNum.text,ItemCode,tbMgtKey.Text,filePath,txtUserID.Text);
+                response := statementService.AttachFile(txtCorpNum.text, ItemCode, tbMgtKey.Text, filePath, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 
 end;                                                 
 
@@ -439,10 +572,10 @@ var
         i : Integer;
 begin
         try
-                filelist := statementService.GetFiles(txtCorpNum.text,ItemCode,tbMgtKey.Text);
+                filelist := statementService.GetFiles(txtCorpNum.text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -451,7 +584,10 @@ begin
         
         for i := 0 to Length(fileList) -1 do
         begin
-            tmp := tmp +  IntToStr(fileList[i].SerialNum) + ' | ' + fileList[i].DisplayName + ' | ' + fileList[i].AttachedFile + ' | ' + fileList[i].RegDT + #13;
+            tmp := tmp +  IntToStr(fileList[i].SerialNum) + ' | '
+                        + fileList[i].DisplayName + ' | '
+                        + fileList[i].AttachedFile + ' | '
+                        + fileList[i].RegDT + #13;
             tbFileIndexID.text := fileList[i].AttachedFile;
         end;
 
@@ -463,15 +599,16 @@ var
         response : TResponse;
 begin
         try
-                response := statementService.DeleteFile(txtCorpNum.text,ItemCode,tbMgtKey.Text,tbFileIndexID.Text,txtUserID.Text);
+                response := statementService.DeleteFile(txtCorpNum.text, ItemCode,
+                                        tbMgtKey.Text, tbFileIndexID.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 Function BoolToStr(b:Boolean):String;
 begin 
@@ -483,25 +620,35 @@ var
         statementInfo : TStatementInfo;
         tmp : string;
 begin
+        {**********************************************************************}
+        { 전자명세서 상태 확인 (GetInfo API) 응답항목에 대한 정보는            }
+        { "[전자명세서 API 연동매뉴얼] > 4.2. 전자명세서 상태정보 구성"        }
+        { 을 참조하시기 바랍니다.                                              }
+        {**********************************************************************}
+
         try
-                statementInfo := statementService.getInfo(txtCorpNum.text,ItemCode,tbMgtKey.Text);
+                statementInfo := statementService.getInfo(txtCorpNum.text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
         tmp := 'ItemKey | InvoiceNum | StateCode | TaxType | WriteDate | RegDT | OpenYN | OpenDT | SenderPrintYN | ReceiverPrintYN' + #13;
 
-        tmp := tmp + statementInfo.ItemKey + ' | ' + statementInfo.InvoiceNum + ' | ' + IntToStr(statementInfo.StateCode) + ' | '
-        + statementInfo.TaxType + ' | ' + statementInfo.WriteDate + ' | ' + statementInfo.RegDT + ' | '
-        + BoolToStr(statementInfo.OpenYN) + ' | ' + statementInfo.OpenDT + ' | ' + BoolToStr(statementInfo.SenderPrintYN) + ' | ' 
-        + BoolToStr(statementInfo.ReceiverPrintYN) + #13;
+        tmp := tmp + statementInfo.ItemKey + ' | '
+                   + statementInfo.InvoiceNum + ' | '
+                   + IntToStr(statementInfo.StateCode) + ' | '
+                   + statementInfo.TaxType + ' | '
+                   + statementInfo.WriteDate + ' | '
+                   + statementInfo.RegDT + ' | '
+                   + BoolToStr(statementInfo.OpenYN) + ' | '
+                   + statementInfo.OpenDT + ' | '
+                   + BoolToStr(statementInfo.SenderPrintYN) + ' | '
+                   + BoolToStr(statementInfo.ReceiverPrintYN) + #13;
 
         ShowMessage(tmp);
-
-
 end;
 
 procedure TfrmExample.btnGetInfosClick(Sender: TObject);
@@ -511,14 +658,24 @@ var
         tmp : string;
         i : Integer;
 begin
+        {**********************************************************************}
+        { 전자명세서 상태 대량 확인 (GetInfos API) 응답항목에 대한 정보는      }
+        { "[전자명세서 API 연동매뉴얼] > 4.2. 전자명세서 상태정보 구성"        }
+        { 을 참조하시기 바랍니다.                                              }
+        {**********************************************************************}
+
+        //전자명세서 문서관리번호 배열, 최대 1000건까지 기재가능
         SetLength(KeyList,2);
-        KeyList[0] := '1234';
-        KeyList[1] := '20160112-01';
+        KeyList[0] := '20161005-01';
+        KeyList[1] := '20160112-02';
+        KeyList[3] := '20160112-03';
+        KeyList[4] := '20160112-04';
+        
         try
-                InfoList := statementService.getInfos(txtCorpNum.text,ItemCode,KeyList);
+                InfoList := statementService.getInfos(txtCorpNum.text, ItemCode, KeyList);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -527,9 +684,13 @@ begin
         
         for i := 0 to Length(InfoList) -1 do
         begin
-            tmp := tmp + InfoList[i].ItemKey + ' | ' + IntToStr(InfoList[i].StateCode) + ' | '
-                + InfoList[i].TaxType + ' | ' + InfoList[i].WriteDate + ' | ' + InfoList[i].RegDT + ' | '
-                + BoolToStr(InfoList[i].senderPrintYN) + ' | ' + BoolToStr(InfoList[i].receiverPrintYN) +  #13;
+            tmp := tmp + InfoList[i].ItemKey + ' | '
+                        + IntToStr(InfoList[i].StateCode) + ' | '
+                        + InfoList[i].TaxType + ' | '
+                        + InfoList[i].WriteDate + ' | '
+                        + InfoList[i].RegDT + ' | '
+                        + BoolToStr(InfoList[i].senderPrintYN) + ' | '
+                        + BoolToStr(InfoList[i].receiverPrintYN) +  #13;
         end;
 
         ShowMessage(tmp);
@@ -543,22 +704,21 @@ var
         i : Integer;
 begin
         try
-                LogList := statementService.getLogs(txtCorpNum.text,ItemCode,tbMgtKey.Text);
+                LogList := statementService.getLogs(txtCorpNum.text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        tmp := 'DocLogType | Log | ProcType | ProcCorpName | ProcMemo | RegDT | IP' + #13;
+        tmp := 'DocLogType | Log | ProcType | ProcMemo | RegDT | IP' + #13;
         
         for i := 0 to Length(LogList) -1 do
         begin
             tmp := tmp + IntToStr(LogList[i].DocLogType) + ' | '
                         + LogList[i].Log + ' | '
                         + LogList[i].ProcType + ' | '
-                        + LogList[i].ProcCorpName + ' | '
                         + LogList[i].ProcMemo + ' | '
                         + LogList[i].RegDT + ' | '
                         + LogList[i].IP + ' | ' + #13;
@@ -587,16 +747,17 @@ var
         memo : String;
 begin
         memo := '발행취소 메모';
+
         try
-                response := statementService.Cancel(txtCorpNum.text,ItemCode,tbMgtKey.Text,memo,txtUserID.Text);
+                response := statementService.Cancel(txtCorpNum.text, ItemCode, tbMgtKey.Text, memo, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnIssueClick(Sender: TObject);
@@ -604,18 +765,20 @@ var
         response : TResponse;
         memo : String;
 begin
+
+        // 메모
         memo := '발행 메모';
-        
+
         try
-                response := statementService.Issue(txtCorpNum.text,ItemCode,tbMgtKey.Text,memo,txtUserID.Text);
+                response := statementService.Issue(txtCorpNum.text, ItemCode, tbMgtKey.Text, memo, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 
@@ -626,20 +789,26 @@ var
         receiveNum : String;
         contents : String;
 begin
-        sendNum := '010-1234-1234';      // 발신번호
-        receivenUm := '010-123-123';     // 수신번호
-        contents := '세금계산서가 발행되었습니다. 메일 확인 바랍니다.';       // 안내문자 내용, 90byte 초과하는 경우 길이가 조정되어 전송됨.
+        // 발신번호
+        sendNum := '070-4304-2991';
+
+        // 수신번호
+        receivenUm := '010-000-111';
+        
+        // 안내문자 내용, 90byte 초과하는 경우 길이가 조정되어 전송됨.
+        contents := '거래명세서가 발행되었습니다. 메일 확인 바랍니다.';
         
         try
-                response := statementService.SendSMS(txtCorpNum.text,ItemCode,tbMgtKey.Text,sendNum,receiveNum,contents,txtUserID.Text);
+                response := statementService.SendSMS(txtCorpNum.text, ItemCode, tbMgtKey.Text,
+                                        sendNum, receiveNum, contents, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnReSendEmailClick(Sender: TObject);
@@ -647,18 +816,20 @@ var
         response : TResponse;
         email : String;
 begin
-        email := 'test@test.com';       // 수신 메일주소
-        
+        // 수신 메일주소
+        email := 'test@test.com';
+
         try
-                response := statementService.SendEmail(txtCorpNum.text,ItemCode,tbMgtKey.Text,email,txtUserID.Text);
+                response := statementService.SendEmail(txtCorpNum.text, ItemCode,
+                                                tbMgtKey.Text, email, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnSendInvoiceFaxClick(Sender: TObject);
@@ -667,19 +838,23 @@ var
         sendNum : String;
         receiveNum : String;
 begin
-        sendNum := '080-1234-1234';      // 팩스 발신번호
-        receiveNum := '02-111-222';     // 팩스 수신번호
+        // 팩스 발신번호
+        sendNum := '080-1234-1234';
+
+        // 팩스 수신번호
+        receiveNum := '02-111-222';
 
         try
-                response := statementService.SendFAX(txtCorpNum.text,ItemCode,tbMgtKey.Text,sendNum,receiveNum,txtUserID.Text);
+                response := statementService.SendFAX(txtCorpNum.text, ItemCode,
+                                        tbMgtKey.Text, sendNum, receiveNum, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 
@@ -688,11 +863,14 @@ procedure TfrmExample.btnGetTaxinvoiceURL1Click(Sender: TObject);
 var
         resultURL : String;
 begin
+
+        // 반환되는 URL은 보안정책으로인해 30초의 유효시간을 갖습니다.
+
         try
-                resultURL := statementService.GetURL(txtCorpNum.Text,txtUserID.Text,'TBOX');
+                resultURL := statementService.GetURL(txtCorpNum.Text, txtUserID.Text, 'TBOX');
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -704,11 +882,14 @@ procedure TfrmExample.btnGetTaxinvoiceURL2Click(Sender: TObject);
 var
         resultURL : String;
 begin
+
+        // 반환되는 URL은 보안정책으로인해 30초의 유효시간을 갖습니다.
+        
         try
-                resultURL := statementService.GetURL(txtCorpNum.Text,txtUserID.Text,'SBOX');
+                resultURL := statementService.GetURL(txtCorpNum.Text, txtUserID.Text, 'SBOX');
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -752,11 +933,14 @@ procedure TfrmExample.btnGetPopUpURLClick(Sender: TObject);
 var
   resultURL : String;
 begin
+
+        // 반환된 URL은 보안정책으로 인해 30초의 유효시간을 갖습니다.
+
         try
-                resultURL := statementService.getPopupURL(txtCorpNum.Text,ItemCode,tbMgtKey.Text, txtUserID.Text);
+                resultURL := statementService.getPopupURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -768,11 +952,14 @@ procedure TfrmExample.btnGetPrintURLClick(Sender: TObject);
 var
   resultURL : String;
 begin
+
+        // 반환된 URL은 보안정책으로 인해 30초의 유효시간을 갖습니다.
+        
         try
-                resultURL := statementService.getPrintURL(txtCorpNum.Text,ItemCode,tbMgtKey.Text, txtUserID.Text);
+                resultURL := statementService.getPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -784,11 +971,14 @@ procedure TfrmExample.btnGetMailURLClick(Sender: TObject);
 var
   resultURL : String;
 begin
+
+        // 메일링크 URL의 경우 유효시간이 존재하지 않습니다.
+
         try
-                resultURL := statementService.getMailURL(txtCorpNum.Text,ItemCode,tbMgtKey.Text, txtUserID.Text);
+                resultURL := statementService.getMailURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -801,14 +991,19 @@ var
         KeyList : Array of String;
         resultURL : String;
 begin
+
+        // 반환된 URL은 보안정책으로 인해 30초의 유효시간을 갖습니다.
+
+        // 인쇄할 전자명세서 문서관리번호 배열, 최대 100건
         SetLength(KeyList,2);
-        KeyList[0] := '1234';
-        KeyList[1] := '123';
+        KeyList[0] := '20161005-01';
+        KeyList[1] := '20161005-02';
+
         try
-                resultURL := statementService.getMassPrintURL(txtCorpNum.text,ItemCode,KeyList,txtUserID.Text);
+                resultURL := statementService.getMassPrintURL(txtCorpNum.text, ItemCode, KeyList, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -914,12 +1109,12 @@ begin
         except
                 on le : EPopbillException do begin
                         statement.Free;
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 
@@ -929,11 +1124,16 @@ var
         tmp : string;
         i : integer;
 begin
+        {***********************************************************************}
+        { 전자명세서 항목에 대한 자세한 사항은 "[전자명세서  API 연동매뉴얼]    }
+        { > 4.1 전자명세서 구성 " 을 참조하시기 바랍니다.                       }
+        {***********************************************************************}
+
         try
-                statement := statementService.getDetailInfo(txtCorpNum.text,ItemCode,tbMgtKey.Text);
+                statement := statementService.getDetailInfo(txtCorpNum.text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -1027,10 +1227,10 @@ var
         InUse : boolean;
 begin
         try
-                InUse := statementService.CheckMgtKeyInUse(txtCorpNum.text,ItemCode,tbMgtKey.Text);
+                InUse := statementService.CheckMgtKeyInUse(txtCorpNum.text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -1043,11 +1243,14 @@ procedure TfrmExample.Button1Click(Sender: TObject);
 var
   resultURL : String;
 begin
+
+        // 반환된 URL은 보안정책으로 인해 30초의 유효시간을 갖습니다.
+
         try
-                resultURL := statementService.getEPrintURL(txtCorpNum.Text,ItemCode,tbMgtKey.Text, txtUserID.Text);
+                resultURL := statementService.getEPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -1063,12 +1266,12 @@ begin
                 response := statementService.CheckID(txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 
 end;
 
@@ -1077,26 +1280,43 @@ var
         response : TResponse;
         joinInfo : TJoinContact;
 begin
-        joinInfo.id := 'userid';                        // [필수] 아이디 (6자 이상 20자 미만)
-        joinInfo.pwd := 'thisispassword';               // [필수] 비밀번호 (6자 이상 20자 미만)
-        joinInfo.personName := '담당자성명';            // [필수] 담당자명(한글이나 영문 30자 이내)
-        joinInfo.tel := '070-7510-3710';                // [필수] 연락처
-        joinInfo.hp := '010-1111-2222';                 // 휴대폰번호
-        joinInfo.fax := '02-6442-9700';                 // 팩스번호
-        joinInfo.email := 'test@test.com';              // [필수] 이메일
-        joinInfo.searchAllAllowYN := false;             // 조회권한(true 회사조회/ false 개인조회)
-        joinInfo.mgrYN     := false;                    // 관리자 권한여부 
+        // [필수] 담당자 아이디 (6자 이상 20자 미만)
+        joinInfo.id := 'useid';
+        
+        // [필수] 비밀번호 (6자 이상 20자 미만)
+        joinInfo.pwd := 'thisispassword';
+
+        // [필수] 담당자명(한글이나 영문 30자 이내)
+        joinInfo.personName := '담당자성명';
+
+        // [필수] 연락처
+        joinInfo.tel := '070-4304-2991';
+
+        // 휴대폰번호
+        joinInfo.hp := '010-1111-2222';
+
+        // 팩스번호
+        joinInfo.fax := '02-6442-9700';
+        
+        // [필수] 이메일
+        joinInfo.email := 'test@test.com';
+
+        // 회사조회 권한여부, true-회사조회 / false-개인조회
+        joinInfo.searchAllAllowYN := false;
+
+        // 관리자 권한여부
+        joinInfo.mgrYN := false;
 
         try
-                response := statementService.RegistContact(txtCorpNum.text,joinInfo,txtUserID.text);
+                response := statementService.RegistContact(txtCorpNum.text, joinInfo, txtUserID.text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnListContactClick(Sender: TObject);
@@ -1107,10 +1327,10 @@ var
 begin
 
         try
-                InfoList := statementService.ListContact(txtCorpNum.text,txtUserID.text);
+                InfoList := statementService.ListContact(txtCorpNum.text, txtUserID.text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -1138,24 +1358,37 @@ var
 begin
         contactInfo := TContactInfo.Create;
 
-        contactInfo.personName := '테스트 담당자';      // 담당자명
-        contactInfo.tel := '070-7510-3710';             // 연락처
-        contactInfo.hp := '010-4324-1111';              // 휴대폰번호
-        contactInfo.email := 'test@test.com';           // 이메일 주소
-        contactInfo.fax := '02-6442-9799';              // 팩스번호
-        contactInfo.searchAllAllowYN := true;           // 회사조회 권한여부
-        contactInfo.mgrYN := false;                     // 관리자 전환 여부 
+        // 담당자명
+        contactInfo.personName := '테스트 담당자';
+
+        // 연락처
+        contactInfo.tel := '070-4304-2991';
+
+        // 휴대폰번호
+        contactInfo.hp := '010-000-1111';
+
+        // 이메일 주소
+        contactInfo.email := 'test@test.com';
+        
+        // 팩스번호
+        contactInfo.fax := '02-6442-9799';
+
+        // 조회권한, true(회사조회), false(개인조회)
+        contactInfo.searchAllAllowYN := true;
+
+        // 관리자권한 설정여부
+        contactInfo.mgrYN := false; 
 
         try
-                response := statementService.UpdateContact(txtCorpNum.text,contactInfo,txtUserID.Text);
+                response := statementService.UpdateContact(txtCorpNum.text, contactInfo, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnGetCorpInfoClick(Sender: TObject);
@@ -1167,16 +1400,16 @@ begin
                 corpInfo := statementService.GetCorpInfo(txtCorpNum.text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        tmp := 'CorpName : ' + corpInfo.CorpName + #13;
-        tmp := tmp + 'CeoName : ' + corpInfo.CeoName + #13;
-        tmp := tmp + 'BizType : ' + corpInfo.BizType + #13;
-        tmp := tmp + 'BizClass : ' + corpInfo.BizClass + #13;
-        tmp := tmp + 'Addr : ' + corpInfo.Addr + #13;
+        tmp := 'CorpName (상호) : ' + corpInfo.CorpName + #13;
+        tmp := tmp + 'CeoName (대표자 성명) : ' + corpInfo.CeoName + #13;
+        tmp := tmp + 'BizType (업태) : ' + corpInfo.BizType + #13;
+        tmp := tmp + 'BizClass (종목) : ' + corpInfo.BizClass + #13;
+        tmp := tmp + 'Addr (주소) : ' + corpInfo.Addr + #13;
 
         ShowMessage(tmp);
 end;
@@ -1188,22 +1421,31 @@ var
 begin
         corpInfo := TCorpInfo.Create;
 
-        corpInfo.ceoname := '대표자명';         //대표자명
-        corpInfo.corpName := '팝빌';            // 회사명
-        corpInfo.bizType := '업태';             // 업태
-        corpInfo.bizClass := '업종';            // 업종
-        corpInfo.addr := '서울특별시 강남구 영동대로 517';  // 주소
+        // 대표자명, 최대 30자
+        corpInfo.ceoname := '대표자명';
+
+        // 상호, 최대 70자
+        corpInfo.corpName := '상호';
+
+        // 업태, 최대 40자
+        corpInfo.bizType := '업태';
+
+        // 종목, 최대 40자
+        corpInfo.bizClass := '종목';
+
+        // 주소, 최대 300자
+        corpInfo.addr := '서울특별시 강남구 영동대로 517';
 
         try
-                response := statementService.UpdateCorpInfo(txtCorpNum.text,corpInfo,txtUserID.Text);
+                response := statementService.UpdateCorpInfo(txtCorpNum.text, corpInfo, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnRegistIssueClick(Sender: TObject);
@@ -1213,51 +1455,132 @@ var
         memo : String;
 begin
         statement := TStatement.Create;
+
+        // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
         statement.itemCode := ItemCode;
+
+        // 맞춤양식코드, 기본값(공백처리)
+        // 별도의 양식으로 전송하고자 하는경우 링크허브로 문의하여 주시면
+        // 맞춤양식을 제작하여 양식코드를 발급하여 드립니다.
         statement.formCode := txtFormCode.Text;
-        
-        statement.writeDate := '20160126';             //필수, 기재상 작성일자
-        statement.purposeType := '영수';               //필수, {영수, 청구}
-        statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
-        statement.SMSSendYN := false;                  //발행시 문자발송기능 사용시 활용
-        statement.AutoAcceptYN := true;               //수신자 승인없이 밸행시에 승인 처리여부.
+
+        // [필수] 작성일자
+        statement.writeDate := '20161005';
+
+        // [필수] {영수, 청구} 중 기재
+        statement.purposeType := '영수';
+
+        // [필수] {과세, 영세, 면세} 중 기재
+        statement.taxType :='과세';
+
+        // 발행시 수신자 알림문자 전송여부
+        statement.SMSSendYN := false;
+
+        // 수신자 승인없이 밸행시에 승인 처리여부.
+        statement.AutoAcceptYN := true;
+
+        // 거래명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
+        // 사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
 
-        statement.senderCorpNum := '1234567890';       //공급자 사업자번호
-        statement.senderTaxRegID := '';                //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+
+        {**********************************************************************}
+        {                             공급자 정보                              }
+        {**********************************************************************}
+
+        // 공급자 사업자번호, '-'제외 10자리
+        statement.senderCorpNum := '1234567890';
+
+        // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        statement.senderTaxRegID := '';
+
+        // 공급자 상호
         statement.senderCorpName := '공급자 상호';
+
+        // 공급자 대표자 성명
         statement.senderCEOName := '공급자 대표자 성명';
+
+        // 공급자 주소
         statement.senderAddr := '공급자 주소';
-        statement.senderBizClass := '공급자 업종';
+
+        // 공급자 종목
+        statement.senderBizClass := '공급자 종목';
+
+        // 공급자 업태 
         statement.senderBizType := '공급자 업태,업태2';
+
+        // 공급자 담당자명
         statement.senderContactName := '공급자 담당자명';
+
+        // 공급자 담당자 메일주소
         statement.senderEmail := 'test@test.com';
+
+        // 공급자 담당자 연락처 
         statement.senderTEL := '070-7070-0707';
+
+        // 공급자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
-        statement.receiverCorpNum := '8888888888';    // 공급받는자 사업자번호
+
+        {**********************************************************************}
+        {                            공급받는자 정보                           }
+        {**********************************************************************}
+
+        // 공급받는자 사업자번호, '-' 제외 10자리 
+        statement.receiverCorpNum := '8888888888';
+
+        // 공급받는자 상호 
         statement.receiverCorpName := '공급받는자 상호';
-        statement.receiverTaxRegID := '';             //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+
+        //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        statement.receiverTaxRegID := '';
+
+        // 공급받는자 대표자 성명
         statement.receiverCEOName := '공급받는자 대표자 성명';
+
+        // 공급받는자 주소
         statement.receiverAddr := '공급받는자 주소';
+
+        // 공급받는자 종목
         statement.receiverBizClass := '공급받는자 업종';
+
+        // 공급받는자 업태
         statement.receiverBizType := '공급받는자 업태';
+
+        // 공급받는자 담당자명
         statement.receiverContactName := '공급받는자 담당자명';
+
+        // 공급받는자 담당자 메일주소
         statement.receiverEmail := 'test@receiver.com';
+
+        // 공급받는자 담당자 연락처 
         statement.receiverTEL := '070-1234-1234';
+
+        // 공급받는자 담당자 휴대폰번호
         statement.receiverHP := '010-111-222';
 
-        statement.supplyCostTotal := '100000';         //필수 공급가액 합계
-        statement.taxTotal := '10000';                 //필수 세액 합계
-        statement.totalAmount := '110000';             //필수 합계금액.  공급가액 + 세액
+        
+        //필수 공급가액 합계
+        statement.supplyCostTotal := '200000';
 
-        statement.serialNum := '123';                  // 기재 상 일련번호
+        //필수 세액 합계
+        statement.taxTotal := '20000';
+
+        //필수 합계금액.  공급가액 + 세액
+        statement.totalAmount := '220000';
+
+        // 기재 상 일련번호
+        statement.serialNum := '1';
+        
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
 
-        statement.businessLicenseYN := false; //사업자등록증 이미지 첨부시 설정.
-        statement.bankBookYN := false ;        //통장사본 이미지 첨부시 설정.
+        // 사업자등록증 첨부여부
+        statement.businessLicenseYN := false;
+
+        // 통장사본 첨부여부
+        statement.bankBookYN := false ;
 
         //상세항목 0~99개 까지 작성가능.
         // SerialNum 은 1부터 99까지 순차기재.
@@ -1282,10 +1605,23 @@ begin
         statement.detailList[0].spare5 := '';
         
         statement.detailList[1] := TStatementDetail.Create;
-        statement.detailList[1].serialNum := 2;
+        statement.detailList[1].serialNum := 2;                //일련번호
+        statement.detailList[1].purchaseDT := '20151211';      //거래일자
         statement.detailList[1].itemName := '품목명';
+        statement.detailList[1].spec := '규격';
+        statement.detailList[1].qty := '1';                    //수량
+        statement.detailList[1].unitCost := '100000';          //단가
+        statement.detailList[1].supplyCost := '100000';        //공급가액
+        statement.detailList[1].tax := '10000';                //세액
+        statement.detailList[1].remark := '품목비고';
+        statement.detailList[1]._unit := '';                   //단위
+        statement.detailList[1].spare1 := '';
+        statement.detailList[1].spare2 := '';
+        statement.detailList[1].spare3 := '';
+        statement.detailList[1].spare4 := '';
+        statement.detailList[1].spare5 := '';
 
-        //추가속성항목, 자세한 사항은 [전자명세서 api 연동매뉴얼 > 5.2. 기본양식 추가속성 테이블] 참조
+        //추가속성항목, 자세한 사항은 "[전자명세서 api 연동매뉴얼] > 5.2. 기본양식 추가속성 테이블" 참조
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
@@ -1300,19 +1636,20 @@ begin
         statement.propertyBag[2].name := 'Deposit';
         statement.propertyBag[2].value := '10000';
 
+        memo := '즉시발행 메모';
+        
         try
-                memo := '즉시발행 메모';
-                response := statementService.RegistIssue(txtCorpNum.text, statement,memo,txtUserID.Text);
+                response := statementService.RegistIssue(txtCorpNum.text, statement, memo, txtUserID.Text);
                 statement.Free;
         except
                 on le : EPopbillException do begin
                         statement.Free;
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
         
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnGetPopbillURL_CHRGClick(Sender: TObject);
@@ -1320,11 +1657,13 @@ var
   resultURL : String;
 begin
 
+        // 반환되는 URL은 보안 정책으로 인해 30초의 유효시간을 갖습니다.
+
         try
-                resultURL := statementService.getPopbillURL(txtCorpNum.Text,txtUserID.Text,'CHRG');
+                resultURL := statementService.getPopbillURL(txtCorpNum.Text, txtUserID.Text, 'CHRG');
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -1337,15 +1676,15 @@ var
         response : TResponse;
 begin
         try
-                response := statementService.CheckIsMember(txtCorpNum.text,LinkID);
+                response := statementService.CheckIsMember(txtCorpNum.text, LinkID);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnCancelClick(Sender: TObject);
@@ -1356,31 +1695,31 @@ begin
         memo := '발행취소 메모';
         
         try
-                response := statementService.Cancel(txtCorpNum.text,ItemCode,tbMgtKey.Text,memo,txtUserID.Text);
+                response := statementService.Cancel(txtCorpNum.text, ItemCode, tbMgtKey.Text, memo, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnDelete_registIssueClick(Sender: TObject);
 var
         response : TResponse;
 begin
-       try
-                response := statementService.Delete(txtCorpNum.text,ItemCode,tbMgtKey.Text,txtUserID.Text);
+        try
+                response := statementService.Delete(txtCorpNum.text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
 procedure TfrmExample.btnIssueFaxClick(Sender: TObject);
@@ -1390,53 +1729,142 @@ var
         sendNum : String;
         receiveNum : String;
 begin
-        statement := TStatement.Create;
-        statement.itemCode := ItemCode;
-        statement.formCode := txtFormCode.Text;
-        
-        statement.writeDate := '20150923';             //필수, 기재상 작성일자
-        statement.purposeType := '영수';               //필수, {영수, 청구}
-        statement.taxType :='과세';                    //필수, {과세, 영세, 면세}
-        statement.SMSSendYN := false;                  //발행시 문자발송기능 사용시 활용
-        statement.AutoAcceptYN := false;               //수신자 승인없이 밸행시에 승인 처리여부.
-        statement.MgtKey := tbMgtKey.Text;             //팩스파일명
 
+        // 발신번호
+        sendNum := '070-4304-2991';
+
+        // 수신팩스번호
+        receiveNum := '02-000-111';
+
+
+        // 전자명세서 객체 초기화
+        statement := TStatement.Create;
+
+        // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
+        statement.itemCode := ItemCode;
+
+        // 맞춤양식코드, 기본값(공백처리)
+        // 별도의 양식으로 전송하고자 하는경우 링크허브로 문의하여 주시면
+        // 맞춤양식을 제작하여 양식코드를 발급하여 드립니다.
+        statement.formCode := txtFormCode.Text;
+
+        // [필수] 작성일자
+        statement.writeDate := '20161005';
+
+        // [필수] {영수, 청구} 중 기재
+        statement.purposeType := '영수';
+
+        // [필수] {과세, 영세, 면세} 중 기재
+        statement.taxType :='과세';
+
+        // 발행시 수신자 알림문자 전송여부
+        statement.SMSSendYN := false;
+
+        // 수신자 승인없이 밸행시에 승인 처리여부.
+        statement.AutoAcceptYN := true;
+
+        // 거래명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
+        // 사업자별로 중복되지 않도록 구성
+        statement.MgtKey := tbMgtKey.Text;
+
+
+        {**********************************************************************}
+        {                             공급자 정보                              }
+        {**********************************************************************}
+
+        // 공급자 사업자번호, '-'제외 10자리
         statement.senderCorpNum := '1234567890';
-        statement.senderTaxRegID := ''; //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+
+        // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        statement.senderTaxRegID := '';
+
+        // 공급자 상호
         statement.senderCorpName := '공급자 상호';
-        statement.senderCEOName := '공급자"" 대표자 성명';
+
+        // 공급자 대표자 성명
+        statement.senderCEOName := '공급자 대표자 성명';
+
+        // 공급자 주소
         statement.senderAddr := '공급자 주소';
-        statement.senderBizClass := '공급자 업종';
+
+        // 공급자 종목
+        statement.senderBizClass := '공급자 종목';
+
+        // 공급자 업태 
         statement.senderBizType := '공급자 업태,업태2';
+
+        // 공급자 담당자명
         statement.senderContactName := '공급자 담당자명';
+
+        // 공급자 담당자 메일주소
         statement.senderEmail := 'test@test.com';
+
+        // 공급자 담당자 연락처 
         statement.senderTEL := '070-7070-0707';
+
+        // 공급자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
+
+        {**********************************************************************}
+        {                            공급받는자 정보                           }
+        {**********************************************************************}
+
+        // 공급받는자 사업자번호, '-' 제외 10자리 
         statement.receiverCorpNum := '8888888888';
+
+        // 공급받는자 상호 
         statement.receiverCorpName := '공급받는자 상호';
+
+        //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        statement.receiverTaxRegID := '';
+
+        // 공급받는자 대표자 성명
         statement.receiverCEOName := '공급받는자 대표자 성명';
+
+        // 공급받는자 주소
         statement.receiverAddr := '공급받는자 주소';
+
+        // 공급받는자 종목
         statement.receiverBizClass := '공급받는자 업종';
+
+        // 공급받는자 업태
         statement.receiverBizType := '공급받는자 업태';
+
+        // 공급받는자 담당자명
         statement.receiverContactName := '공급받는자 담당자명';
+
+        // 공급받는자 담당자 메일주소
         statement.receiverEmail := 'test@receiver.com';
-        statement.receiverFAX :='010-2222-1111';
 
-        statement.supplyCostTotal := '100000';         //필수 공급가액 합계
-        statement.taxTotal := '10000';                 //필수 세액 합계
-        statement.totalAmount := '110000';             //필수 합계금액.  공급가액 + 세액
+        // 공급받는자 담당자 연락처 
+        statement.receiverTEL := '070-1234-1234';
 
-        statement.serialNum := '123';
+        // 공급받는자 담당자 휴대폰번호
+        statement.receiverHP := '010-111-222';
+
+        
+        //필수 공급가액 합계
+        statement.supplyCostTotal := '200000';
+
+        //필수 세액 합계
+        statement.taxTotal := '20000';
+
+        //필수 합계금액.  공급가액 + 세액
+        statement.totalAmount := '220000';
+
+        // 기재 상 일련번호
+        statement.serialNum := '1';
+        
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
 
-        statement.businessLicenseYN := false; //사업자등록증 이미지 첨부시 설정.
-        statement.bankBookYN := false ;        //통장사본 이미지 첨부시 설정.
-        statement.faxsendYN := false;          //발행시 Fax발송시 설정.
+        // 사업자등록증 첨부여부
+        statement.businessLicenseYN := false;
 
-
+        // 통장사본 첨부여부
+        statement.bankBookYN := false ;
 
         //상세항목 0~99개 까지 작성가능.
         // SerialNum 은 1부터 99까지 순차기재.
@@ -1445,27 +1873,46 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20140319';      //거래일자
-        statement.detailList[0].itemName := '품/\목명';
+        statement.detailList[0].purchaseDT := '20151211';      //거래일자
+        statement.detailList[0].itemName := '품목명';
         statement.detailList[0].spec := '규격';
         statement.detailList[0].qty := '1';                    //수량
         statement.detailList[0].unitCost := '100000';          //단가
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
         statement.detailList[0].remark := '품목비고';
-
-
+        statement.detailList[0]._unit := '';                   //단위
+        statement.detailList[0].spare1 := '';
+        statement.detailList[0].spare2 := '';
+        statement.detailList[0].spare3 := '';
+        statement.detailList[0].spare4 := '';
+        statement.detailList[0].spare5 := '';
+        
         statement.detailList[1] := TStatementDetail.Create;
-        statement.detailList[1].serialNum := 2;
-        statement.detailList[1].itemName := '품목"명';
+        statement.detailList[1].serialNum := 2;                //일련번호
+        statement.detailList[1].purchaseDT := '20151211';      //거래일자
+        statement.detailList[1].itemName := '품목명';
+        statement.detailList[1].spec := '규격';
+        statement.detailList[1].qty := '1';                    //수량
+        statement.detailList[1].unitCost := '100000';          //단가
+        statement.detailList[1].supplyCost := '100000';        //공급가액
+        statement.detailList[1].tax := '10000';                //세액
+        statement.detailList[1].remark := '품목비고';
+        statement.detailList[1]._unit := '';                   //단위
+        statement.detailList[1].spare1 := '';
+        statement.detailList[1].spare2 := '';
+        statement.detailList[1].spare3 := '';
+        statement.detailList[1].spare4 := '';
+        statement.detailList[1].spare5 := '';
 
+        //추가속성항목, 자세한 사항은 "[전자명세서 api 연동매뉴얼] > 5.2. 기본양식 추가속성 테이블" 참조
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
         statement.propertyBag[0].name := 'Balance';
         statement.propertyBag[0].value := '10000';
 
-         statement.propertyBag[1] := TProperty.Create;
+        statement.propertyBag[1] := TProperty.Create;
         statement.propertyBag[1].name := 'CBalance';
         statement.propertyBag[1].value := '20000';
 
@@ -1475,17 +1922,15 @@ begin
 
 
         try
-                sendNum := '07075103710';
-                receiveNum := '02111222';
-                response := statementService.FAXSend(txtCorpNum.text, statement,sendNum, receiveNum,txtUserID.Text);
+                response := statementService.FAXSend(txtCorpNum.text, statement, sendNum, receiveNum, txtUserID.Text);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage('receiptNum : '+ response);
+        ShowMessage('팩스접수번호(receiptNum) : '+ response);
 
 end;
 
@@ -1504,37 +1949,61 @@ var
         i : integer;
         SearchList : TStatementSearchList;
 begin
+        {**********************************************************************}
+        { - 조회일자와 상세조건들을 사용해 전자명세서 목록을 조회합니다.       }
+        { - 응답항목에 대한 자세한 사항은 "[전자명세서 API 연동매뉴얼] >       }
+        {   4.2. 전자명세서 상태정보 구성" 을 참조하시기 바랍니다.             }
+        {**********************************************************************}
 
-        DType := 'W';                   // [필수] 일자유형 { R: 등록일자, W:작성일자, I:발행일자 }
-        SDate := '20160701';            // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
-        EDate := '20160831';            // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
 
-        SetLength(StateList, 2);        // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
+        // [필수] 일자유형 { R: 등록일자, W:작성일자, I:발행일자 }
+        DType := 'W';
+
+        // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
+        SDate := '20160701';
+        
+        // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
+        EDate := '20160831';
+
+        // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
+        SetLength(StateList, 2);
         StateList[0] := '2**';
         StateList[1] := '3**';
 
-        SetLength(ItemCodeList, 6);     // 문서종류 코드배열
-        ItemCodeList[0] := 121;         // 거래명세서
-        ItemCodeList[1] := 122;         // 청구서
-        ItemCodeList[2] := 123;         // 견적서
-        ItemCodeList[3] := 124;         // 발주서
-        ItemCodeList[4] := 125;         // 입금표
-        ItemCodeList[5] := 126;         // 영수증
 
-        QString := '';                  // 거래처 정보, 거래처 상호 또는 거래처 사업자등록번호 기재, 미기재시 전체조회
-        
-        Page := 1;                      // 페이지 번호, 기본값 1
-        PerPage := 30;                  // 페이지당 검색갯수, 기본값 500, 최대 1000
+        { 문서종류 코드배열
+         121 - 거래명세서
+         122 - 청구서
+         123 - 견적서
+         124 - 발주서
+         125 - 입금표
+         126 - 영수증  }
+        SetLength(ItemCodeList, 6);
+        ItemCodeList[0] := 121;
+        ItemCodeList[1] := 122;
+        ItemCodeList[2] := 123;
+        ItemCodeList[3] := 124;
+        ItemCodeList[4] := 125;
+        ItemCodeList[5] := 126;         
 
-        Order := 'D';                   // 'D' : 내림차순 , 'A' : 오름차순
+        // 거래처 정보, 거래처 상호 또는 거래처 사업자등록번호 기재, 미기재시 전체조회
+        QString := '';
 
+        // 페이지 번호, 기본값 1
+        Page := 1;
 
+        // 페이지당 검색갯수, 기본값 500, 최대 1000
+        PerPage := 30;
+
+        // 정렬방향, 'D' : 내림차순 , 'A' : 오름차순
+        Order := 'D';
 
         try
-                SearchList := statementService.Search(txtCorpNum.text,DType, SDate, EDate, StateList, ItemCodeList, QString, Page, PerPage, Order);
+                SearchList := statementService.Search(txtCorpNum.text,DType, SDate,
+                                EDate, StateList, ItemCodeList, QString, Page, PerPage, Order);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -1551,20 +2020,20 @@ begin
         
         for i := 0 to Length(SearchList.list) -1 do
         begin
-            tmp := tmp + IntToStr(SearchList.list[i].ItemCode) + ' | '          // 문서종류 코드
-                + SearchList.list[i].ItemKey + ' | '                            // 아이템코드
-                + IntToStr(SearchList.list[i].StateCode) + ' | '                // 상태코드
-                + SearchList.list[i].TaxType + ' | '                            // 과세형태
-                + SearchList.list[i].WriteDate + ' | '                          // 작성일자
-                + SearchList.list[i].SenderCorpName + ' | '                     // 발신자 상호
-                + SearchList.list[i].SenderCorpNum + ' | '                      // 발신자 사업자번호
-                + SearchList.list[i].ReceiverCorpName + ' | '                   // 수신자 상호
-                + SearchList.list[i].ReceiverCorpNum + ' | '                    // 수신자 사업자번호
-                + SearchList.list[i].SupplyCostTotal + ' | '                    // 공급가액 합계
-                + SearchList.list[i].TaxTotal + ' | '                           // 세액 합계
-                + SearchList.list[i].RegDT + ' | '                              // 임시저장 일시 (yyyyMMddHHmmss)
-                + BoolToStr(SearchList.list[i].SenderPrintYN) + ' | '           // 발신자 인쇄여부
-                + BoolToStr(SearchList.list[i].receiverPrintYN) + ' | ' + #13;   // 수신자 인쇄여부
+            tmp := tmp + IntToStr(SearchList.list[i].ItemCode) + ' | '
+                + SearchList.list[i].ItemKey + ' | '
+                + IntToStr(SearchList.list[i].StateCode) + ' | '
+                + SearchList.list[i].TaxType + ' | '
+                + SearchList.list[i].WriteDate + ' | '
+                + SearchList.list[i].SenderCorpName + ' | '
+                + SearchList.list[i].SenderCorpNum + ' | '
+                + SearchList.list[i].ReceiverCorpName + ' | '
+                + SearchList.list[i].ReceiverCorpNum + ' | '
+                + SearchList.list[i].SupplyCostTotal + ' | '
+                + SearchList.list[i].TaxTotal + ' | '
+                + SearchList.list[i].RegDT + ' | '
+                + BoolToStr(SearchList.list[i].SenderPrintYN) + ' | '
+                + BoolToStr(SearchList.list[i].receiverPrintYN) + ' | ' + #13;
         end;
 
         SearchList.Free;
@@ -1579,19 +2048,22 @@ var
         SubItemCode : Integer;
         SubMgtKey : String;
 begin
-        SubItemCode := 121;             // 첨부할 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
-        SubMgtKey := '20151223-01';     // 첨부할 전자명세서 문서관리번호
+        // 첨부할 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
+        SubItemCode := 121;
+
+        // 첨부할 전자명세서 문서관리번호
+        SubMgtKey := '20151223-01';
 
         try
-                response := statementService.AttachStatement(txtCorpNum.text,ItemCode,tbMgtKey.Text,SubItemCode,SubMgtKey);
+                response := statementService.AttachStatement(txtCorpNum.text, ItemCode, tbMgtKey.Text, SubItemCode, SubMgtKey);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 
 
 end;
@@ -1602,19 +2074,22 @@ var
         SubItemCode : Integer;
         SubMgtKey : String;
 begin
-        SubItemCode := 121;             // 첨부해제할 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
-        SubMgtKey := '20151223-01';     // 첨부해제할 전자명세서 문서관리번호
+        // 첨부해제할 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
+        SubItemCode := 121;
+
+        // 첨부해제할 전자명세서 문서관리번호
+        SubMgtKey := '20151223-01';
 
         try
-                response := statementService.DetachStatement(txtCorpNum.text,ItemCode,tbMgtKey.Text,SubItemCode,SubMgtKey);
+                response := statementService.DetachStatement(txtCorpNum.text, ItemCode, tbMgtKey.Text, SubItemCode, SubMgtKey);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
-        ShowMessage(IntToStr(response.code) + ' | ' +  response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 
 
 end;
@@ -1626,10 +2101,10 @@ var
 begin
 
         try
-                chargeInfo := statementService.GetChargeInfo(txtCorpNum.text,ItemCode);
+                chargeInfo := statementService.GetChargeInfo(txtCorpNum.text, ItemCode);
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
@@ -1647,17 +2122,18 @@ var
   resultURL : String;
 begin
 
+        // 반환되는 URL은 보안 정책으로 인해 30초의 유효시간을 갖습니다.
+        
         try
-                resultURL := statementService.getPopbillURL(txtCorpNum.Text,txtUserID.Text,'SEAL');
+                resultURL := statementService.getPopbillURL(txtCorpNum.Text, txtUserID.Text, 'SEAL');
         except
                 on le : EPopbillException do begin
-                        ShowMessage(IntToStr(le.code) + ' | ' +  le.Message);
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
 
         ShowMessage('ResultURL is ' + #13 + resultURL);
-
 end;
 
 end.
