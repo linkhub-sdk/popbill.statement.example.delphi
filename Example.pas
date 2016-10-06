@@ -1938,6 +1938,11 @@ procedure TfrmExample.btnCheckIsMemberClick(Sender: TObject);
 var
         response : TResponse;
 begin
+        {**********************************************************************}
+        { 해당 사업자의 연동회원 가입여부를 확인합니다.                        }
+        { - LinkID는 파트너를 식별하는 인증정보(32번라인)에 설정되어 있습니다. }
+        {**********************************************************************}
+
         try
                 response := statementService.CheckIsMember(txtCorpNum.text, LinkID);
         except
@@ -1955,6 +1960,13 @@ var
         response : TResponse;
         memo : String;
 begin
+        {**********************************************************************}
+        { [승인대기], [발행완료] 상태의 전자명세서를 취소처리합니다.           }
+        { - [발행취소] 전자명세서의 문서관리번호(mgtKey)는 삭제(Delete API)를  }
+        {   호출하여 [삭제] 상태에서 재사용 할 수 있습니다.                    } 
+        {**********************************************************************}
+
+        // 메모
         memo := '발행취소 메모';
         
         try
@@ -1973,6 +1985,12 @@ procedure TfrmExample.btnDelete_registIssueClick(Sender: TObject);
 var
         response : TResponse;
 begin
+        {**********************************************************************}
+        { 1건의 전자명세서를 [삭제]합니다. 전자명세서가 삭제된 경우에만        } 
+        { 문서관리번호(mgtKey)를 재사용 할 수 있습니다.                        }
+        { - 삭제가능한 문서 상태 : [임시저장], [발행취소]                      }
+        {**********************************************************************}
+
         try
                 response := statementService.Delete(txtCorpNum.text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
