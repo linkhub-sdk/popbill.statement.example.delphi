@@ -1,6 +1,6 @@
 object frmExample: TfrmExample
-  Left = 412
-  Top = 185
+  Left = 506
+  Top = 197
   Width = 875
   Height = 708
   Caption = '팝빌 전자명세서 SDK Example'
@@ -183,7 +183,7 @@ object frmExample: TfrmExample
       object btnGetFileList: TButton
         Left = 8
         Top = 56
-        Width = 105
+        Width = 112
         Height = 25
         Caption = '첨부파일 목록'
         TabOrder = 0
@@ -192,7 +192,7 @@ object frmExample: TfrmExample
       object btnAttachFile: TButton
         Left = 8
         Top = 24
-        Width = 105
+        Width = 112
         Height = 25
         Caption = '파일 첨부'
         TabOrder = 1
@@ -201,7 +201,7 @@ object frmExample: TfrmExample
       object btnDeleteFile: TButton
         Left = 8
         Top = 124
-        Width = 105
+        Width = 112
         Height = 25
         Caption = '첨부파일 삭제'
         TabOrder = 2
@@ -210,7 +210,7 @@ object frmExample: TfrmExample
       object tbFileIndexID: TEdit
         Left = 8
         Top = 98
-        Width = 105
+        Width = 112
         Height = 21
         ImeName = '한국어 입력 시스템 (IME 2000)'
         TabOrder = 3

@@ -2,8 +2,8 @@
 { 팝빌 전자명세서API Delphi SDK Example                                        }
 {                                                                              }
 { - 델파이 SDK 적용방법 안내 : http://blog.linkhub.co.kr/1059                  }
-{ - 업데이트 일자 : 2016-10-06                                                 }
-{ - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991 (정요한 대리)             }
+{ - 업데이트 일자 : 2017-02-22                                                 }
+{ - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991                           }
 { - 연동 기술지원 이메일 : code@linkhub.co.kr                                  }
 {                                                                              }
 { <테스트 연동개발 준비사항>                                                   }
@@ -315,7 +315,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자, 작성양식 yyyyMMdd
-        statement.writeDate := '20161005';
+        statement.writeDate := '20170222';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -498,7 +498,7 @@ begin
 
 
         try
-                response := statementService.Register(txtCorpNum.text, statement, txtUserID.Text);
+                response := statementService.Register(txtCorpNum.text, statement);
                 statement.Free;
         except
                 on le : EPopbillException do begin
@@ -590,7 +590,8 @@ begin
         {**********************************************************************}
 
         try
-                response := statementService.Delete(txtCorpNum.text, ItemCode, tbMgtKey.Text, txtUserID.Text);
+                response := statementService.Delete(txtCorpNum.text, ItemCode,
+                        tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -621,7 +622,7 @@ begin
 
         try
                 response := statementService.AttachFile(txtCorpNum.text, ItemCode,
-                                                tbMgtKey.Text, filePath, txtUserID.Text);
+                                                tbMgtKey.Text, filePath);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -680,7 +681,7 @@ begin
 
         try
                 response := statementService.DeleteFile(txtCorpNum.text, ItemCode,
-                                        tbMgtKey.Text, tbFileIndexID.Text, txtUserID.Text);
+                                        tbMgtKey.Text, tbFileIndexID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -848,7 +849,7 @@ begin
 
         try
                 response := statementService.Cancel(txtCorpNum.text, ItemCode,
-                                                tbMgtKey.Text, memo, txtUserID.Text);
+                        tbMgtKey.Text, memo);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -874,7 +875,7 @@ begin
 
         try
                 response := statementService.Issue(txtCorpNum.text, ItemCode,
-                                                tbMgtKey.Text, memo, txtUserID.Text);
+                        tbMgtKey.Text, memo);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -911,7 +912,7 @@ begin
         
         try
                 response := statementService.SendSMS(txtCorpNum.text, ItemCode, tbMgtKey.Text,
-                                        sendNum, receiveNum, contents, txtUserID.Text);
+                                        sendNum, receiveNum, contents);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -936,7 +937,7 @@ begin
 
         try
                 response := statementService.SendEmail(txtCorpNum.text, ItemCode,
-                                                tbMgtKey.Text, email, txtUserID.Text);
+                                                tbMgtKey.Text, email);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -968,7 +969,7 @@ begin
 
         try
                 response := statementService.SendFAX(txtCorpNum.text, ItemCode,
-                                        tbMgtKey.Text, sendNum, receiveNum, txtUserID.Text);
+                                        tbMgtKey.Text, sendNum, receiveNum);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -991,7 +992,7 @@ begin
         {**********************************************************************}
 
         try
-                resultURL := statementService.GetURL(txtCorpNum.Text, txtUserID.Text, 'TBOX');
+                resultURL := statementService.GetURL(txtCorpNum.Text, 'TBOX');
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1013,14 +1014,14 @@ begin
         {**********************************************************************}
         
         try
-                resultURL := statementService.GetURL(txtCorpNum.Text, txtUserID.Text, 'SBOX');
+                resultURL := statementService.GetURL(txtCorpNum.Text, 'SBOX');
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
-
+        
         ShowMessage('ResultURL is ' + #13 + resultURL);
 end;
 
@@ -1034,14 +1035,13 @@ begin
         {**********************************************************************}
 
         try
-                resultURL := statementService.getPopupURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
+                resultURL := statementService.getPopupURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
-
         ShowMessage('ResultURL is ' + #13 + resultURL);
 end;
 
@@ -1055,7 +1055,7 @@ begin
         {**********************************************************************}
         
         try
-                resultURL := statementService.getPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
+                resultURL := statementService.getPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1076,7 +1076,7 @@ begin
         {**********************************************************************}
 
         try
-                resultURL := statementService.getMailURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
+                resultURL := statementService.getMailURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1103,7 +1103,7 @@ begin
         KeyList[1] := '20161005-02';
 
         try
-                resultURL := statementService.getMassPrintURL(txtCorpNum.text, ItemCode, KeyList, txtUserID.Text);
+                resultURL := statementService.getMassPrintURL(txtCorpNum.text, ItemCode, KeyList);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1318,7 +1318,8 @@ begin
 
 
         try
-                response := statementService.Update(txtCorpNum.text,ItemCode,tbMgtKey.Text, statement,txtUserID.Text);
+                response := statementService.Update(txtCorpNum.text, ItemCode,
+                        tbMgtKey.Text, statement );
                 statement.Free;
         except
                 on le : EPopbillException do begin
@@ -1469,7 +1470,7 @@ begin
        {**********************************************************************}
 
         try
-                resultURL := statementService.getEPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
+                resultURL := statementService.getEPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1538,7 +1539,7 @@ begin
         joinInfo.mgrYN := false;
 
         try
-                response := statementService.RegistContact(txtCorpNum.text, joinInfo, txtUserID.text);
+                response := statementService.RegistContact(txtCorpNum.text, joinInfo);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1560,7 +1561,7 @@ begin
         {**********************************************************************}
 
         try
-                InfoList := statementService.ListContact(txtCorpNum.text, txtUserID.text);
+                InfoList := statementService.ListContact(txtCorpNum.text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1637,7 +1638,7 @@ begin
         { 연동회원의 회사정보를 확인합니다.                                    }
         {**********************************************************************}
         try
-                corpInfo := statementService.GetCorpInfo(txtCorpNum.text, txtUserID.Text);
+                corpInfo := statementService.GetCorpInfo(txtCorpNum.text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1681,7 +1682,7 @@ begin
         corpInfo.addr := '서울특별시 강남구 영동대로 517';
 
         try
-                response := statementService.UpdateCorpInfo(txtCorpNum.text, corpInfo, txtUserID.Text);
+                response := statementService.UpdateCorpInfo(txtCorpNum.text, corpInfo);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1715,7 +1716,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20161005';
+        statement.writeDate := '20170222';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -1900,7 +1901,7 @@ begin
         memo := '즉시발행 메모';
         
         try
-                response := statementService.RegistIssue(txtCorpNum.text, statement, memo, txtUserID.Text);
+                response := statementService.RegistIssue(txtCorpNum.text, statement, memo);
                 statement.Free;
         except
                 on le : EPopbillException do begin
@@ -1923,7 +1924,7 @@ begin
         {**********************************************************************}
         
         try
-                resultURL := statementService.getPopbillURL(txtCorpNum.Text, txtUserID.Text, 'CHRG');
+                resultURL := statementService.getPopbillURL(txtCorpNum.Text, 'CHRG');
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1970,7 +1971,7 @@ begin
         memo := '발행취소 메모';
         
         try
-                response := statementService.Cancel(txtCorpNum.text, ItemCode, tbMgtKey.Text, memo, txtUserID.Text);
+                response := statementService.Cancel(txtCorpNum.text, ItemCode, tbMgtKey.Text, memo);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1992,7 +1993,7 @@ begin
         {**********************************************************************}
 
         try
-                response := statementService.Delete(txtCorpNum.text, ItemCode, tbMgtKey.Text, txtUserID.Text);
+                response := statementService.Delete(txtCorpNum.text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -2036,7 +2037,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20161005';
+        statement.writeDate := '20170222';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -2216,7 +2217,7 @@ begin
 
 
         try
-                response := statementService.FAXSend(txtCorpNum.text, statement, sendNum, receiveNum, txtUserID.Text);
+                response := statementService.FAXSend(txtCorpNum.text, statement, sendNum, receiveNum);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -2433,7 +2434,7 @@ begin
         {**********************************************************************}
                 
         try
-                resultURL := statementService.getPopbillURL(txtCorpNum.Text, txtUserID.Text, 'SEAL');
+                resultURL := statementService.getPopbillURL(txtCorpNum.Text, 'SEAL');
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
