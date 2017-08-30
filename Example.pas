@@ -2,7 +2,7 @@
 { 팝빌 전자명세서 API Delphi SDK Example                                        }
 {                                                                              }
 { - 델파이 SDK 적용방법 안내 : http://blog.linkhub.co.kr/572                   }
-{ - 업데이트 일자 : 2017-05-23                                                 }
+{ - 업데이트 일자 : 2017-08-30                                                 }
 { - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991                           }
 { - 연동 기술지원 이메일 : code@linkhub.co.kr                                  }
 {                                                                              }
@@ -69,7 +69,6 @@ type
     GroupBox9: TGroupBox;
     btnJoin: TButton;
     GroupBox11: TGroupBox;
-    btnGetBalance: TButton;
     btnGetUnitCost: TButton;
     GroupBox12: TGroupBox;
     btnGetPopBillURL: TButton;
@@ -95,7 +94,6 @@ type
     Button1: TButton;
     btnCheckID: TButton;
     btnCheckIsMember: TButton;
-    btnGetPartnerBalance: TButton;
     btnRegistContact: TButton;
     btnListContact: TButton;
     btnUpdateContact: TButton;
@@ -109,13 +107,18 @@ type
     Shape3: TShape;
     Shape4: TShape;
     Shape5: TShape;
-    btnGetPopbillURL_CHRG: TButton;
     btnIssueFax: TButton;
     btnSearch: TButton;
     btnAttachStatement: TButton;
     btnDetachStatement: TButton;
     btnGetChargeInfo: TButton;
     btnGetPopbillURL_SEAL: TButton;
+    GroupBox13: TGroupBox;
+    GroupBox16: TGroupBox;
+    btnGetBalance: TButton;
+    btnGetPopbillURL_CHRG: TButton;
+    btnGetPartnerBalance: TButton;
+    btnGetPartnerURL_CHRG: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action:TCloseAction);
     procedure btnGetPopBillURLClick(Sender: TObject);
@@ -164,6 +167,7 @@ type
     procedure btnDetachStatementClick(Sender: TObject);
     procedure btnGetChargeInfoClick(Sender: TObject);
     procedure btnGetPopbillURL_SEALClick(Sender: TObject);
+    procedure btnGetPartnerURL_CHRGClick(Sender: TObject);
 public
   end;
 
@@ -2446,6 +2450,28 @@ begin
         end;
 
         ShowMessage('ResultURL is ' + #13 + resultURL);
+end;
+
+procedure TfrmExample.btnGetPartnerURL_CHRGClick(Sender: TObject);
+var
+  resultURL : String;
+begin
+        {**********************************************************************}
+        { 파트너 포인트 충전 URL을 반환합니다.                                 }
+        { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.              }
+        {**********************************************************************}
+        
+        try
+                resultURL := statementService.getPartnerURL(txtCorpNum.Text, 'CHRG');
+        except
+                on le : EPopbillException do begin
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
+                        Exit;
+                end;
+        end;
+
+        ShowMessage('ResultURL is ' + #13 + resultURL);
+
 end;
 
 end.
