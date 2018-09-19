@@ -2,7 +2,7 @@
 { 팝빌 전자명세서 API Delphi SDK Example                                        }
 {                                                                              }
 { - 델파이 SDK 적용방법 안내 : http://blog.linkhub.co.kr/572                   }
-{ - 업데이트 일자 : 2017-08-30                                                 }
+{ - 업데이트 일자 : 2018-09-19                                                 }
 { - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991                           }
 { - 연동 기술지원 이메일 : code@linkhub.co.kr                                  }
 {                                                                              }
@@ -72,11 +72,6 @@ type
     btnGetUnitCost: TButton;
     GroupBox12: TGroupBox;
     btnGetPopBillURL: TButton;
-    GroupBox7: TGroupBox;
-    btnGetPopUpURL: TButton;
-    btnGetPrintURL: TButton;
-    btnGetPrintsURL: TButton;
-    btnGetMailURL: TButton;
     txtCorpNum: TEdit;
     Label3: TLabel;
     GroupBox4: TGroupBox;
@@ -91,7 +86,6 @@ type
     txtFormCode: TEdit;
     Label5: TLabel;
     Label7: TLabel;
-    Button1: TButton;
     btnCheckID: TButton;
     btnCheckIsMember: TButton;
     btnRegistContact: TButton;
@@ -119,6 +113,14 @@ type
     btnGetPopbillURL_CHRG: TButton;
     btnGetPartnerBalance: TButton;
     btnGetPartnerURL_CHRG: TButton;
+    GroupBox7: TGroupBox;
+    btnGetPopUpURL: TButton;
+    btnGetPrintURL: TButton;
+    btnGetPrintsURL: TButton;
+    btnGetMailURL: TButton;
+    Button1: TButton;
+    btnListEmailConfig: TButton;
+    btnUpdateEmailConfig: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action:TCloseAction);
     procedure btnGetPopBillURLClick(Sender: TObject);
@@ -168,6 +170,8 @@ type
     procedure btnGetChargeInfoClick(Sender: TObject);
     procedure btnGetPopbillURL_SEALClick(Sender: TObject);
     procedure btnGetPartnerURL_CHRGClick(Sender: TObject);
+    procedure btnListEmailConfigClick(Sender: TObject);
+    procedure btnUpdateEmailConfigClick(Sender: TObject);
 public
   end;
 
@@ -2473,6 +2477,83 @@ begin
 
         ShowMessage('ResultURL is ' + #13 + resultURL);
 
+end;
+
+procedure TfrmExample.btnListEmailConfigClick(Sender: TObject);
+var
+        EmailConfigList : TEmailConfigList;
+        tmp : string;
+        i : Integer;
+begin
+        {**********************************************************************}
+        {  전자명세서 메일전송 항목에 대한 전송여부를 목록으로 반환한다.       }
+        {**********************************************************************}
+        
+        try
+                EmailConfigList := statementService.ListEmailConfig(txtCorpNum.text);
+        except
+                on le : EPopbillException do begin
+                        ShowMessage('응답코드 : '+ IntToStr(le.code) + #10#13 +'응답메시지 : '+  le.Message);
+                        Exit;
+                end;
+        end;
+
+        tmp := '메일전송유형 | 전송여부' + #13;
+
+        for i := 0 to Length(EmailConfigList) -1 do
+        begin
+            if EmailConfigList[i].EmailType = 'SMT_ISSUE' then
+                tmp := tmp + 'SMT_ISSUE (공급받는자에게 전자명세서가 발행 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+
+            if EmailConfigList[i].EmailType = 'SMT_ACCEPT' then
+                tmp := tmp + 'SMT_ACCEPT (공급자에게 전자명세서가 승인 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+
+            if EmailConfigList[i].EmailType = 'SMT_DENY' then
+                tmp := tmp + 'SMT_DENY (공급자에게 전자명세서가 거부 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+
+            if EmailConfigList[i].EmailType = 'SMT_CANCEL' then
+                tmp := tmp + 'SMT_CANCEL (공급받는자에게 전자명세서가 취소 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+
+            if EmailConfigList[i].EmailType = 'SMT_CANCEL_ISSUE' then
+                tmp := tmp + 'SMT_CANCEL_ISSUE (공급받는자에게 전자명세서가 발행취소 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+
+        end;
+
+        ShowMessage(tmp);
+end;
+
+procedure TfrmExample.btnUpdateEmailConfigClick(Sender: TObject);
+var
+        response : TResponse;
+        EmailType : String;
+        SendYN    : Boolean;
+begin
+        {**************************************************************************************}
+        {전자명세서 메일전송 항목에 대한 전송여부를 수정한다.                                  }
+        { 메일전송유형                                                                         }
+        {  SMT_ISSUE : 공급받는자에게 전자명세서가 발행 되었음을 알려주는 메일 알림            }
+        {  SMT_ACCEPT : 공급자에게 전자명세서가 승인 되었음을 알려주는 메일 알림               }
+        {  SMT_DENY : 공급자에게 전자명세서가 거부 되었음을 알려주는 메일 알림                 }
+        {  SMT_CANCEL : 공급받는자에게 전자명세서가 취소 되었음을 알려주는 메일 알림           }
+        {  SMT_CANCEL_ISSUE : 공급받는자에게 전자명세서가 발행취소 되었음을 알려주는 메일 알림 }
+        {**************************************************************************************}
+
+        // 메일전송유형
+        EmailType := 'SMT_ISSUE';
+
+        // 전송여부 (True - 전송, False - 미전송)
+        SendYN := True;
+
+        try
+                response := statementService.UpdateEmailConfig(txtCorpNum.text, EmailType, SendYN);
+        except
+                on le : EPopbillException do begin
+                        ShowMessage('응답코드 : '+ IntToStr(le.code) + #10#13 +'응답메시지 : '+  le.Message);
+                        Exit;
+                end;
+        end;
+
+        ShowMessage('응답코드 : '+ IntToStr(response.code) + #10#13 +'응답메시지 : '+  response.Message);
 end;
 
 end.

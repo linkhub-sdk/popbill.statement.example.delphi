@@ -1,8 +1,8 @@
 object frmExample: TfrmExample
-  Left = 235
-  Top = 191
+  Left = 544
+  Top = 214
   Width = 1151
-  Height = 687
+  Height = 681
   Caption = '팝빌 전자명세서 SDK Example'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -31,7 +31,7 @@ object frmExample: TfrmExample
   object GroupBox1: TGroupBox
     Left = 16
     Top = 216
-    Width = 825
+    Width = 1113
     Height = 417
     Caption = '전자명세서 관련 API'
     TabOrder = 0
@@ -168,8 +168,8 @@ object frmExample: TfrmExample
     object GroupBox3: TGroupBox
       Left = 16
       Top = 192
-      Width = 129
-      Height = 161
+      Width = 177
+      Height = 193
       Caption = '첨부파일'
       TabOrder = 1
       object Label2: TLabel
@@ -181,88 +181,88 @@ object frmExample: TfrmExample
         Caption = '삭제할 파일ID:'
       end
       object btnGetFileList: TButton
-        Left = 8
+        Left = 7
         Top = 56
-        Width = 112
+        Width = 161
         Height = 25
         Caption = '첨부파일 목록'
         TabOrder = 0
         OnClick = btnGetFileListClick
       end
       object btnAttachFile: TButton
-        Left = 8
+        Left = 7
         Top = 24
-        Width = 112
+        Width = 161
         Height = 25
         Caption = '파일 첨부'
         TabOrder = 1
         OnClick = btnAttachFileClick
       end
       object btnDeleteFile: TButton
-        Left = 8
+        Left = 7
         Top = 124
-        Width = 112
+        Width = 161
         Height = 25
         Caption = '첨부파일 삭제'
         TabOrder = 2
         OnClick = btnDeleteFileClick
       end
       object tbFileIndexID: TEdit
-        Left = 8
+        Left = 7
         Top = 98
-        Width = 112
+        Width = 161
         Height = 21
         ImeName = '한국어 입력 시스템 (IME 2000)'
         TabOrder = 3
       end
     end
     object GroupBox5: TGroupBox
-      Left = 160
+      Left = 200
       Top = 192
-      Width = 137
-      Height = 185
+      Width = 177
+      Height = 193
       Caption = '문서 정보'
       TabOrder = 2
       object btnGetDetailInfo: TButton
-        Left = 8
+        Left = 7
         Top = 121
-        Width = 120
+        Width = 161
         Height = 25
         Caption = '문서상세정보'
         TabOrder = 0
         OnClick = btnGetDetailInfoClick
       end
       object btnGetLogs: TButton
-        Left = 8
+        Left = 7
         Top = 88
-        Width = 120
+        Width = 161
         Height = 25
         Caption = '문서이력'
         TabOrder = 1
         OnClick = btnGetLogsClick
       end
       object btnGetInfo: TButton
-        Left = 8
+        Left = 7
         Top = 24
-        Width = 120
+        Width = 161
         Height = 25
         Caption = '문서정보'
         TabOrder = 2
         OnClick = btnGetInfoClick
       end
       object btnGetInfos: TButton
-        Left = 8
+        Left = 7
         Top = 56
-        Width = 120
+        Width = 161
         Height = 25
         Caption = '문서정보(대량)'
         TabOrder = 3
         OnClick = btnGetInfosClick
       end
       object btnSearch: TButton
-        Left = 8
+        Left = 7
         Top = 152
-        Width = 121
+        Width = 161
         Height = 25
         Caption = '문서목록조회'
         TabOrder = 4
@@ -270,65 +270,83 @@ object frmExample: TfrmExample
       end
     end
     object GroupBox6: TGroupBox
-      Left = 312
+      Left = 384
       Top = 192
-      Width = 153
-      Height = 217
+      Width = 345
+      Height = 193
       Caption = '부가서비스'
       TabOrder = 3
       object btnReSendEmail: TButton
-        Left = 8
+        Left = 7
         Top = 24
-        Width = 137
+        Width = 161
         Height = 25
         Caption = '이메일 전송'
         TabOrder = 0
         OnClick = btnReSendEmailClick
       end
       object btnReSendSMS: TButton
-        Left = 8
+        Left = 7
         Top = 56
-        Width = 137
+        Width = 161
         Height = 25
         Caption = '문자 전송'
         TabOrder = 1
         OnClick = btnReSendSMSClick
       end
       object btnSendInvoiceFax: TButton
-        Left = 8
+        Left = 7
         Top = 88
-        Width = 137
+        Width = 161
         Height = 25
         Caption = '팩스 전송'
         TabOrder = 2
         OnClick = btnSendInvoiceFaxClick
       end
       object btnIssueFax: TButton
-        Left = 8
+        Left = 7
         Top = 120
-        Width = 137
+        Width = 161
         Height = 25
         Caption = '선팩스 전송'
         TabOrder = 3
         OnClick = btnIssueFaxClick
       end
       object btnAttachStatement: TButton
-        Left = 8
-        Top = 152
-        Width = 137
+        Left = 175
+        Top = 24
+        Width = 161
         Height = 25
         Caption = '전자명세서 첨부'
         TabOrder = 4
         OnClick = btnAttachStatementClick
       end
       object btnDetachStatement: TButton
-        Left = 8
-        Top = 184
-        Width = 137
+        Left = 175
+        Top = 56
+        Width = 161
         Height = 25
         Caption = '전자명세서 첨부해제'
         TabOrder = 5
         OnClick = btnDetachStatementClick
+      end
+      object btnListEmailConfig: TButton
+        Left = 176
+        Top = 88
+        Width = 161
+        Height = 25
+        Caption = '알림메일 전송목록 조회'
+        TabOrder = 6
+        OnClick = btnListEmailConfigClick
+      end
+      object btnUpdateEmailConfig: TButton
+        Left = 176
+        Top = 120
+        Width = 161
+        Height = 25
+        Caption = '알림메일 전송설정 수정'
+        TabOrder = 7
+        OnClick = btnUpdateEmailConfigClick
       end
     end
     object tbMgtKey: TEdit
@@ -349,25 +367,25 @@ object frmExample: TfrmExample
       OnClick = btnCheckMgtKeyInUseClick
     end
     object GroupBox10: TGroupBox
-      Left = 664
+      Left = 920
       Top = 192
-      Width = 145
-      Height = 161
+      Width = 177
+      Height = 193
       Caption = '기타  URL'
       TabOrder = 6
       object btnGetTaxinvoiceURL1: TButton
-        Left = 8
+        Left = 7
         Top = 24
-        Width = 121
+        Width = 161
         Height = 25
         Caption = '임시(연동) 문서함'
         TabOrder = 0
         OnClick = btnGetTaxinvoiceURL1Click
       end
       object btnGetTaxinvoiceURL2: TButton
-        Left = 8
+        Left = 7
         Top = 56
-        Width = 121
+        Width = 161
         Height = 25
         Caption = '발행 문서함'
         TabOrder = 1
@@ -457,6 +475,59 @@ object frmExample: TfrmExample
         Caption = '삭제'
         TabOrder = 2
         OnClick = btnDelete_registIssueClick
+      end
+    end
+    object GroupBox7: TGroupBox
+      Left = 736
+      Top = 192
+      Width = 177
+      Height = 193
+      Caption = ' 문서관련 URL기능'
+      TabOrder = 10
+      object btnGetPopUpURL: TButton
+        Left = 7
+        Top = 24
+        Width = 161
+        Height = 25
+        Caption = '문서 내용보기 팝업 URL'
+        TabOrder = 0
+        OnClick = btnGetPopUpURLClick
+      end
+      object btnGetPrintURL: TButton
+        Left = 7
+        Top = 56
+        Width = 161
+        Height = 25
+        Caption = '인쇄 팝업 URL'
+        TabOrder = 1
+        OnClick = btnGetPrintURLClick
+      end
+      object btnGetPrintsURL: TButton
+        Left = 7
+        Top = 120
+        Width = 161
+        Height = 25
+        Caption = '대량인쇄 팝업 URL'
+        TabOrder = 2
+        OnClick = btnGetPrintsURLClick
+      end
+      object btnGetMailURL: TButton
+        Left = 7
+        Top = 152
+        Width = 161
+        Height = 25
+        Caption = '이메일의 보기버튼 URL'
+        TabOrder = 3
+        OnClick = btnGetMailURLClick
+      end
+      object Button1: TButton
+        Left = 7
+        Top = 88
+        Width = 161
+        Height = 25
+        Caption = '수신자 인쇄 팝업 URL'
+        TabOrder = 4
+        OnClick = Button1Click
       end
     end
   end
@@ -616,66 +687,13 @@ object frmExample: TfrmExample
       end
     end
   end
-  object GroupBox7: TGroupBox
-    Left = 488
-    Top = 432
-    Width = 177
-    Height = 193
-    Caption = ' 문서관련 URL기능'
-    TabOrder = 2
-    object btnGetPopUpURL: TButton
-      Left = 8
-      Top = 24
-      Width = 161
-      Height = 25
-      Caption = '문서 내용보기 팝업 URL'
-      TabOrder = 0
-      OnClick = btnGetPopUpURLClick
-    end
-    object btnGetPrintURL: TButton
-      Left = 8
-      Top = 56
-      Width = 161
-      Height = 25
-      Caption = '인쇄 팝업 URL'
-      TabOrder = 1
-      OnClick = btnGetPrintURLClick
-    end
-    object btnGetPrintsURL: TButton
-      Left = 8
-      Top = 120
-      Width = 161
-      Height = 25
-      Caption = '대량인쇄 팝업 URL'
-      TabOrder = 2
-      OnClick = btnGetPrintsURLClick
-    end
-    object btnGetMailURL: TButton
-      Left = 8
-      Top = 152
-      Width = 161
-      Height = 25
-      Caption = '이메일의 보기버튼 URL'
-      TabOrder = 3
-      OnClick = btnGetMailURLClick
-    end
-    object Button1: TButton
-      Left = 8
-      Top = 88
-      Width = 161
-      Height = 25
-      Caption = '수신자 인쇄 팝업 URL'
-      TabOrder = 4
-      OnClick = Button1Click
-    end
-  end
   object txtCorpNum: TEdit
     Left = 152
     Top = 8
     Width = 137
     Height = 21
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 3
+    TabOrder = 2
     Text = '1234567890'
   end
   object txtUserID: TEdit
@@ -684,7 +702,7 @@ object frmExample: TfrmExample
     Width = 137
     Height = 21
     ImeName = 'Microsoft IME 2010'
-    TabOrder = 4
+    TabOrder = 3
     Text = 'testkorea'
   end
   object GroupBox13: TGroupBox
@@ -693,7 +711,7 @@ object frmExample: TfrmExample
     Width = 145
     Height = 124
     Caption = '연동과금 포인트'
-    TabOrder = 5
+    TabOrder = 4
     object btnGetBalance: TButton
       Left = 8
       Top = 24
@@ -719,7 +737,7 @@ object frmExample: TfrmExample
     Width = 145
     Height = 124
     Caption = '파트너과금 포인트'
-    TabOrder = 6
+    TabOrder = 5
     object btnGetPartnerBalance: TButton
       Left = 8
       Top = 24
