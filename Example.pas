@@ -71,7 +71,7 @@ type
     GroupBox11: TGroupBox;
     btnGetUnitCost: TButton;
     GroupBox12: TGroupBox;
-    btnGetPopBillURL: TButton;
+    btnGetAccessURL: TButton;
     txtCorpNum: TEdit;
     Label3: TLabel;
     GroupBox4: TGroupBox;
@@ -110,7 +110,7 @@ type
     GroupBox13: TGroupBox;
     GroupBox16: TGroupBox;
     btnGetBalance: TButton;
-    btnGetPopbillURL_CHRG: TButton;
+    btnGetChargeURL: TButton;
     btnGetPartnerBalance: TButton;
     btnGetPartnerURL_CHRG: TButton;
     GroupBox7: TGroupBox;
@@ -123,7 +123,7 @@ type
     btnUpdateEmailConfig: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action:TCloseAction);
-    procedure btnGetPopBillURLClick(Sender: TObject);
+    procedure btnGetAccessURLClick(Sender: TObject);
     procedure btnJoinClick(Sender: TObject);
     procedure btnRegisterClick(Sender: TObject);
     procedure btnGetBalanceClick(Sender: TObject);
@@ -159,7 +159,7 @@ type
     procedure btnGetCorpInfoClick(Sender: TObject);
     procedure btnUpdateCorpInfoClick(Sender: TObject);
     procedure btnRegistIssueClick(Sender: TObject);
-    procedure btnGetPopbillURL_CHRGClick(Sender: TObject);
+    procedure btnGetChargeURLClick(Sender: TObject);
     procedure btnCheckIsMemberClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnDelete_registIssueClick(Sender: TObject);
@@ -208,7 +208,7 @@ begin
     if condition then result := trueVal else result := falseVal;
 end;
 
-procedure TfrmExample.btnGetPopBillURLClick(Sender: TObject);
+procedure TfrmExample.btnGetAccessURLClick(Sender: TObject);
 var
   resultURL : String;
 begin
@@ -218,7 +218,7 @@ begin
         {**********************************************************************}
 
         try
-                resultURL := statementService.getPopbillURL(txtCorpNum.Text, txtUserID.Text, 'LOGIN');
+                resultURL := statementService.getAccessURL(txtCorpNum.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1926,7 +1926,7 @@ begin
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
-procedure TfrmExample.btnGetPopbillURL_CHRGClick(Sender: TObject);
+procedure TfrmExample.btnGetChargeURLClick(Sender: TObject);
 var
   resultURL : String;
 begin
@@ -1936,7 +1936,7 @@ begin
         {**********************************************************************}
         
         try
-                resultURL := statementService.getPopbillURL(txtCorpNum.Text, 'CHRG');
+                resultURL := statementService.getChargeURL(txtCorpNum.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);

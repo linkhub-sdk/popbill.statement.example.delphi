@@ -606,14 +606,14 @@ object frmExample: TfrmExample
       Height = 124
       Caption = 'ÆËºô ±âº» URL'
       TabOrder = 2
-      object btnGetPopBillURL: TButton
+      object btnGetAccessURL: TButton
         Left = 8
         Top = 24
         Width = 174
         Height = 25
         Caption = 'ÆËºô ·Î±×ÀÎ URL'
         TabOrder = 0
-        OnClick = btnGetPopBillURLClick
+        OnClick = btnGetAccessURLClick
       end
       object btnGetPopbillURL_SEAL: TButton
         Left = 8
@@ -721,14 +721,14 @@ object frmExample: TfrmExample
       TabOrder = 0
       OnClick = btnGetBalanceClick
     end
-    object btnGetPopbillURL_CHRG: TButton
+    object btnGetChargeURL: TButton
       Left = 8
       Top = 56
       Width = 129
       Height = 25
       Caption = 'Æ÷ÀÎÆ® ÃæÀü URL'
       TabOrder = 1
-      OnClick = btnGetPopbillURL_CHRGClick
+      OnClick = btnGetChargeURLClick
     end
   end
   object GroupBox16: TGroupBox
