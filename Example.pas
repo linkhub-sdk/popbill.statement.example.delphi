@@ -2444,9 +2444,9 @@ begin
         { 인감 및 첨부문서 등록  URL을 반환합니다.                             }
         { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.              }
         {**********************************************************************}
-                
+
         try
-                resultURL := statementService.getPopbillURL(txtCorpNum.Text, 'SEAL');
+                resultURL := statementService.getSealURL(txtCorpNum.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
