@@ -106,7 +106,7 @@ type
     btnAttachStatement: TButton;
     btnDetachStatement: TButton;
     btnGetChargeInfo: TButton;
-    btnGetPopbillURL_SEAL: TButton;
+    btnGetSealURL: TButton;
     GroupBox13: TGroupBox;
     GroupBox16: TGroupBox;
     btnGetBalance: TButton;
@@ -168,7 +168,7 @@ type
     procedure btnAttachStatementClick(Sender: TObject);
     procedure btnDetachStatementClick(Sender: TObject);
     procedure btnGetChargeInfoClick(Sender: TObject);
-    procedure btnGetPopbillURL_SEALClick(Sender: TObject);
+    procedure btnGetSealURLClick(Sender: TObject);
     procedure btnGetPartnerURL_CHRGClick(Sender: TObject);
     procedure btnListEmailConfigClick(Sender: TObject);
     procedure btnUpdateEmailConfigClick(Sender: TObject);
@@ -2436,7 +2436,7 @@ begin
 
 end;
 
-procedure TfrmExample.btnGetPopbillURL_SEALClick(Sender: TObject);
+procedure TfrmExample.btnGetSealURLClick(Sender: TObject);
 var
   resultURL : String;
 begin

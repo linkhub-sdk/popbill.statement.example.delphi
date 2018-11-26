@@ -615,14 +615,14 @@ object frmExample: TfrmExample
         TabOrder = 0
         OnClick = btnGetAccessURLClick
       end
-      object btnGetPopbillURL_SEAL: TButton
+      object btnGetSealURL: TButton
         Left = 8
         Top = 56
         Width = 175
         Height = 25
         Caption = '인감 및 첨부문서 등록 URL'
         TabOrder = 1
-        OnClick = btnGetPopbillURL_SEALClick
+        OnClick = btnGetSealURLClick
       end
     end
     object GroupBox4: TGroupBox
