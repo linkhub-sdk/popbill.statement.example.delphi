@@ -246,30 +246,30 @@ begin
         joinInfo.LinkID := LinkID;
 
         // 사업자번호 '-' 제외, 10자리
-        joinInfo.CorpNum := '1234567890';
+        joinInfo.CorpNum := '4364364364';
 
-        // 대표자성명, 최대 30자
+        // 대표자성명, 최대 100자
         joinInfo.CEOName := '대표자성명';
 
-        // 상호명, 최대 70자
+        // 상호명, 최대 200자
         joinInfo.CorpName := '링크허브';
 
         // 주소, 최대 300자
         joinInfo.Addr := '주소';
 
-        // 업태, 최대 40자
+        // 업태, 최대 100자
         joinInfo.BizType := '업태';
 
-        // 종목, 최대 40자
+        // 종목, 최대 100자
         joinInfo.BizClass := '종목';
 
-        // 아이디, 6자이상 20자 미만
+        // 아이디, 6자이상 50자 미만
         joinInfo.ID     := 'userid';
 
         // 비밀번호, 6자이상 20자 미만
         joinInfo.PWD    := 'pwd_must_be_long_enough';
 
-        // 담당자명, 최대 30자
+        // 담당자명, 최대 100자
         joinInfo.ContactName := '담당자명';
 
         // 담당자 연락처, 최대 20자
@@ -281,7 +281,7 @@ begin
         // 담당자 팩스번호, 최대 20자
         joinInfo.ContactFAX := '02-6442-9700';
 
-        // 담당자 메일, 최대 70자
+        // 담당자 메일, 최대 100자
         joinInfo.ContactEmail := 'code@linkhub.co.kr';
 
         try
@@ -314,7 +314,7 @@ begin
         {   4.1. 전자명세서 구성" 을 참조하시기 바랍니다.                      }
         {**********************************************************************}
 
-         // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
+         // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표, 126-영수증
         statement.itemCode := ItemCode;
 
         // 맞춤양식코드, 기본값(공백처리)
@@ -323,7 +323,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자, 작성양식 yyyyMMdd
-        statement.writeDate := '20170222';
+        statement.writeDate := '20190114';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -343,81 +343,81 @@ begin
 
 
         {**********************************************************************}
-        {                             공급자 정보                              }
+        {                             발신자 정보                              }
         {**********************************************************************}
 
-        // 공급자 사업자번호, '-'제외 10자리
-        statement.senderCorpNum := '1234567890';
+        // 발신자 사업자번호, '-'제외 10자리
+        statement.senderCorpNum := txtCorpNum.Text;
 
         // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.senderTaxRegID := '';
 
-        // 공급자 상호
-        statement.senderCorpName := '공급자 상호';
+        // 발신자 상호
+        statement.senderCorpName := '발신자 상호';
 
-        // 공급자 대표자 성명
-        statement.senderCEOName := '공급자 대표자 성명';
+        // 발신자 대표자 성명
+        statement.senderCEOName := '발신자 대표자 성명';
 
-        // 공급자 주소
-        statement.senderAddr := '공급자 주소';
+        // 발신자 주소
+        statement.senderAddr := '발신자 주소';
 
-        // 공급자 종목
-        statement.senderBizClass := '공급자 종목';
+        // 발신자 종목
+        statement.senderBizClass := '발신자 종목';
 
-        // 공급자 업태 
-        statement.senderBizType := '공급자 업태,업태2';
+        // 발신자 업태
+        statement.senderBizType := '발신자 업태,업태2';
 
-        // 공급자 담당자명
-        statement.senderContactName := '공급자 담당자명';
+        // 발신자 담당자명
+        statement.senderContactName := '발신자 담당자명';
 
-        // 공급자 담당자 메일주소
+        // 발신자 담당자 메일주소
         statement.senderEmail := 'test@test.com';
 
-        // 공급자 담당자 연락처 
+        // 발신자 담당자 연락처
         statement.senderTEL := '070-7070-0707';
 
-        // 공급자 담당자 휴대폰번호
+        // 발신자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
 
         {**********************************************************************}
-        {                            공급받는자 정보                           }
+        {                            수신자 정보                               }
         {**********************************************************************}
 
-        // 공급받는자 사업자번호, '-' 제외 10자리 
+        // 공급받는자 사업자번호, '-' 제외 10자리
         statement.receiverCorpNum := '8888888888';
 
-        // 공급받는자 상호 
-        statement.receiverCorpName := '공급받는자 상호';
+        // 수신자 상호
+        statement.receiverCorpName := '수신자 상호';
 
-        //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.receiverTaxRegID := '';
 
-        // 공급받는자 대표자 성명
-        statement.receiverCEOName := '공급받는자 대표자 성명';
+        // 수신자 대표자 성명
+        statement.receiverCEOName := '수신자 대표자 성명';
 
-        // 공급받는자 주소
-        statement.receiverAddr := '공급받는자 주소';
+        // 수신자 주소
+        statement.receiverAddr := '수신자 주소';
 
-        // 공급받는자 종목
-        statement.receiverBizClass := '공급받는자 업종';
+        // 수신자 종목
+        statement.receiverBizClass := '수신자 업종';
 
-        // 공급받는자 업태
-        statement.receiverBizType := '공급받는자 업태';
+        // 수신자 업태
+        statement.receiverBizType := '수신자 업태';
 
-        // 공급받는자 담당자명
-        statement.receiverContactName := '공급받는자 담당자명';
+        // 수신자 담당자명
+        statement.receiverContactName := '수신자 담당자명';
 
-        // 공급받는자 담당자 메일주소
+        // 수신자 담당자 메일주소
         statement.receiverEmail := 'test@receiver.com';
 
-        // 공급받는자 담당자 연락처 
+        // 수신자 담당자 연락처
         statement.receiverTEL := '070-1234-1234';
 
-        // 공급받는자 담당자 휴대폰번호
+        // 수신자 담당자 휴대폰번호
         statement.receiverHP := '010-111-222';
 
-        
+
         //필수 공급가액 합계
         statement.supplyCostTotal := '200000';
 
@@ -429,7 +429,7 @@ begin
 
         // 기재 상 일련번호
         statement.serialNum := '1';
-        
+
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
@@ -452,7 +452,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20151211';      //거래일자
+        statement.detailList[0].purchaseDT := '20190114';      //거래일자
         statement.detailList[0].itemName := '품목명';
         statement.detailList[0].spec := '규격';
         statement.detailList[0].qty := '1';                    //수량
@@ -466,10 +466,10 @@ begin
         statement.detailList[0].spare3 := '';
         statement.detailList[0].spare4 := '';
         statement.detailList[0].spare5 := '';
-        
+
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20151211';      //거래일자
+        statement.detailList[1].purchaseDT := '20190114';      //거래일자
         statement.detailList[1].itemName := '품목명';
         statement.detailList[1].spec := '규격';
         statement.detailList[1].qty := '1';                    //수량
@@ -663,7 +663,7 @@ begin
                 end;
         end;
 
-        tmp := 'SerialNum | DisplayName | AttachedFile | RegDT' + #13;
+        tmp := 'SerialNum(첨부파일 일련번호) | DisplayName(첨부파일명) | AttachedFile(파일아이디) | RegDT(첨부일시)' + #13;
         
         for i := 0 to Length(fileList) -1 do
         begin
@@ -726,7 +726,9 @@ begin
                 end;
         end;
 
-        tmp := 'ItemKey | InvoiceNum | StateCode | TaxType | WriteDate | RegDT | OpenYN | OpenDT | SenderPrintYN | ReceiverPrintYN' + #13;
+        tmp := 'ItemKey(팝빌 관리번호) | InvoiceNum(문서고유번호) | StateCode(상태코드) | TaxType(세금형태) | ';
+        tmp := tmp + 'WriteDate(작성일자) | RegDT(임시저장일시) |OpenYN(개봉 여부) | OpenDT(개봉 일시) | ';
+        tmp := tmp + 'SenderPrintYN(발신자 인쇄여부) | ReceiverPrintYN(수신자 인쇄여부)' + #13;
 
         tmp := tmp + statementInfo.ItemKey + ' | '
                    + statementInfo.InvoiceNum + ' | '
@@ -759,10 +761,10 @@ begin
 
         //전자명세서 문서관리번호 배열, 최대 1000건까지 기재가능
         SetLength(KeyList,4);
-        KeyList[0] := '20161005-01';
-        KeyList[1] := '20161005-02';
-        KeyList[2] := '20161005-03';
-        KeyList[3] := '20161005-04';
+        KeyList[0] := '20190114-001';
+        KeyList[1] := '20190114-002';
+        KeyList[2] := '20190114-003';
+        KeyList[3] := '20190114-004';
         
         try
                 InfoList := statementService.getInfos(txtCorpNum.text, ItemCode, KeyList);
@@ -773,8 +775,9 @@ begin
                 end;
         end;
 
-        tmp := 'ItemKey | StateCode | TaxType | WriteDate | RegDT | SenderPrintYN | ReceiverPrintYN' + #13;
-        
+        tmp := 'ItemKey(팝빌 관리번호) | StateCode(상태코드) | TaxType(세금형태) | WriteDate(작성일자) | ';
+        tmp := 'RegDT(임시저장 일시) | SenderPrintYN(발신자 인쇄여부) | ReceiverPrintYN(수신자 인쇄여부)' + #13;
+
         for i := 0 to Length(InfoList) -1 do
         begin
             tmp := tmp + InfoList[i].ItemKey + ' | '
@@ -812,7 +815,7 @@ begin
                 end;
         end;
 
-        tmp := 'DocLogType | Log | ProcType | ProcMemo | RegDT | IP' + #13;
+        tmp := 'DocLogType(로그타입) | Log(이력정보) | ProcType(처리형태) | ProcMemo(처리메모) | RegDT(등록일시) | IP(아이피)' + #13;
         
         for i := 0 to Length(LogList) -1 do
         begin
@@ -905,8 +908,8 @@ begin
         {**********************************************************************}
         { 알림문자를 전송합니다. (단문/SMS- 한글 최대 45자)                    }
         { - 알림문자 전송시 포인트가 차감됩니다. (전송실패시 환불처리)         }
-        { - 전송내역 확인은 "팝빌 로그인" > [문자 팩스] > [전송내역] 탭에서    }
-        {   전송결과를 확인할 수 있습니다.                                     }
+        { - 전송내역 확인은 "팝빌 로그인" > [문자 팩스] > [문자] >  [전송내역] }
+        {   메뉴에서 전송결과를 확인할 수 있습니다.                            }
         {**********************************************************************}
 
         // 발신번호
@@ -1107,8 +1110,8 @@ begin
 
         // 전자명세서 문서관리번호 배열, 최대 100건
         SetLength(KeyList,2);
-        KeyList[0] := '20161005-01';
-        KeyList[1] := '20161005-02';
+        KeyList[0] := '20190114-001';
+        KeyList[1] := '20190114-002';
 
         try
                 resultURL := statementService.getMassPrintURL(txtCorpNum.text, ItemCode, KeyList);
@@ -1140,7 +1143,7 @@ begin
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
         
-         // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
+         // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표, 126-영수증
         statement.itemCode := ItemCode;
 
         // 맞춤양식코드, 기본값(공백처리)
@@ -1149,7 +1152,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20161005';
+        statement.writeDate := '20190114';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -1169,81 +1172,81 @@ begin
 
 
         {**********************************************************************}
-        {                             공급자 정보                              }
+        {                             발신자 정보                              }
         {**********************************************************************}
 
-        // 공급자 사업자번호, '-'제외 10자리
-        statement.senderCorpNum := '1234567890';
+        // 발신자 사업자번호, '-'제외 10자리
+        statement.senderCorpNum := txtCorpNum.Text;
 
         // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.senderTaxRegID := '';
 
-        // 공급자 상호
-        statement.senderCorpName := '공급자 상호_수정';
+        // 발신자 상호
+        statement.senderCorpName := '발신자 상호_수정';
 
-        // 공급자 대표자 성명
-        statement.senderCEOName := '공급자 대표자 성명_수정';
+        // 발신자 대표자 성명
+        statement.senderCEOName := '발신자 대표자 성명_수정';
 
-        // 공급자 주소
-        statement.senderAddr := '공급자 주소_수정';
+        // 발신자 주소
+        statement.senderAddr := '발신자 주소_수정';
 
-        // 공급자 종목
-        statement.senderBizClass := '공급자 종목_수정';
+        // 발신자 종목
+        statement.senderBizClass := '발신자 종목_수정';
 
-        // 공급자 업태 
-        statement.senderBizType := '공급자 업태,업태2';
+        // 발신자 업태
+        statement.senderBizType := '발신자 업태,업태2';
 
-        // 공급자 담당자명
-        statement.senderContactName := '공급자 담당자명';
+        // 발신자 담당자명
+        statement.senderContactName := '발신자 담당자명';
 
-        // 공급자 담당자 메일주소
+        // 발신자 담당자 메일주소
         statement.senderEmail := 'test@test.com';
 
-        // 공급자 담당자 연락처 
+        // 발신자 담당자 연락처
         statement.senderTEL := '070-7070-0707';
 
-        // 공급자 담당자 휴대폰번호
+        // 발신자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
 
         {**********************************************************************}
-        {                            공급받는자 정보                           }
+        {                             수신자 정보                              }
         {**********************************************************************}
 
-        // 공급받는자 사업자번호, '-' 제외 10자리 
+        // 수신자 사업자번호, '-' 제외 10자리
         statement.receiverCorpNum := '8888888888';
 
-        // 공급받는자 상호 
-        statement.receiverCorpName := '공급받는자 상호';
+        // 수신자 상호
+        statement.receiverCorpName := '수신자 상호';
 
-        //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.receiverTaxRegID := '';
 
-        // 공급받는자 대표자 성명
-        statement.receiverCEOName := '공급받는자 대표자 성명';
+        // 수신자 대표자 성명
+        statement.receiverCEOName := '수신자 대표자 성명';
 
-        // 공급받는자 주소
-        statement.receiverAddr := '공급받는자 주소';
+        // 수신자 주소
+        statement.receiverAddr := '수신자 주소';
 
-        // 공급받는자 종목
-        statement.receiverBizClass := '공급받는자 업종';
+        // 수신자 종목
+        statement.receiverBizClass := '수신자 업종';
 
-        // 공급받는자 업태
-        statement.receiverBizType := '공급받는자 업태';
+        // 수신자 업태
+        statement.receiverBizType := '수신자 업태';
 
-        // 공급받는자 담당자명
-        statement.receiverContactName := '공급받는자 담당자명';
+        // 수신자 담당자명
+        statement.receiverContactName := '수신자 담당자명';
 
-        // 공급받는자 담당자 메일주소
+        // 수신자 담당자 메일주소
         statement.receiverEmail := 'test@receiver.com';
 
-        // 공급받는자 담당자 연락처 
+        // 수신자 담당자 연락처
         statement.receiverTEL := '070-1234-1234';
 
-        // 공급받는자 담당자 휴대폰번호
+        // 수신자 담당자 휴대폰번호
         statement.receiverHP := '010-111-222';
 
-        
+
         //필수 공급가액 합계
         statement.supplyCostTotal := '200000';
 
@@ -1255,7 +1258,7 @@ begin
 
         // 기재 상 일련번호
         statement.serialNum := '1';
-        
+
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
@@ -1277,7 +1280,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20161006';      //거래일자
+        statement.detailList[0].purchaseDT := '20190114';      //거래일자
         statement.detailList[0].itemName := '품목명';
         statement.detailList[0].spec := '규격';
         statement.detailList[0].qty := '1';                    //수량
@@ -1291,10 +1294,10 @@ begin
         statement.detailList[0].spare3 := '';
         statement.detailList[0].spare4 := '';
         statement.detailList[0].spare5 := '';
-        
+
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20161006';      //거래일자
+        statement.detailList[1].purchaseDT := '20190114';      //거래일자
         statement.detailList[1].itemName := '품목명';
         statement.detailList[1].spec := '규격';
         statement.detailList[1].qty := '1';                    //수량
@@ -1362,59 +1365,48 @@ begin
                 end;
         end;
 
-        tmp := tmp +'mgtKey : ' +  statement.mgtKey + #13;
-        tmp := tmp +'formCode : ' +  statement.formCode + #13;
-        tmp := tmp +'itemCode : ' +  IntToStr(statement.itemCode) + #13;
+        tmp := tmp +'itemCode(문서종류 코드) : ' +  IntToStr(statement.itemCode) + #13;
+        tmp := tmp +'mgtKey(문서관리번호) : ' +  statement.mgtKey + #13;
+        tmp := tmp +'formCode(맞춤양식 코드) : ' +  statement.formCode + #13;
+        tmp := tmp +'writeDate(작성일자) : ' +  statement.WriteDate + #13;
+        tmp := tmp +'taxType(세금형태) : ' +  statement.TaxType + #13;
+        tmp := tmp +'purposeType(영수/청구) : ' +  statement.purposeType + #13;
+        tmp := tmp +'serialNum(일련번호) : ' +  statement.serialNum + #13;
+        tmp := tmp +'taxTotal(세액 합계) : ' +  statement.taxTotal + #13;
+        tmp := tmp +'supplyCostTotal(공급가액 합계) : ' +  statement.supplyCostTotal + #13;
+        tmp := tmp +'totalAmount(합계금액) : ' +  statement.totalAmount + #13;
+        tmp := tmp +'remark1(비고1) : ' +  statement.remark1 + #13;
+        tmp := tmp +'remark2(비고2) : ' +  statement.remark2 + #13;
+        tmp := tmp +'remark3(비고3) : ' +  statement.remark3 + #13;
 
-        tmp := tmp +'writeDate : ' +  statement.WriteDate + #13;
-        tmp := tmp +'taxType : ' +  statement.TaxType + #13;
-        tmp := tmp +'SMSSendYN : ' +  IfThen(statement.SMSSendYN,'true','false') + #13;
-        tmp := tmp +'AutoAcceptYN : ' +  IfThen(statement.AutoAcceptYN,'true','false') + #13;
+        tmp := tmp +'senderCorpNum(발신자 사업자번호) : ' +  statement.SenderCorpNum + #13;
+        tmp := tmp +'senderTaxRegID(발신자 종사업장번호) : ' +  statement.SenderTaxRegID + #13;
+        tmp := tmp +'senderCorpName(발신자 상호) : ' +  statement.SenderCorpName + #13;
+        tmp := tmp +'senderCEOName(발신자 대표자성명) : ' +  statement.SenderCEOName + #13;
+        tmp := tmp +'senderAddr(발신자 주소) : ' +  statement.SenderAddr + #13;
+        tmp := tmp +'senderBizClass(발신자 종목) : ' +  statement.SenderBizClass + #13;
+        tmp := tmp +'senderBizType(발신자 업태) : ' +  statement.SenderBizType + #13;
+        tmp := tmp +'senderContactName(발신자 성명) : ' +  statement.SenderContactName + #13;
+        tmp := tmp +'senderDeptName(발신자 부서) : ' +  statement.SenderDeptName + #13;
+        tmp := tmp +'senderTEL(발신자 연락처) : ' +  statement.SenderTEL + #13;
+        tmp := tmp +'senderHP(발신자 휴대전화) : ' +  statement.SenderHP + #13;
+        tmp := tmp +'senderEmail(발신자 이메일) : ' +  statement.SenderEmail + #13;
 
-        tmp := tmp +'senderCorpNum : ' +  statement.SenderCorpNum + #13;
-        tmp := tmp +'senderTaxRegID : ' +  statement.SenderTaxRegID + #13;
-        tmp := tmp +'senderCorpName : ' +  statement.SenderCorpName + #13;
-        tmp := tmp +'senderCEOName : ' +  statement.SenderCEOName + #13;
-        tmp := tmp +'senderAddr : ' +  statement.SenderAddr + #13;
-        tmp := tmp +'senderBizClass : ' +  statement.SenderBizClass + #13;
-        tmp := tmp +'senderBizType : ' +  statement.SenderBizType + #13;
-        tmp := tmp +'senderContactName : ' +  statement.SenderContactName + #13;
-        tmp := tmp +'senderDeptName : ' +  statement.SenderDeptName + #13;
-        tmp := tmp +'senderTEL : ' +  statement.SenderTEL + #13;
-        tmp := tmp +'senderHP : ' +  statement.SenderHP + #13;
-        tmp := tmp +'senderEmail : ' +  statement.SenderEmail + #13;
+        tmp := tmp +'receiverCorpNum(수신자 사업자번호) : ' +  statement.ReceiverCorpNum + #13;
+        tmp := tmp +'receiverTaxRegID(수신자 종사업장번호) : ' +  statement.ReceiverTaxRegID + #13;
+        tmp := tmp +'receiverCorpName(수신자 상호) : ' +  statement.ReceiverCorpName + #13;
+        tmp := tmp +'receiverCEOName(수신자 대표자성명) : ' +  statement.ReceiverCEOName + #13;
+        tmp := tmp +'receiverAddr(수신자 주소) : ' +  statement.ReceiverAddr + #13;
+        tmp := tmp +'receiverBizClass(수신자 종목) : ' +  statement.ReceiverBizClass + #13;
+        tmp := tmp +'receiverBizType(수신자 업태) : ' +  statement.ReceiverBizType + #13;
+        tmp := tmp +'receiverContactName(수신자 성명) : ' +  statement.ReceiverContactName + #13;
+        tmp := tmp +'receiverDeptName(수신자 부서) : ' +  statement.ReceiverDeptName + #13;
+        tmp := tmp +'receiverTEL(수신자 연락처) : ' +  statement.ReceiverTEL + #13;
+        tmp := tmp +'receiverHP(수신자 휴대전화) : ' +  statement.ReceiverHP + #13;
+        tmp := tmp +'receiverEmail(수신자 이메일) : ' +  statement.ReceiverEmail + #13;
 
-        tmp := tmp +'receiverCorpNum : ' +  statement.ReceiverCorpNum + #13;
-        tmp := tmp +'receiverTaxRegID : ' +  statement.ReceiverTaxRegID + #13;
-        tmp := tmp +'receiverCorpName : ' +  statement.ReceiverCorpName + #13;
-        tmp := tmp +'receiverCEOName : ' +  statement.ReceiverCEOName + #13;
-        tmp := tmp +'receiverAddr : ' +  statement.ReceiverAddr + #13;
-        tmp := tmp +'receiverBizClass : ' +  statement.ReceiverBizClass + #13;
-        tmp := tmp +'receiverBizType : ' +  statement.ReceiverBizType + #13;
-        tmp := tmp +'receiverContactName : ' +  statement.ReceiverContactName + #13;
-        tmp := tmp +'receiverDeptName : ' +  statement.ReceiverDeptName + #13;
-        tmp := tmp +'receiverTEL : ' +  statement.ReceiverTEL + #13;
-        tmp := tmp +'receiverHP : ' +  statement.ReceiverHP + #13;
-        tmp := tmp +'receiverEmail : ' +  statement.ReceiverEmail + #13;
-
-        tmp := tmp +'taxTotal : ' +  statement.taxTotal + #13;
-        tmp := tmp +'supplyCostTotal : ' +  statement.supplyCostTotal + #13;
-        tmp := tmp +'totalAmount : ' +  statement.totalAmount + #13;
-
-        tmp := tmp +'purposeType : ' +  statement.purposeType + #13;
-        tmp := tmp +'serialNum : ' +  statement.serialNum + #13;
-
-
-        tmp := tmp +'remark1 : ' +  statement.remark1 + #13;
-        tmp := tmp +'remark2 : ' +  statement.remark2 + #13;
-        tmp := tmp +'remark3 : ' +  statement.remark3 + #13;
-
-        tmp := tmp +'businessLicenseYN : ' +  IfThen(statement.businessLicenseYN,'true','false') + #13;
-        tmp := tmp +'bankBookYN : ' +  IfThen(statement.bankBookYN,'true','false') + #13;
-        tmp := tmp +'faxsendYN : ' +  IfThen(statement.fAXSendYN,'true','false') + #13;
-
-        tmp := tmp + '-----상세항목-----' + #13#13;
-
+        tmp := tmp + '-----상세항목-----' + #13;
+        tmp := tmp + '일련번호|거래일자|품목명|규격|수량|단가|공급가액|세액|비고|여분1' + #13;
         for i:= 0 to Length(statement.detailList)-1 do
         begin
             tmp := tmp + IntToStr(statement.detailList[i].serialNum) + ' | ' +
@@ -1426,15 +1418,11 @@ begin
                          statement.detailList[i].supplyCost + ' | ' +
                          statement.detailList[i].tax + ' | ' +
                          statement.detailList[i].remark + ' | ' +
-                         statement.detailList[i].spare1 + ' | ' +
-                         statement.detailList[i].spare2 + ' | ' +
-                         statement.detailList[i].spare3 + ' | ' +
-                         statement.detailList[i].spare4 + ' | ' +
-                         statement.detailList[i].spare5 + #13 ;
+                         statement.detailList[i].spare1 + #13 ;
 
         end;
 
-        tmp := tmp + '-----추가속성-----' + #13#13;
+        tmp := tmp + '-----추가속성-----' + #13;
 
         for i:= 0 to Length(statement.propertyBag)-1 do
         begin
@@ -1442,6 +1430,11 @@ begin
                          statement.propertyBag[i].value + #13 ;
 
         end;
+
+        tmp := tmp +'businessLicenseYN(사업자등록증 첨부 여부) : ' +  IfThen(statement.businessLicenseYN,'true','false') + #13;
+        tmp := tmp +'bankBookYN(통장사본 첨부 여부) : ' +  IfThen(statement.bankBookYN,'true','false') + #13;
+        tmp := tmp +'SMSSendYN(문자 자동전송 여부) : ' +  IfThen(statement.SMSSendYN,'true','false') + #13;
+        tmp := tmp +'AutoAcceptYN(발행시 자동승인 여부) : ' +  IfThen(statement.AutoAcceptYN,'true','false') + #13;
 
         ShowMessage(tmp);
 end;
@@ -1518,34 +1511,34 @@ begin
         {**********************************************************************}
         { 연동회원의 담당자를 신규로 등록합니다.                               }
         {**********************************************************************}
-        
-        // [필수] 담당자 아이디 (6자 이상 20자 미만)
-        joinInfo.id := 'useid';
-        
+
+        // [필수] 담당자 아이디 (6자 이상 50자 미만)
+        joinInfo.id := 'testkorea0222_01';
+
         // [필수] 비밀번호 (6자 이상 20자 미만)
         joinInfo.pwd := 'thisispassword';
 
-        // [필수] 담당자명(한글이나 영문 30자 이내)
+        // [필수] 담당자명(한글이나 영문 100자 이내)
         joinInfo.personName := '담당자성명';
 
-        // [필수] 연락처
+        // [필수] 연락처 (최대 20자)
         joinInfo.tel := '070-4304-2991';
 
-        // 휴대폰번호
+        // 휴대폰번호 (최대 20자)
         joinInfo.hp := '010-1111-2222';
 
-        // 팩스번호
+        // 팩스번호 (최대 20자)
         joinInfo.fax := '02-6442-9700';
-        
-        // [필수] 이메일
+
+        // [필수] 이메일 (최대 100자)
         joinInfo.email := 'test@test.com';
 
         // 회사조회 권한여부, true-회사조회 / false-개인조회
         joinInfo.searchAllAllowYN := false;
 
-        // 관리자 권한여부
+        // 관리자 권한여부, true-관리자 / false-사용자
         joinInfo.mgrYN := false;
-
+        
         try
                 response := statementService.RegistContact(txtCorpNum.text, joinInfo);
         except
@@ -1576,7 +1569,10 @@ begin
                         Exit;
                 end;
         end;
-        tmp := 'id | email | hp | personName | searchAllAlloyYN | tel | fax | mgrYN | regDT | state' + #13;
+
+        tmp := 'id(아이디) | email(이메일) | hp(휴대폰) | personName(성명) | searchAllAllowYN(회사조회 권한) | ';
+        tmp := tmp + 'tel(연락처) | fax(팩스) | mgrYN(관리자 여부) | regDT(등록일시) | state(상태)' + #13;
+
         for i := 0 to Length(InfoList) -1 do
         begin
             tmp := tmp + InfoList[i].id + ' | ';
@@ -1602,32 +1598,32 @@ begin
         {**********************************************************************}
         { 연동회원의 담당자 정보를 수정합니다.                                 }
         {**********************************************************************}
-        
-        contactInfo := TContactInfo.Create;
 
-        // 담당자명
-        contactInfo.personName := '테스트 담당자';
+        contactInfo := TContactInfo.Create;
 
         // 담당자 아이디
         contactInfo.id := 'testkorea';
 
-        // 연락처
+        // 담당자명 (최대 100자)
+        contactInfo.personName := '테스트 담당자';
+
+        // 연락처 (최대 20자)
         contactInfo.tel := '070-4304-2991';
 
-        // 휴대폰번호
-        contactInfo.hp := '010-000-1111';
+        // 휴대폰번호 (최대 20자)
+        contactInfo.hp := '010-4324-1111';
 
-        // 이메일 주소
+        // 이메일 주소 (최대 100자)
         contactInfo.email := 'test@test.com';
-        
-        // 팩스번호
+
+        // 팩스번호 (최대 20자)
         contactInfo.fax := '02-6442-9799';
 
         // 조회권한, true(회사조회), false(개인조회)
         contactInfo.searchAllAllowYN := true;
 
-        // 관리자권한 설정여부
-        contactInfo.mgrYN := false; 
+        // 관리자권한 설정여부, true-관리자 / false-사용자
+        contactInfo.mgrYN := false;
 
         try
                 response := statementService.UpdateContact(txtCorpNum.text, contactInfo, txtUserID.Text);
@@ -1675,19 +1671,19 @@ begin
         {**********************************************************************}
         { 연동회원의 회사정보를 수정합니다.                                    }
         {**********************************************************************}
-        
+
         corpInfo := TCorpInfo.Create;
 
-        // 대표자명, 최대 30자
+        // 대표자명, 최대 100자
         corpInfo.ceoname := '대표자명';
 
-        // 상호, 최대 70자
+        // 상호, 최대 200자
         corpInfo.corpName := '상호';
 
-        // 업태, 최대 40자
+        // 업태, 최대 100자
         corpInfo.bizType := '업태';
 
-        // 종목, 최대 40자
+        // 종목, 최대 100자
         corpInfo.bizClass := '종목';
 
         // 주소, 최대 300자
@@ -1719,7 +1715,7 @@ begin
 
         statement := TStatement.Create;
 
-        // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
+        // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표, 126-영수증
         statement.itemCode := ItemCode;
 
         // 맞춤양식코드, 기본값(공백처리)
@@ -1728,7 +1724,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20170222';
+        statement.writeDate := '20190114';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -1748,81 +1744,81 @@ begin
 
 
         {**********************************************************************}
-        {                             공급자 정보                              }
+        {                             발신자 정보                              }
         {**********************************************************************}
 
-        // 공급자 사업자번호, '-'제외 10자리
-        statement.senderCorpNum := '1234567890';
+        // 발신자 사업자번호, '-'제외 10자리
+        statement.senderCorpNum := txtCorpNum.Text;
 
         // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.senderTaxRegID := '';
 
-        // 공급자 상호
-        statement.senderCorpName := '공급자 상호';
+        // 발신자 상호
+        statement.senderCorpName := '발신자 상호';
 
-        // 공급자 대표자 성명
-        statement.senderCEOName := '공급자 대표자 성명';
+        // 발신자 대표자 성명
+        statement.senderCEOName := '발신자 대표자 성명';
 
-        // 공급자 주소
-        statement.senderAddr := '공급자 주소';
+        // 발신자 주소
+        statement.senderAddr := '발신자 주소';
 
-        // 공급자 종목
-        statement.senderBizClass := '공급자 종목';
+        // 발신자 종목
+        statement.senderBizClass := '발신자 종목';
 
-        // 공급자 업태 
-        statement.senderBizType := '공급자 업태,업태2';
+        // 발신자 업태
+        statement.senderBizType := '발신자 업태,업태2';
 
-        // 공급자 담당자명
-        statement.senderContactName := '공급자 담당자명';
+        // 발신자 담당자명
+        statement.senderContactName := '발신자 담당자명';
 
-        // 공급자 담당자 메일주소
+        // 발신자 담당자 메일주소
         statement.senderEmail := 'test@test.com';
 
-        // 공급자 담당자 연락처 
+        // 발신자 담당자 연락처
         statement.senderTEL := '070-7070-0707';
 
-        // 공급자 담당자 휴대폰번호
+        // 발신자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
 
         {**********************************************************************}
-        {                            공급받는자 정보                           }
+        {                            수신자 정보                               }
         {**********************************************************************}
 
-        // 공급받는자 사업자번호, '-' 제외 10자리 
+        // 수신자 사업자번호, '-' 제외 10자리
         statement.receiverCorpNum := '8888888888';
 
-        // 공급받는자 상호 
+        // 수신자 상호
         statement.receiverCorpName := '공급받는자 상호';
 
         //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.receiverTaxRegID := '';
 
-        // 공급받는자 대표자 성명
-        statement.receiverCEOName := '공급받는자 대표자 성명';
+        // 수신자 대표자 성명
+        statement.receiverCEOName := '수신자 대표자 성명';
 
-        // 공급받는자 주소
-        statement.receiverAddr := '공급받는자 주소';
+        // 수신자 주소
+        statement.receiverAddr := '수신자 주소';
 
-        // 공급받는자 종목
-        statement.receiverBizClass := '공급받는자 업종';
+        // 수신자 종목
+        statement.receiverBizClass := '수신자 업종';
 
-        // 공급받는자 업태
-        statement.receiverBizType := '공급받는자 업태';
+        // 수신자 업태
+        statement.receiverBizType := '수신자 업태';
 
-        // 공급받는자 담당자명
-        statement.receiverContactName := '공급받는자 담당자명';
+        // 수신자 담당자명
+        statement.receiverContactName := '수신자 담당자명';
 
-        // 공급받는자 담당자 메일주소
+        // 수신자 담당자 메일주소
         statement.receiverEmail := 'test@receiver.com';
 
-        // 공급받는자 담당자 연락처 
+        // 수신자 담당자 연락처
         statement.receiverTEL := '070-1234-1234';
 
-        // 공급받는자 담당자 휴대폰번호
+        // 수신자 담당자 휴대폰번호
         statement.receiverHP := '010-111-222';
 
-        
+
         //필수 공급가액 합계
         statement.supplyCostTotal := '200000';
 
@@ -1834,7 +1830,7 @@ begin
 
         // 기재 상 일련번호
         statement.serialNum := '1';
-        
+
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
@@ -1844,7 +1840,7 @@ begin
 
         // 통장사본 첨부여부
         statement.bankBookYN := false ;
-        
+
 
         {**********************************************************************}
         {                     전자명세서 상세항목(품목) 정보                   }
@@ -1857,7 +1853,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20151211';      //거래일자
+        statement.detailList[0].purchaseDT := '20190114';      //거래일자
         statement.detailList[0].itemName := '품목명';
         statement.detailList[0].spec := '규격';
         statement.detailList[0].qty := '1';                    //수량
@@ -1871,10 +1867,10 @@ begin
         statement.detailList[0].spare3 := '';
         statement.detailList[0].spare4 := '';
         statement.detailList[0].spare5 := '';
-        
+
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20151211';      //거래일자
+        statement.detailList[1].purchaseDT := '20190114';      //거래일자
         statement.detailList[1].itemName := '품목명';
         statement.detailList[1].spec := '규격';
         statement.detailList[1].qty := '1';                    //수량
@@ -1889,13 +1885,13 @@ begin
         statement.detailList[1].spare4 := '';
         statement.detailList[1].spare5 := '';
 
-        
+
         {**********************************************************************}
         {                           추가속성 항목                              }
         { - 추가속성 항목에 대한 자세한 사항은 "[전자명세서 api 연동매뉴얼] >  }
         {   5.2. 기본양식 추가속성 테이블" 참조하시기 바랍니다.                }
         {**********************************************************************}
-        
+
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
@@ -1911,7 +1907,7 @@ begin
         statement.propertyBag[2].value := '10000';
 
         memo := '즉시발행 메모';
-        
+
         try
                 response := statementService.RegistIssue(txtCorpNum.text, statement, memo);
                 statement.Free;
@@ -1922,7 +1918,7 @@ begin
                         Exit;
                 end;
         end;
-        
+
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -2026,8 +2022,8 @@ begin
         {**********************************************************************}
         { 전자명세서를 팩스로 전송합니다.                                      }
         { - 팝빌에 전자명세서가 등록되지 않고 팩스로 전송됩니다.               }
-        { - 전송결과는 [팝빌홈페이지] > [문자, 팩스] > [팩스 전송내역] 에서    }
-        {   확인할 수 있습니다.                                                }
+        { - 전송결과는 [팝빌홈페이지] > [문자, 팩스] > [팩스] > [전송내역]     }
+        {   메뉴 에서 확인할 수 있습니다.                                      }
         {**********************************************************************}
 
         // 발신번호
@@ -2049,7 +2045,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20170222';
+        statement.writeDate := '20190114';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -2069,81 +2065,81 @@ begin
 
 
         {**********************************************************************}
-        {                             공급자 정보                              }
+        {                             발신자 정보                              }
         {**********************************************************************}
 
         // 공급자 사업자번호, '-'제외 10자리
-        statement.senderCorpNum := '1234567890';
+        statement.senderCorpNum := txtCorpNum.Text;
 
         // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.senderTaxRegID := '';
 
-        // 공급자 상호
-        statement.senderCorpName := '공급자 상호';
+        // 발신자 상호
+        statement.senderCorpName := '발신자 상호';
 
-        // 공급자 대표자 성명
-        statement.senderCEOName := '공급자 대표자 성명';
+        // 발신자 대표자 성명
+        statement.senderCEOName := '발신자 대표자 성명';
 
-        // 공급자 주소
-        statement.senderAddr := '공급자 주소';
+        // 발신자 주소
+        statement.senderAddr := '발신자 주소';
 
-        // 공급자 종목
-        statement.senderBizClass := '공급자 종목';
+        // 발신자 종목
+        statement.senderBizClass := '발신자 종목';
 
-        // 공급자 업태 
-        statement.senderBizType := '공급자 업태,업태2';
+        // 발신자 업태
+        statement.senderBizType := '발신자 업태,업태2';
 
-        // 공급자 담당자명
-        statement.senderContactName := '공급자 담당자명';
+        // 발신자 담당자명
+        statement.senderContactName := '발신자 담당자명';
 
-        // 공급자 담당자 메일주소
+        // 발신자 담당자 메일주소
         statement.senderEmail := 'test@test.com';
 
-        // 공급자 담당자 연락처 
+        // 발신자 담당자 연락처
         statement.senderTEL := '070-7070-0707';
 
-        // 공급자 담당자 휴대폰번호
+        // 발신자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
 
         {**********************************************************************}
-        {                            공급받는자 정보                           }
+        {                              수신자 정보                             }
         {**********************************************************************}
 
-        // 공급받는자 사업자번호, '-' 제외 10자리 
+        // 수신자 사업자번호, '-' 제외 10자리
         statement.receiverCorpNum := '8888888888';
 
-        // 공급받는자 상호 
-        statement.receiverCorpName := '공급받는자 상호';
+        // 수신자 상호
+        statement.receiverCorpName := '수신자 상호';
 
-        //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
+        // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.receiverTaxRegID := '';
 
-        // 공급받는자 대표자 성명
-        statement.receiverCEOName := '공급받는자 대표자 성명';
+        // 수신자 대표자 성명
+        statement.receiverCEOName := '수신자 대표자 성명';
 
-        // 공급받는자 주소
-        statement.receiverAddr := '공급받는자 주소';
+        // 수신자 주소
+        statement.receiverAddr := '수신자 주소';
 
-        // 공급받는자 종목
-        statement.receiverBizClass := '공급받는자 업종';
+        // 수신자 종목
+        statement.receiverBizClass := '수신자 업종';
 
-        // 공급받는자 업태
-        statement.receiverBizType := '공급받는자 업태';
+        // 수신자 업태
+        statement.receiverBizType := '수신자 업태';
 
-        // 공급받는자 담당자명
-        statement.receiverContactName := '공급받는자 담당자명';
+        // 수신자 담당자명
+        statement.receiverContactName := '수신자 담당자명';
 
-        // 공급받는자 담당자 메일주소
+        // 수신자 담당자 메일주소
         statement.receiverEmail := 'test@receiver.com';
 
-        // 공급받는자 담당자 연락처 
+        // 수신자 담당자 연락처
         statement.receiverTEL := '070-1234-1234';
 
-        // 공급받는자 담당자 휴대폰번호
+        // 수신자 담당자 휴대폰번호
         statement.receiverHP := '010-111-222';
 
-        
+
         //필수 공급가액 합계
         statement.supplyCostTotal := '200000';
 
@@ -2155,7 +2151,7 @@ begin
 
         // 기재 상 일련번호
         statement.serialNum := '1';
-        
+
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
@@ -2175,7 +2171,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20151211';      //거래일자
+        statement.detailList[0].purchaseDT := '20190114';      //거래일자
         statement.detailList[0].itemName := '품목명';
         statement.detailList[0].spec := '규격';
         statement.detailList[0].qty := '1';                    //수량
@@ -2189,10 +2185,10 @@ begin
         statement.detailList[0].spare3 := '';
         statement.detailList[0].spare4 := '';
         statement.detailList[0].spare5 := '';
-        
+
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20151211';      //거래일자
+        statement.detailList[1].purchaseDT := '20190114';      //거래일자
         statement.detailList[1].itemName := '품목명';
         statement.detailList[1].spec := '규격';
         statement.detailList[1].qty := '1';                    //수량
@@ -2266,10 +2262,10 @@ begin
         DType := 'W';
 
         // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
-        SDate := '20160901';
+        SDate := '20190101';
 
         // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
-        EDate := '20161031';
+        EDate := '20190114';
 
         // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
         SetLength(StateList, 2);
@@ -2290,7 +2286,7 @@ begin
         ItemCodeList[2] := 123;
         ItemCodeList[3] := 124;
         ItemCodeList[4] := 125;
-        ItemCodeList[5] := 126;         
+        ItemCodeList[5] := 126;
 
         // 거래처 정보, 거래처 상호 또는 거래처 사업자등록번호 기재, 미기재시 전체조회
         QString := '';
@@ -2314,16 +2310,18 @@ begin
                 end;
         end;
 
-        tmp := 'code : '+IntToStr(SearchList.code) + #13;
-        tmp := tmp + 'total : '+ IntToStr(SearchList.total) + #13;
-        tmp := tmp + 'perPage : '+ IntToStr(SearchList.perPage) + #13;
-        tmp := tmp + 'pageNum : '+ IntToStr(SearchList.pageNum) + #13;
-        tmp := tmp + 'pageCount : '+ IntToStr(SearchList.pageCount) + #13;
-        tmp := tmp + 'message : '+ SearchList.message + #13#13;
+        tmp := 'code(응답코드) : '+IntToStr(SearchList.code) + #13;
+        tmp := tmp + 'total(총 검색결과 건수) : '+ IntToStr(SearchList.total) + #13;
+        tmp := tmp + 'perPage(페이지당 검색개수) : '+ IntToStr(SearchList.perPage) + #13;
+        tmp := tmp + 'pageNum(페이지 번호) : '+ IntToStr(SearchList.pageNum) + #13;
+        tmp := tmp + 'pageCount(페이지 개수) : '+ IntToStr(SearchList.pageCount) + #13;
+        tmp := tmp + 'message(응답메시지) : '+ SearchList.message + #13#13;
 
-        tmp := tmp + 'ItemCode | ItemKey | StateCode | TaxType | WriteDate | SenderCorpName | SenderCorpNum | '
-               + ' ReceiverCorpName | ReceiverCorpNum | SupplyCostTotal | TaxTotal | RegDT | SenderPrintYN | ReceiverPrintYN ' + #13;
-        
+        tmp := tmp + 'ItemCode(문서종류코드) | ItemKey(팝빌 관리번호) | StateCode(상태코드) | TaxType(세금형태) | WriteDate(작성일자) |';
+        tmp := tmp + 'SenderCorpName(발신자 상호) | SenderCorpNum(발신자 사업자번호) |  ReceiverCorpName(수신자 상호) |';
+        tmp := tmp + 'ReceiverCorpNum(수신자 사업자번호) | SupplyCostTotal(공급가액 합계) | TaxTotal(세액 합계) |';
+        tmp := tmp + 'RegDT(임시저장일시) | SenderPrintYN(발신자 인쇄여부) | ReceiverPrintYN(수신자인쇄여부) ' + #13;
+
         for i := 0 to Length(SearchList.list) -1 do
         begin
             tmp := tmp + IntToStr(SearchList.list[i].ItemCode) + ' | '
@@ -2362,7 +2360,7 @@ begin
         SubItemCode := 121;
 
         // 첨부할 전자명세서 문서관리번호
-        SubMgtKey := '20151223-01';
+        SubMgtKey := '20190114-002';
 
         try
                 response := statementService.AttachStatement(txtCorpNum.text, ItemCode, tbMgtKey.Text, SubItemCode, SubMgtKey);
@@ -2392,7 +2390,7 @@ begin
         SubItemCode := 121;
 
         // 첨부해제할 전자명세서 문서관리번호
-        SubMgtKey := '20151223-01';
+        SubMgtKey := '20190114-002';
 
         try
                 response := statementService.DetachStatement(txtCorpNum.text, ItemCode, tbMgtKey.Text, SubItemCode, SubMgtKey);
@@ -2555,5 +2553,6 @@ begin
 
         ShowMessage('응답코드 : '+ IntToStr(response.code) + #10#13 +'응답메시지 : '+  response.Message);
 end;
+
 
 end.
