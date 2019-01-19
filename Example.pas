@@ -418,18 +418,19 @@ begin
         statement.receiverHP := '010-111-222';
 
 
-        //필수 공급가액 합계
+        //[필수] 공급가액 합계
         statement.supplyCostTotal := '200000';
 
-        //필수 세액 합계
+        //[필수] 세액 합계
         statement.taxTotal := '20000';
 
-        //필수 합계금액.  공급가액 + 세액
+        //[필수] 합계금액.  공급가액 + 세액
         statement.totalAmount := '220000';
 
         // 기재 상 일련번호
         statement.serialNum := '1';
 
+        // 비고
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
@@ -453,36 +454,34 @@ begin
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
         statement.detailList[0].purchaseDT := '20190114';      //거래일자
-        statement.detailList[0].itemName := '품목명';
-        statement.detailList[0].spec := '규격';
+        statement.detailList[0].itemName := '품목명';          //품목명
+        statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
         statement.detailList[0].unitCost := '100000';          //단가
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
-        statement.detailList[0].remark := '품목비고';
-        statement.detailList[0]._unit := '';                   //단위
-        statement.detailList[0].spare1 := '';
-        statement.detailList[0].spare2 := '';
-        statement.detailList[0].spare3 := '';
-        statement.detailList[0].spare4 := '';
-        statement.detailList[0].spare5 := '';
+        statement.detailList[0].remark := '품목비고';          //비고
+        statement.detailList[0].spare1 := '';                  //여분1
+        statement.detailList[0].spare2 := '';                  //여분2
+        statement.detailList[0].spare3 := '';                  //여분3
+        statement.detailList[0].spare4 := '';                  //여분4
+        statement.detailList[0].spare5 := '';                  //여분5
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20190114';      //거래일자
-        statement.detailList[1].itemName := '품목명';
-        statement.detailList[1].spec := '규격';
-        statement.detailList[1].qty := '1';                    //수량
-        statement.detailList[1].unitCost := '100000';          //단가
-        statement.detailList[1].supplyCost := '100000';        //공급가액
-        statement.detailList[1].tax := '10000';                //세액
-        statement.detailList[1].remark := '품목비고';
-        statement.detailList[1]._unit := '';                   //단위
-        statement.detailList[1].spare1 := '';
-        statement.detailList[1].spare2 := '';
-        statement.detailList[1].spare3 := '';
-        statement.detailList[1].spare4 := '';
-        statement.detailList[1].spare5 := '';
+        statement.detailList[0].purchaseDT := '20190114';      //거래일자
+        statement.detailList[0].itemName := '품목명';          //품목명
+        statement.detailList[0].spec := '규격';                //규격
+        statement.detailList[0].qty := '1';                    //수량
+        statement.detailList[0].unitCost := '100000';          //단가
+        statement.detailList[0].supplyCost := '100000';        //공급가액
+        statement.detailList[0].tax := '10000';                //세액
+        statement.detailList[0].remark := '품목비고';          //비고
+        statement.detailList[0].spare1 := '';                  //여분1
+        statement.detailList[0].spare2 := '';                  //여분2
+        statement.detailList[0].spare3 := '';                  //여분3
+        statement.detailList[0].spare4 := '';                  //여분4
+        statement.detailList[0].spare5 := '';                  //여분5
 
         {**********************************************************************}
         {                           추가속성 항목                              }
@@ -1247,18 +1246,19 @@ begin
         statement.receiverHP := '010-111-222';
 
 
-        //필수 공급가액 합계
+        //[필수] 공급가액 합계
         statement.supplyCostTotal := '200000';
 
-        //필수 세액 합계
+        //[필수] 세액 합계
         statement.taxTotal := '20000';
 
-        //필수 합계금액.  공급가액 + 세액
+        //[필수] 합계금액.  공급가액 + 세액
         statement.totalAmount := '220000';
 
-        // 기재 상 일련번호
+        //기재 상 일련번호
         statement.serialNum := '1';
 
+        //비고
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
@@ -1281,36 +1281,34 @@ begin
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
         statement.detailList[0].purchaseDT := '20190114';      //거래일자
-        statement.detailList[0].itemName := '품목명';
-        statement.detailList[0].spec := '규격';
+        statement.detailList[0].itemName := '품목명';          //품목명
+        statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
         statement.detailList[0].unitCost := '100000';          //단가
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
-        statement.detailList[0].remark := '품목비고';
-        statement.detailList[0]._unit := '';                   //단위
-        statement.detailList[0].spare1 := '';
-        statement.detailList[0].spare2 := '';
-        statement.detailList[0].spare3 := '';
-        statement.detailList[0].spare4 := '';
-        statement.detailList[0].spare5 := '';
+        statement.detailList[0].remark := '품목비고';          //비고
+        statement.detailList[0].spare1 := '';                  //여분1
+        statement.detailList[0].spare2 := '';                  //여분2
+        statement.detailList[0].spare3 := '';                  //여분3
+        statement.detailList[0].spare4 := '';                  //여분4
+        statement.detailList[0].spare5 := '';                  //여분5
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20190114';      //거래일자
-        statement.detailList[1].itemName := '품목명';
-        statement.detailList[1].spec := '규격';
-        statement.detailList[1].qty := '1';                    //수량
-        statement.detailList[1].unitCost := '100000';          //단가
-        statement.detailList[1].supplyCost := '100000';        //공급가액
-        statement.detailList[1].tax := '10000';                //세액
-        statement.detailList[1].remark := '품목비고';
-        statement.detailList[1]._unit := '';                   //단위
-        statement.detailList[1].spare1 := '';
-        statement.detailList[1].spare2 := '';
-        statement.detailList[1].spare3 := '';
-        statement.detailList[1].spare4 := '';
-        statement.detailList[1].spare5 := '';
+        statement.detailList[0].purchaseDT := '20190114';      //거래일자
+        statement.detailList[0].itemName := '품목명';          //품목명
+        statement.detailList[0].spec := '규격';                //규격
+        statement.detailList[0].qty := '1';                    //수량
+        statement.detailList[0].unitCost := '100000';          //단가
+        statement.detailList[0].supplyCost := '100000';        //공급가액
+        statement.detailList[0].tax := '10000';                //세액
+        statement.detailList[0].remark := '품목비고';          //비고
+        statement.detailList[0].spare1 := '';                  //여분1
+        statement.detailList[0].spare2 := '';                  //여분2
+        statement.detailList[0].spare3 := '';                  //여분3
+        statement.detailList[0].spare4 := '';                  //여분4
+        statement.detailList[0].spare5 := '';                  //여분5
 
         //추가속성항목, 자세한 사항은 "[전자명세서 api 연동매뉴얼] > 5.2. 기본양식 추가속성 테이블" 참조
         setLength(statement.propertyBag,3);
@@ -1406,7 +1404,8 @@ begin
         tmp := tmp +'receiverEmail(수신자 이메일) : ' +  statement.ReceiverEmail + #13;
 
         tmp := tmp + '-----상세항목-----' + #13;
-        tmp := tmp + '일련번호|거래일자|품목명|규격|수량|단가|공급가액|세액|비고|여분1' + #13;
+        tmp := tmp + 'serialNum(일련번호) | purchaseDT(거래일자) | itemName(품목명) | spec(규격) | qty(수량) | ';
+        tmp := tmp + 'unitCost(단가) | supplyCost(공급가액) | tax(세액) | remark(비고) | spare1(여분1)' + #13;
         for i:= 0 to Length(statement.detailList)-1 do
         begin
             tmp := tmp + IntToStr(statement.detailList[i].serialNum) + ' | ' +
@@ -1819,18 +1818,19 @@ begin
         statement.receiverHP := '010-111-222';
 
 
-        //필수 공급가액 합계
+        //[필수] 공급가액 합계
         statement.supplyCostTotal := '200000';
 
-        //필수 세액 합계
+        //[필수] 세액 합계
         statement.taxTotal := '20000';
 
-        //필수 합계금액.  공급가액 + 세액
+        //[필수] 합계금액.  공급가액 + 세액
         statement.totalAmount := '220000';
 
         // 기재 상 일련번호
         statement.serialNum := '1';
 
+        // 비고
         statement.remark1 := '비고1';
         statement.remark2 := '비고2';
         statement.remark3 := '비고3';
@@ -1839,7 +1839,7 @@ begin
         statement.businessLicenseYN := false;
 
         // 통장사본 첨부여부
-        statement.bankBookYN := false ;
+        statement.bankBookYN := false;
 
 
         {**********************************************************************}
@@ -1854,36 +1854,34 @@ begin
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
         statement.detailList[0].purchaseDT := '20190114';      //거래일자
-        statement.detailList[0].itemName := '품목명';
-        statement.detailList[0].spec := '규격';
+        statement.detailList[0].itemName := '품목명';          //품목명
+        statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
         statement.detailList[0].unitCost := '100000';          //단가
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
-        statement.detailList[0].remark := '품목비고';
-        statement.detailList[0]._unit := '';                   //단위
-        statement.detailList[0].spare1 := '';
-        statement.detailList[0].spare2 := '';
-        statement.detailList[0].spare3 := '';
-        statement.detailList[0].spare4 := '';
-        statement.detailList[0].spare5 := '';
+        statement.detailList[0].remark := '품목비고';          //비고
+        statement.detailList[0].spare1 := '';                  //여분1
+        statement.detailList[0].spare2 := '';                  //여분2
+        statement.detailList[0].spare3 := '';                  //여분3
+        statement.detailList[0].spare4 := '';                  //여분4
+        statement.detailList[0].spare5 := '';                  //여분5
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20190114';      //거래일자
-        statement.detailList[1].itemName := '품목명';
-        statement.detailList[1].spec := '규격';
-        statement.detailList[1].qty := '1';                    //수량
-        statement.detailList[1].unitCost := '100000';          //단가
-        statement.detailList[1].supplyCost := '100000';        //공급가액
-        statement.detailList[1].tax := '10000';                //세액
-        statement.detailList[1].remark := '품목비고';
-        statement.detailList[1]._unit := '';                   //단위
-        statement.detailList[1].spare1 := '';
-        statement.detailList[1].spare2 := '';
-        statement.detailList[1].spare3 := '';
-        statement.detailList[1].spare4 := '';
-        statement.detailList[1].spare5 := '';
+        statement.detailList[0].purchaseDT := '20190114';      //거래일자
+        statement.detailList[0].itemName := '품목명';          //품목명
+        statement.detailList[0].spec := '규격';                //규격
+        statement.detailList[0].qty := '1';                    //수량
+        statement.detailList[0].unitCost := '100000';          //단가
+        statement.detailList[0].supplyCost := '100000';        //공급가액
+        statement.detailList[0].tax := '10000';                //세액
+        statement.detailList[0].remark := '품목비고';          //비고
+        statement.detailList[0].spare1 := '';                  //여분1
+        statement.detailList[0].spare2 := '';                  //여분2
+        statement.detailList[0].spare3 := '';                  //여분3
+        statement.detailList[0].spare4 := '';                  //여분4
+        statement.detailList[0].spare5 := '';                  //여분5
 
 
         {**********************************************************************}
