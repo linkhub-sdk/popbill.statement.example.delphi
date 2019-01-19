@@ -469,19 +469,19 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[0].purchaseDT := '20190114';      //거래일자
-        statement.detailList[0].itemName := '품목명';          //품목명
-        statement.detailList[0].spec := '규격';                //규격
-        statement.detailList[0].qty := '1';                    //수량
-        statement.detailList[0].unitCost := '100000';          //단가
-        statement.detailList[0].supplyCost := '100000';        //공급가액
-        statement.detailList[0].tax := '10000';                //세액
-        statement.detailList[0].remark := '품목비고';          //비고
-        statement.detailList[0].spare1 := '';                  //여분1
-        statement.detailList[0].spare2 := '';                  //여분2
-        statement.detailList[0].spare3 := '';                  //여분3
-        statement.detailList[0].spare4 := '';                  //여분4
-        statement.detailList[0].spare5 := '';                  //여분5
+        statement.detailList[1].purchaseDT := '20190114';      //거래일자
+        statement.detailList[1].itemName := '품목명';          //품목명
+        statement.detailList[1].spec := '규격';                //규격
+        statement.detailList[1].qty := '1';                    //수량
+        statement.detailList[1].unitCost := '100000';          //단가
+        statement.detailList[1].supplyCost := '100000';        //공급가액
+        statement.detailList[1].tax := '10000';                //세액
+        statement.detailList[1].remark := '품목비고';          //비고
+        statement.detailList[1].spare1 := '';                  //여분1
+        statement.detailList[1].spare2 := '';                  //여분2
+        statement.detailList[1].spare3 := '';                  //여분3
+        statement.detailList[1].spare4 := '';                  //여분4
+        statement.detailList[1].spare5 := '';                  //여분5
 
         {**********************************************************************}
         {                           추가속성 항목                              }
@@ -1296,19 +1296,19 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[0].purchaseDT := '20190114';      //거래일자
-        statement.detailList[0].itemName := '품목명';          //품목명
-        statement.detailList[0].spec := '규격';                //규격
-        statement.detailList[0].qty := '1';                    //수량
-        statement.detailList[0].unitCost := '100000';          //단가
-        statement.detailList[0].supplyCost := '100000';        //공급가액
-        statement.detailList[0].tax := '10000';                //세액
-        statement.detailList[0].remark := '품목비고';          //비고
-        statement.detailList[0].spare1 := '';                  //여분1
-        statement.detailList[0].spare2 := '';                  //여분2
-        statement.detailList[0].spare3 := '';                  //여분3
-        statement.detailList[0].spare4 := '';                  //여분4
-        statement.detailList[0].spare5 := '';                  //여분5
+        statement.detailList[1].purchaseDT := '20190114';      //거래일자
+        statement.detailList[1].itemName := '품목명';          //품목명
+        statement.detailList[1].spec := '규격';                //규격
+        statement.detailList[1].qty := '1';                    //수량
+        statement.detailList[1].unitCost := '100000';          //단가
+        statement.detailList[1].supplyCost := '100000';        //공급가액
+        statement.detailList[1].tax := '10000';                //세액
+        statement.detailList[1].remark := '품목비고';          //비고
+        statement.detailList[1].spare1 := '';                  //여분1
+        statement.detailList[1].spare2 := '';                  //여분2
+        statement.detailList[1].spare3 := '';                  //여분3
+        statement.detailList[1].spare4 := '';                  //여분4
+        statement.detailList[1].spare5 := '';                  //여분5
 
         //추가속성항목, 자세한 사항은 "[전자명세서 api 연동매뉴얼] > 5.2. 기본양식 추가속성 테이블" 참조
         setLength(statement.propertyBag,3);
@@ -1869,19 +1869,19 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[0].purchaseDT := '20190114';      //거래일자
-        statement.detailList[0].itemName := '품목명';          //품목명
-        statement.detailList[0].spec := '규격';                //규격
-        statement.detailList[0].qty := '1';                    //수량
-        statement.detailList[0].unitCost := '100000';          //단가
-        statement.detailList[0].supplyCost := '100000';        //공급가액
-        statement.detailList[0].tax := '10000';                //세액
-        statement.detailList[0].remark := '품목비고';          //비고
-        statement.detailList[0].spare1 := '';                  //여분1
-        statement.detailList[0].spare2 := '';                  //여분2
-        statement.detailList[0].spare3 := '';                  //여분3
-        statement.detailList[0].spare4 := '';                  //여분4
-        statement.detailList[0].spare5 := '';                  //여분5
+        statement.detailList[1].purchaseDT := '20190114';      //거래일자
+        statement.detailList[1].itemName := '품목명';          //품목명
+        statement.detailList[1].spec := '규격';                //규격
+        statement.detailList[1].qty := '1';                    //수량
+        statement.detailList[1].unitCost := '100000';          //단가
+        statement.detailList[1].supplyCost := '100000';        //공급가액
+        statement.detailList[1].tax := '10000';                //세액
+        statement.detailList[1].remark := '품목비고';          //비고
+        statement.detailList[1].spare1 := '';                  //여분1
+        statement.detailList[1].spare2 := '';                  //여분2
+        statement.detailList[1].spare3 := '';                  //여분3
+        statement.detailList[1].spare4 := '';                  //여분4
+        statement.detailList[1].spare5 := '';                  //여분5
 
 
         {**********************************************************************}
