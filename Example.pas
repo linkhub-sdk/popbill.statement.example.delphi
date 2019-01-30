@@ -61,13 +61,13 @@ type
     btnGetInfo: TButton;
     btnGetInfos: TButton;
     GroupBox6: TGroupBox;
-    btnReSendEmail: TButton;
-    btnReSendSMS: TButton;
-    btnSendInvoiceFax: TButton;
+    btnSendEmail: TButton;
+    btnSendSMS: TButton;
+    btnSendFax: TButton;
     tbMgtKey: TEdit;
     GroupBox8: TGroupBox;
     GroupBox9: TGroupBox;
-    btnJoin: TButton;
+    btnJoinMember: TButton;
     GroupBox11: TGroupBox;
     btnGetUnitCost: TButton;
     GroupBox12: TGroupBox;
@@ -79,8 +79,8 @@ type
     Label4: TLabel;
     txtUserID: TEdit;
     GroupBox10: TGroupBox;
-    btnGetTaxinvoiceURL1: TButton;
-    btnGetTaxinvoiceURL2: TButton;
+    btnGetURL1: TButton;
+    btnGetURL2: TButton;
     OpenDialog1: TOpenDialog;
     cbItemCode: TComboBox;
     txtFormCode: TEdit;
@@ -101,7 +101,7 @@ type
     Shape3: TShape;
     Shape4: TShape;
     Shape5: TShape;
-    btnIssueFax: TButton;
+    btnFaxSend: TButton;
     btnSearch: TButton;
     btnAttachStatement: TButton;
     btnDetachStatement: TButton;
@@ -124,7 +124,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action:TCloseAction);
     procedure btnGetAccessURLClick(Sender: TObject);
-    procedure btnJoinClick(Sender: TObject);
+    procedure btnJoinMemberClick(Sender: TObject);
     procedure btnRegisterClick(Sender: TObject);
     procedure btnGetBalanceClick(Sender: TObject);
     procedure btnGetUnitCostClick(Sender: TObject);
@@ -139,11 +139,11 @@ type
     procedure cbItemCodeChange(Sender: TObject);
     procedure btnCancel_IssueClick(Sender: TObject);
     procedure btnIssueClick(Sender: TObject);
-    procedure btnReSendSMSClick(Sender: TObject);
-    procedure btnReSendEmailClick(Sender: TObject);
-    procedure btnSendInvoiceFaxClick(Sender: TObject);
-    procedure btnGetTaxinvoiceURL1Click(Sender: TObject);
-    procedure btnGetTaxinvoiceURL2Click(Sender: TObject);
+    procedure btnSendSMSClick(Sender: TObject);
+    procedure btnSendEmailClick(Sender: TObject);
+    procedure btnSendFaxClick(Sender: TObject);
+    procedure btnGetURL1Click(Sender: TObject);
+    procedure btnGetURL2Click(Sender: TObject);
     procedure btnGetPopUpURLClick(Sender: TObject);
     procedure btnGetPrintURLClick(Sender: TObject);
     procedure btnGetMailURLClick(Sender: TObject);
@@ -163,7 +163,7 @@ type
     procedure btnCheckIsMemberClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnDelete_registIssueClick(Sender: TObject);
-    procedure btnIssueFaxClick(Sender: TObject);
+    procedure btnFaxSendClick(Sender: TObject);
     procedure btnSearchClick(Sender: TObject);
     procedure btnAttachStatementClick(Sender: TObject);
     procedure btnDetachStatementClick(Sender: TObject);
@@ -208,6 +208,12 @@ begin
     if condition then result := trueVal else result := falseVal;
 end;
 
+Function BoolToStr(b:Boolean):String;
+begin
+    if b = true then BoolToStr:='True';
+    if b = false then BoolToStr:='False';
+end;
+
 procedure TfrmExample.btnGetAccessURLClick(Sender: TObject);
 var
   resultURL : String;
@@ -216,7 +222,6 @@ begin
         {    팝빌(www.popbill.com)에 로그인된 팝업 URL을 반환합니다.           }
         {    URL 보안정책에 따라 반환된 URL은 30초의 유효시간을 갖습니다.      }
         {**********************************************************************}
-
         try
                 resultURL := statementService.getAccessURL(txtCorpNum.Text, txtUserID.Text);
         except
@@ -225,18 +230,14 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('ResultURL is ' + #13 + resultURL);
 end;
 
-
-
-procedure TfrmExample.btnJoinClick(Sender: TObject);
+procedure TfrmExample.btnJoinMemberClick(Sender: TObject);
 var
         response : TResponse;
         joinInfo : TJoinForm;
 begin
-
         {**********************************************************************}
         {    파트너의 연동회원으로 회원가입을 요청합니다.                      }
         {    아이디 중복확인은 btnCheckIDClick 프로시져를 참조하시기 바랍니다. }
@@ -292,9 +293,7 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
-
 end;
 
 procedure TfrmExample.btnRegisterClick(Sender: TObject);
@@ -303,7 +302,6 @@ var
         response : TResponse;
 begin
         statement := TStatement.Create;
-
         {**********************************************************************}
         { 전자명세서 1건을 [임시저장] 합니다.                                  }
         { - 전자명세서 임시저장(Register API) 호출후에는 발행(Issue API)을     }
@@ -340,7 +338,6 @@ begin
         // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
         // 사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
-
 
         {**********************************************************************}
         {                             발신자 정보                              }
@@ -379,12 +376,11 @@ begin
         // 발신자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
-
         {**********************************************************************}
         {                            수신자 정보                               }
         {**********************************************************************}
 
-        // 공급받는자 사업자번호, '-' 제외 10자리
+        // 수신자 사업자번호, '-' 제외 10자리
         statement.receiverCorpNum := '8888888888';
 
         // 수신자 상호
@@ -417,14 +413,13 @@ begin
         // 수신자 담당자 휴대폰번호
         statement.receiverHP := '010-111-222';
 
-
         //[필수] 공급가액 합계
         statement.supplyCostTotal := '200000';
 
         //[필수] 세액 합계
         statement.taxTotal := '20000';
 
-        //[필수] 합계금액.  공급가액 + 세액
+        //[필수] 합계금액. 공급가액 + 세액
         statement.totalAmount := '220000';
 
         // 기재 상 일련번호
@@ -440,7 +435,6 @@ begin
 
         // 통장사본 첨부여부
         statement.bankBookYN := false ;
-
 
         {**********************************************************************}
         {                     전자명세서 상세항목(품목) 정보                   }
@@ -461,11 +455,11 @@ begin
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
         statement.detailList[0].remark := '품목비고';          //비고
-        statement.detailList[0].spare1 := '';                  //여분1
-        statement.detailList[0].spare2 := '';                  //여분2
-        statement.detailList[0].spare3 := '';                  //여분3
-        statement.detailList[0].spare4 := '';                  //여분4
-        statement.detailList[0].spare5 := '';                  //여분5
+        statement.detailList[0].spare1 := '여분1';             //여분1
+        statement.detailList[0].spare2 := '여분2';             //여분2
+        statement.detailList[0].spare3 := '여분3';             //여분3
+        statement.detailList[0].spare4 := '여분4';             //여분4
+        statement.detailList[0].spare5 := '여분5';             //여분5
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
@@ -477,11 +471,11 @@ begin
         statement.detailList[1].supplyCost := '100000';        //공급가액
         statement.detailList[1].tax := '10000';                //세액
         statement.detailList[1].remark := '품목비고';          //비고
-        statement.detailList[1].spare1 := '';                  //여분1
-        statement.detailList[1].spare2 := '';                  //여분2
-        statement.detailList[1].spare3 := '';                  //여분3
-        statement.detailList[1].spare4 := '';                  //여분4
-        statement.detailList[1].spare5 := '';                  //여분5
+        statement.detailList[1].spare1 := '여분1';             //여분1
+        statement.detailList[1].spare2 := '여분2';             //여분2
+        statement.detailList[1].spare3 := '여분3';             //여분3
+        statement.detailList[1].spare4 := '여분4';             //여분4
+        statement.detailList[1].spare5 := '여분5';             //여분5
 
         {**********************************************************************}
         {                           추가속성 항목                              }
@@ -492,17 +486,16 @@ begin
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
-        statement.propertyBag[0].name := 'Balance';
-        statement.propertyBag[0].value := '10000';
+        statement.propertyBag[0].name := 'Balance';     //전잔액
+        statement.propertyBag[0].value := '30000';
 
         statement.propertyBag[1] := TProperty.Create;
-        statement.propertyBag[1].name := 'CBalance';
+        statement.propertyBag[1].name := 'CBalance';    //현금액
         statement.propertyBag[1].value := '20000';
 
         statement.propertyBag[2] := TProperty.Create;
-        statement.propertyBag[2].name := 'Deposit';
+        statement.propertyBag[2].name := 'Deposit';    //현잔액
         statement.propertyBag[2].value := '10000';
-
 
         try
                 response := statementService.Register(txtCorpNum.text, statement);
@@ -514,7 +507,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -536,9 +528,7 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('잔여포인트 : ' + FloatToStr(balance));
-
 end;
 
 procedure TfrmExample.btnGetUnitCostClick(Sender: TObject);
@@ -550,7 +540,6 @@ begin
         { 121 - 거래명세서 / 122 - 청구서 / 123 - 견적서                       }
         { 124 - 발주서 / 125 - 입금표 / 126 - 영수증                           }
         {**********************************************************************}
-
         try
                 unitcost := statementService.GetUnitCost(txtCorpNum.text, ItemCode);
         except
@@ -559,7 +548,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage(cbItemCode.Text +' 발행단가 : '+ FloatToStr(unitcost));
 end;
 
@@ -581,9 +569,7 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('잔여포인트 : ' + FloatToStr(balance));
-
 end;
 
 procedure TfrmExample.btnDeleteClick(Sender: TObject);
@@ -593,19 +579,17 @@ begin
         {**********************************************************************}
         { 1건의 전자명세서를 [삭제]합니다. 전자명세서가 삭제된 경우에만        } 
         { 문서관리번호(mgtKey)를 재사용 할 수 있습니다.                        }
-        { - 삭제가능한 문서 상태 : [임시저장], [발행취소]                      }
+        { - 삭제가능한 문서 상태 : [임시저장], [발행취소], [거부]              }
         {**********************************************************************}
 
         try
-                response := statementService.Delete(txtCorpNum.text, ItemCode,
-                        tbMgtKey.Text);
+                response := statementService.Delete(txtCorpNum.text, ItemCode, tbMgtKey.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -636,9 +620,7 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
-
 end;                                                 
 
 procedure TfrmExample.btnGetFileListClick(Sender: TObject);
@@ -672,7 +654,6 @@ begin
                         + fileList[i].RegDT + #13;
             tbFileIndexID.text := fileList[i].AttachedFile;
         end;
-
         ShowMessage(tmp);
 end;
 
@@ -698,11 +679,9 @@ begin
 
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
-Function BoolToStr(b:Boolean):String;
-begin 
-    if b = true then BoolToStr:='True'; 
-    if b = false then BoolToStr:='False'; 
-end;
+
+
+
 procedure TfrmExample.btnGetInfoClick(Sender: TObject);
 var
         statementInfo : TStatementInfo;
@@ -849,9 +828,9 @@ var
         memo : String;
 begin
         {**********************************************************************}
-        { [발행완료] 상태의 전자명세서를 [취소] 합니다.                        }
-        { - [발행취소] 상태의 전자명세서 문서관리번호를 재사용 하기 위해서는   }
-        {   삭제(Delete API)를 호출하여 [삭제] 처리 하셔야 합니다.             }
+        { [승인대기], [발행완료] 상태의 전자명세서를 취소처리합니다.           }
+        { - [발행취소] 전자명세서의 문서관리번호(mgtKey)는 삭제(Delete API)를  }
+        {   호출하여 [삭제] 상태에서 재사용 할 수 있습니다.                    }
         {**********************************************************************}
 
         //메모
@@ -866,7 +845,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -892,12 +870,10 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
-
-procedure TfrmExample.btnReSendSMSClick(Sender: TObject);
+procedure TfrmExample.btnSendSMSClick(Sender: TObject);
 var
         response : TResponse;
         sendNum : String;
@@ -933,7 +909,7 @@ begin
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
-procedure TfrmExample.btnReSendEmailClick(Sender: TObject);
+procedure TfrmExample.btnSendEmailClick(Sender: TObject);
 var
         response : TResponse;
         email : String;
@@ -958,7 +934,7 @@ begin
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
-procedure TfrmExample.btnSendInvoiceFaxClick(Sender: TObject);
+procedure TfrmExample.btnSendFaxClick(Sender: TObject);
 var
         response : TResponse;
         sendNum : String;
@@ -992,7 +968,7 @@ end;
 
 
 
-procedure TfrmExample.btnGetTaxinvoiceURL1Click(Sender: TObject);
+procedure TfrmExample.btnGetURL1Click(Sender: TObject);
 var
         resultURL : String;
 begin
@@ -1000,7 +976,6 @@ begin
         { 전자명세서 임시(연동)문서함 팝업 URL을 반환합니다.                   }
         { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.              }
         {**********************************************************************}
-
         try
                 resultURL := statementService.GetURL(txtCorpNum.Text, 'TBOX');
         except
@@ -1009,15 +984,13 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('ResultURL is ' + #13 + resultURL);
 end;
 
-procedure TfrmExample.btnGetTaxinvoiceURL2Click(Sender: TObject);
+procedure TfrmExample.btnGetURL2Click(Sender: TObject);
 var
         resultURL : String;
 begin
-
         {**********************************************************************}
         { 전자명세서 발행문서함 팝업 URL을 반환합니다.                         }
         { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.              }
@@ -1031,7 +1004,6 @@ begin
                         Exit;
                 end;
         end;
-        
         ShowMessage('ResultURL is ' + #13 + resultURL);
 end;
 
@@ -1059,10 +1031,10 @@ procedure TfrmExample.btnGetPrintURLClick(Sender: TObject);
 var
         resultURL : String;
 begin
-        {**********************************************************************}
-        { 1건의 전자명세서 인쇄 팝업 URL을 반환합니다.                         }
-        { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.              }
-        {**********************************************************************}
+        {*******************************************************************}
+        { 1건의 전자명세서 인쇄 팝업(발신자) URL을 반환합니다.              }
+        { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.           }
+        {*******************************************************************}
         
         try
                 resultURL := statementService.getPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
@@ -1072,7 +1044,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('ResultURL is ' + #13 + resultURL);
 end;
 
@@ -1084,7 +1055,6 @@ begin
         { 메일링크 URL을 반환합니다.                                           }
         { - 메일링크 URL의 경우 유효시간이 존재하지 않습니다.                  }
         {**********************************************************************}
-
         try
                 resultURL := statementService.getMailURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
         except
@@ -1093,7 +1063,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('ResultURL is ' + #13 + resultURL);
 end;
 
@@ -1120,11 +1089,8 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('ResultURL is ' + #13 + resultURL);
-
 end;
-
 
 procedure TfrmExample.btnUpdateClick(Sender: TObject);
 var
@@ -1288,11 +1254,11 @@ begin
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
         statement.detailList[0].remark := '품목비고';          //비고
-        statement.detailList[0].spare1 := '';                  //여분1
-        statement.detailList[0].spare2 := '';                  //여분2
-        statement.detailList[0].spare3 := '';                  //여분3
-        statement.detailList[0].spare4 := '';                  //여분4
-        statement.detailList[0].spare5 := '';                  //여분5
+        statement.detailList[0].spare1 := '여분1';             //여분1
+        statement.detailList[0].spare2 := '여분2';             //여분2
+        statement.detailList[0].spare3 := '여분3';             //여분3
+        statement.detailList[0].spare4 := '여분4';             //여분4
+        statement.detailList[0].spare5 := '여분5';             //여분5
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
@@ -1304,27 +1270,26 @@ begin
         statement.detailList[1].supplyCost := '100000';        //공급가액
         statement.detailList[1].tax := '10000';                //세액
         statement.detailList[1].remark := '품목비고';          //비고
-        statement.detailList[1].spare1 := '';                  //여분1
-        statement.detailList[1].spare2 := '';                  //여분2
-        statement.detailList[1].spare3 := '';                  //여분3
-        statement.detailList[1].spare4 := '';                  //여분4
-        statement.detailList[1].spare5 := '';                  //여분5
+        statement.detailList[1].spare1 := '여분1';             //여분1
+        statement.detailList[1].spare2 := '여분2';             //여분2
+        statement.detailList[1].spare3 := '여분3';             //여분3
+        statement.detailList[1].spare4 := '여분4';             //여분4
+        statement.detailList[1].spare5 := '여분5';             //여분5
 
         //추가속성항목, 자세한 사항은 "[전자명세서 api 연동매뉴얼] > 5.2. 기본양식 추가속성 테이블" 참조
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
-        statement.propertyBag[0].name := 'Balance';
-        statement.propertyBag[0].value := '10000';
+        statement.propertyBag[0].name := 'Balance';     //전잔액
+        statement.propertyBag[0].value := '30000';
 
         statement.propertyBag[1] := TProperty.Create;
-        statement.propertyBag[1].name := 'CBalance';
+        statement.propertyBag[1].name := 'CBalance';    //현금액
         statement.propertyBag[1].value := '20000';
 
         statement.propertyBag[2] := TProperty.Create;
-        statement.propertyBag[2].name := 'Deposit';
+        statement.propertyBag[2].name := 'Deposit';    //현잔액
         statement.propertyBag[2].value := '10000';
-
 
         try
                 response := statementService.Update(txtCorpNum.text, ItemCode,
@@ -1455,19 +1420,17 @@ begin
                         Exit;
                 end;
         end;
-
         if InUse then ShowMessage('사용중') else ShowMessage('미 사용중.');
 end;
-
 
 procedure TfrmExample.Button1Click(Sender: TObject);
 var
   resultURL : String;
 begin
-       {**********************************************************************}
-       { 1건의 전자명세서 인쇄(공급받는자) URL을 반환합니다.                  }
-       { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.              }
-       {**********************************************************************}
+       {******************************************************************}
+       { 1건의 전자명세서 인쇄(수신자) URL을 반환합니다.                  }
+       { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.          }
+       {******************************************************************}
 
         try
                 resultURL := statementService.getEPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
@@ -1477,7 +1440,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('ResultURL is ' + #13 + resultURL);
 end;
 
@@ -1488,7 +1450,6 @@ begin
         {**********************************************************************}
         { 회원가입(JoinMember API)을 호출하기 전 아이디 중복을 확인합니다.     }
         {**********************************************************************}
-        
         try
                 response := statementService.CheckID(txtUserID.Text);
         except
@@ -1497,9 +1458,7 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
-
 end;
 
 procedure TfrmExample.btnRegistContactClick(Sender: TObject);
@@ -1512,7 +1471,7 @@ begin
         {**********************************************************************}
 
         // [필수] 담당자 아이디 (6자 이상 50자 미만)
-        joinInfo.id := 'testkorea0222_01';
+        joinInfo.id := 'testkorea';
 
         // [필수] 비밀번호 (6자 이상 20자 미만)
         joinInfo.pwd := 'thisispassword';
@@ -1537,7 +1496,7 @@ begin
 
         // 관리자 권한여부, true-관리자 / false-사용자
         joinInfo.mgrYN := false;
-        
+
         try
                 response := statementService.RegistContact(txtCorpNum.text, joinInfo);
         except
@@ -1546,7 +1505,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -1585,7 +1543,6 @@ begin
             tmp := tmp + InfoList[i].regDT + ' | ';
             tmp := tmp + IntToStr(InfoList[i].state) + #13;
         end;
-
         ShowMessage(tmp);
 end;
 
@@ -1632,7 +1589,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -1658,7 +1614,6 @@ begin
         tmp := tmp + 'BizType (업태) : ' + corpInfo.BizType + #13;
         tmp := tmp + 'BizClass (종목) : ' + corpInfo.BizClass + #13;
         tmp := tmp + 'Addr (주소) : ' + corpInfo.Addr + #13;
-
         ShowMessage(tmp);
 end;
 
@@ -1696,7 +1651,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -1737,10 +1691,9 @@ begin
         // 수신자 승인없이 밸행시에 승인 처리여부.
         statement.AutoAcceptYN := false;
 
-        // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
-        // 사업자별로 중복되지 않도록 구성
+        // [필수] 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_'
+        // 조합으로 구성사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
-
 
         {**********************************************************************}
         {                             발신자 정보                              }
@@ -1779,7 +1732,6 @@ begin
         // 발신자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
-
         {**********************************************************************}
         {                            수신자 정보                               }
         {**********************************************************************}
@@ -1788,7 +1740,7 @@ begin
         statement.receiverCorpNum := '8888888888';
 
         // 수신자 상호
-        statement.receiverCorpName := '공급받는자 상호';
+        statement.receiverCorpName := '수신자 상호';
 
         //종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
         statement.receiverTaxRegID := '';
@@ -1817,7 +1769,6 @@ begin
         // 수신자 담당자 휴대폰번호
         statement.receiverHP := '010-111-222';
 
-
         //[필수] 공급가액 합계
         statement.supplyCostTotal := '200000';
 
@@ -1841,7 +1792,6 @@ begin
         // 통장사본 첨부여부
         statement.bankBookYN := false;
 
-
         {**********************************************************************}
         {                     전자명세서 상세항목(품목) 정보                   }
         { 상세항목은 0~99개까지 작성이 가능하며, 일련번호(serialNum)은 1부터 99}
@@ -1861,11 +1811,11 @@ begin
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
         statement.detailList[0].remark := '품목비고';          //비고
-        statement.detailList[0].spare1 := '';                  //여분1
-        statement.detailList[0].spare2 := '';                  //여분2
-        statement.detailList[0].spare3 := '';                  //여분3
-        statement.detailList[0].spare4 := '';                  //여분4
-        statement.detailList[0].spare5 := '';                  //여분5
+        statement.detailList[0].spare1 := '여분1';             //여분1
+        statement.detailList[0].spare2 := '여분2';             //여분2
+        statement.detailList[0].spare3 := '여분3';             //여분3
+        statement.detailList[0].spare4 := '여분4';             //여분4
+        statement.detailList[0].spare5 := '여분5';             //여분5
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
@@ -1877,12 +1827,11 @@ begin
         statement.detailList[1].supplyCost := '100000';        //공급가액
         statement.detailList[1].tax := '10000';                //세액
         statement.detailList[1].remark := '품목비고';          //비고
-        statement.detailList[1].spare1 := '';                  //여분1
-        statement.detailList[1].spare2 := '';                  //여분2
-        statement.detailList[1].spare3 := '';                  //여분3
-        statement.detailList[1].spare4 := '';                  //여분4
-        statement.detailList[1].spare5 := '';                  //여분5
-
+        statement.detailList[1].spare1 := '여분1';             //여분1
+        statement.detailList[1].spare2 := '여분2';             //여분2
+        statement.detailList[1].spare3 := '여분3';             //여분3
+        statement.detailList[1].spare4 := '여분4';             //여분4
+        statement.detailList[1].spare5 := '여분5';             //여분5
 
         {**********************************************************************}
         {                           추가속성 항목                              }
@@ -1893,15 +1842,15 @@ begin
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
-        statement.propertyBag[0].name := 'Balance';
-        statement.propertyBag[0].value := '합계';
+        statement.propertyBag[0].name := 'Balance';     //전잔액
+        statement.propertyBag[0].value := '30000';
 
         statement.propertyBag[1] := TProperty.Create;
-        statement.propertyBag[1].name := 'CBalance';
+        statement.propertyBag[1].name := 'CBalance';    //현금액
         statement.propertyBag[1].value := '20000';
 
         statement.propertyBag[2] := TProperty.Create;
-        statement.propertyBag[2].name := 'Deposit';
+        statement.propertyBag[2].name := 'Deposit';    //현잔액
         statement.propertyBag[2].value := '10000';
 
         memo := '즉시발행 메모';
@@ -1916,7 +1865,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -1928,7 +1876,6 @@ begin
         { 연동회원 포인트 충전 URL을 반환합니다.                               }
         { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.              }
         {**********************************************************************}
-        
         try
                 resultURL := statementService.getChargeURL(txtCorpNum.Text, txtUserID.Text);
         except
@@ -1937,7 +1884,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('ResultURL is ' + #13 + resultURL);
 end;
 
@@ -1946,10 +1892,9 @@ var
         response : TResponse;
 begin
         {**********************************************************************}
-        { 해당 사업자의 연동회원 가입여부를 확인합니다.                        }
+        { 파트너의 연동회원으로 가입된 사업자번호인지 확인합니다.              }
         { - LinkID는 파트너를 식별하는 인증정보(32번라인)에 설정되어 있습니다. }
         {**********************************************************************}
-
         try
                 response := statementService.CheckIsMember(txtCorpNum.text, LinkID);
         except
@@ -1958,7 +1903,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -1970,12 +1914,12 @@ begin
         {**********************************************************************}
         { [승인대기], [발행완료] 상태의 전자명세서를 취소처리합니다.           }
         { - [발행취소] 전자명세서의 문서관리번호(mgtKey)는 삭제(Delete API)를  }
-        {   호출하여 [삭제] 상태에서 재사용 할 수 있습니다.                    } 
+        {   호출하여 [삭제] 상태에서 재사용 할 수 있습니다.                    }
         {**********************************************************************}
 
         // 메모
         memo := '발행취소 메모';
-        
+
         try
                 response := statementService.Cancel(txtCorpNum.text, ItemCode, tbMgtKey.Text, memo);
         except
@@ -1984,7 +1928,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -1993,9 +1936,9 @@ var
         response : TResponse;
 begin
         {**********************************************************************}
-        { 1건의 전자명세서를 [삭제]합니다. 전자명세서가 삭제된 경우에만        } 
+        { 1건의 전자명세서를 [삭제]합니다. 전자명세서가 삭제된 경우에만        }
         { 문서관리번호(mgtKey)를 재사용 할 수 있습니다.                        }
-        { - 삭제가능한 문서 상태 : [임시저장], [발행취소]                      }
+        { - 삭제가능한 문서 상태 : [임시저장], [발행취소], [거부]              }
         {**********************************************************************}
 
         try
@@ -2006,11 +1949,10 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
-procedure TfrmExample.btnIssueFaxClick(Sender: TObject);
+procedure TfrmExample.btnFaxSendClick(Sender: TObject);
 var
         statement : TStatement;
         response : String;
@@ -2066,7 +2008,7 @@ begin
         {                             발신자 정보                              }
         {**********************************************************************}
 
-        // 공급자 사업자번호, '-'제외 10자리
+        // 발신자 사업자번호, '-'제외 10자리
         statement.senderCorpNum := txtCorpNum.Text;
 
         // 종사업자 식별번호. 필요시 기재. 형식은 숫자 4자리.
@@ -2413,8 +2355,6 @@ begin
         { 연동회원의 전자명세서 API 서비스 과금정보를 확인합니다.              }
         { - 전자명세서 종류코드(ItemCode) 별 과금정보를 확인할 수 있습니다.    }
         {**********************************************************************}
-
-
         try
                 chargeInfo := statementService.GetChargeInfo(txtCorpNum.text, ItemCode);
         except
@@ -2427,9 +2367,7 @@ begin
         tmp := 'unitCost (단가) : ' + chargeInfo.unitCost + #13;
         tmp := tmp + 'chargeMethod (과금유형) : ' + chargeInfo.chargeMethod + #13;
         tmp := tmp + 'rateSystem (과금제도) : ' + chargeInfo.rateSystem + #13;
-
         ShowMessage(tmp);
-
 end;
 
 procedure TfrmExample.btnGetSealURLClick(Sender: TObject);
@@ -2440,7 +2378,6 @@ begin
         { 인감 및 첨부문서 등록  URL을 반환합니다.                             }
         { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.              }
         {**********************************************************************}
-
         try
                 resultURL := statementService.getSealURL(txtCorpNum.Text, txtUserID.Text);
         except
@@ -2449,7 +2386,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('ResultURL is ' + #13 + resultURL);
 end;
 
@@ -2470,9 +2406,7 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('ResultURL is ' + #13 + resultURL);
-
 end;
 
 procedure TfrmExample.btnListEmailConfigClick(Sender: TObject);
@@ -2482,9 +2416,9 @@ var
         i : Integer;
 begin
         {**********************************************************************}
-        {  전자명세서 메일전송 항목에 대한 전송여부를 목록으로 반환한다.       }
+        {  전자명세서 메일전송 항목에 대한 전송여부를 목록으로 반환합니다.     }
         {**********************************************************************}
-        
+
         try
                 EmailConfigList := statementService.ListEmailConfig(txtCorpNum.text);
         except
@@ -2499,19 +2433,19 @@ begin
         for i := 0 to Length(EmailConfigList) -1 do
         begin
             if EmailConfigList[i].EmailType = 'SMT_ISSUE' then
-                tmp := tmp + 'SMT_ISSUE (공급받는자에게 전자명세서가 발행 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+                tmp := tmp + 'SMT_ISSUE (수신자에게 전자명세서가 발행 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
 
             if EmailConfigList[i].EmailType = 'SMT_ACCEPT' then
-                tmp := tmp + 'SMT_ACCEPT (공급자에게 전자명세서가 승인 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+                tmp := tmp + 'SMT_ACCEPT (발신자에게 전자명세서가 승인 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
 
             if EmailConfigList[i].EmailType = 'SMT_DENY' then
-                tmp := tmp + 'SMT_DENY (공급자에게 전자명세서가 거부 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+                tmp := tmp + 'SMT_DENY (발신자에게 전자명세서가 거부 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
 
             if EmailConfigList[i].EmailType = 'SMT_CANCEL' then
-                tmp := tmp + 'SMT_CANCEL (공급받는자에게 전자명세서가 취소 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+                tmp := tmp + 'SMT_CANCEL (수신자에게 전자명세서가 취소 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
 
             if EmailConfigList[i].EmailType = 'SMT_CANCEL_ISSUE' then
-                tmp := tmp + 'SMT_CANCEL_ISSUE (공급받는자에게 전자명세서가 발행취소 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+                tmp := tmp + 'SMT_CANCEL_ISSUE (수신자에게 전자명세서가 발행취소 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
 
         end;
 
@@ -2524,15 +2458,15 @@ var
         EmailType : String;
         SendYN    : Boolean;
 begin
-        {**************************************************************************************}
-        {전자명세서 메일전송 항목에 대한 전송여부를 수정한다.                                  }
-        { 메일전송유형                                                                         }
-        {  SMT_ISSUE : 공급받는자에게 전자명세서가 발행 되었음을 알려주는 메일 알림            }
-        {  SMT_ACCEPT : 공급자에게 전자명세서가 승인 되었음을 알려주는 메일 알림               }
-        {  SMT_DENY : 공급자에게 전자명세서가 거부 되었음을 알려주는 메일 알림                 }
-        {  SMT_CANCEL : 공급받는자에게 전자명세서가 취소 되었음을 알려주는 메일 알림           }
-        {  SMT_CANCEL_ISSUE : 공급받는자에게 전자명세서가 발행취소 되었음을 알려주는 메일 알림 }
-        {**************************************************************************************}
+        {***********************************************************************************}
+        {전자명세서 메일전송 항목에 대한 전송여부를 수정합니다.                             }
+        { 메일전송유형                                                                      }
+        {  SMT_ISSUE : 수신자에게 전자명세서가 발행 되었음을 알려주는 메일 알림             }
+        {  SMT_ACCEPT : 발신자에게 전자명세서가 승인 되었음을 알려주는 메일 알림            }
+        {  SMT_DENY : 발신자에게 전자명세서가 거부 되었음을 알려주는 메일 알림              }
+        {  SMT_CANCEL : 수신자에게 전자명세서가 취소 되었음을 알려주는 메일 알림            }
+        {  SMT_CANCEL_ISSUE : 수신자에게 전자명세서가 발행취소 되었음을 알려주는 메일 알림  }
+        {***********************************************************************************}
 
         // 메일전송유형
         EmailType := 'SMT_ISSUE';
@@ -2548,9 +2482,7 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : '+ IntToStr(response.code) + #10#13 +'응답메시지 : '+  response.Message);
 end;
-
 
 end.
