@@ -376,6 +376,9 @@ begin
         // 발신자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
+        // 발신자 담당자 팩스
+        statement.senderFAX := '070-000-111';
+
         {**********************************************************************}
         {                            수신자 정보                               }
         {**********************************************************************}
@@ -413,6 +416,10 @@ begin
         // 수신자 담당자 휴대폰번호
         statement.receiverHP := '010-111-222';
 
+        // 수신자 담당자 팩스
+        statement.receiverFAX := '070-000-111';
+
+        
         //[필수] 공급가액 합계
         statement.supplyCostTotal := '200000';
 
@@ -694,7 +701,6 @@ begin
         {  을 참조하시기 바랍니다.                                             }
         {**********************************************************************}
 
-
         try
                 statementInfo := statementService.getInfo(txtCorpNum.text, ItemCode, tbMgtKey.Text);
         except
@@ -704,21 +710,35 @@ begin
                 end;
         end;
 
-        tmp := 'ItemKey(팝빌 관리번호) | InvoiceNum(문서고유번호) | StateCode(상태코드) | TaxType(세금형태) | ';
-        tmp := tmp + 'WriteDate(작성일자) | RegDT(임시저장일시) |OpenYN(개봉 여부) | OpenDT(개봉 일시) | ';
-        tmp := tmp + 'SenderPrintYN(발신자 인쇄여부) | ReceiverPrintYN(수신자 인쇄여부)' + #13;
+        tmp := 'itemCode(문서종류코드) | itemKey(팝빌 관리번호) | invoiceNum(문서고유번호) | mgtKey(문서관리번호) | taxType(세금형태) | ';
+        tmp := tmp + 'writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | ' ;
+        tmp := tmp + 'senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | ';
+        tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | ';
+        tmp := tmp + 'issueDT(발행일시) | stateCode(상태코드) | stateDT(상태 변경일시) | stateMemo(상태메모) | ';
+        tmp := tmp + 'openYN(개봉 여부) | openDT(개봉 일시)' + #13 + #13;
 
-        tmp := tmp + statementInfo.ItemKey + ' | '
-                   + statementInfo.InvoiceNum + ' | '
-                   + IntToStr(statementInfo.StateCode) + ' | '
-                   + statementInfo.TaxType + ' | '
-                   + statementInfo.WriteDate + ' | '
-                   + statementInfo.RegDT + ' | '
-                   + BoolToStr(statementInfo.OpenYN) + ' | '
-                   + statementInfo.OpenDT + ' | '
-                   + BoolToStr(statementInfo.SenderPrintYN) + ' | '
-                   + BoolToStr(statementInfo.ReceiverPrintYN) + #13;
-
+        tmp := tmp + IntToStr(statementInfo.itemCode) + ' | '
+                   + statementInfo.itemKey + ' | '
+                   + statementInfo.invoiceNum + ' | '
+                   + statementInfo.mgtKey + ' | '
+                   + statementInfo.taxType + ' | '
+                   + statementInfo.writeDate + ' | '
+                   + statementInfo.regDT + ' | '
+                   + statementInfo.senderCorpName + ' | '
+                   + statementInfo.senderCorpNum + ' | '
+                   + BoolToStr(statementInfo.senderPrintYN) + ' | '
+                   + statementInfo.receiverCorpName + ' | '
+                   + statementInfo.receiverCorpNum + ' | '
+                   + BoolToStr(statementInfo.receiverPrintYN) + ' | '
+                   + statementInfo.supplyCostTotal + ' | '
+                   + statementInfo.taxTotal + ' | '
+                   + statementInfo.purposeType + ' | '
+                   + statementInfo.issueDT + ' | '
+                   + IntToStr(statementInfo.stateCode) + ' | '
+                   + statementInfo.stateDT + ' | '
+                   + statementInfo.stateMemo + ' | '
+                   + BoolToStr(statementInfo.openYN) + ' | '
+                   + statementInfo.openDT;
         ShowMessage(tmp);
 end;
 
@@ -736,14 +756,13 @@ begin
         {  을 참조하시기 바랍니다.                                             }
         {**********************************************************************}
 
-
-        //전자명세서 문서관리번호 배열, 최대 1000건까지 기재가능
+        //전자명세서 문서관리번호 배열 (최대 1000건)
         SetLength(KeyList,4);
         KeyList[0] := '20190114-001';
         KeyList[1] := '20190114-002';
         KeyList[2] := '20190114-003';
         KeyList[3] := '20190114-004';
-        
+
         try
                 InfoList := statementService.getInfos(txtCorpNum.text, ItemCode, KeyList);
         except
@@ -753,22 +772,39 @@ begin
                 end;
         end;
 
-        tmp := 'ItemKey(팝빌 관리번호) | StateCode(상태코드) | TaxType(세금형태) | WriteDate(작성일자) | ';
-        tmp := 'RegDT(임시저장 일시) | SenderPrintYN(발신자 인쇄여부) | ReceiverPrintYN(수신자 인쇄여부)' + #13;
+        tmp := 'itemCode(문서종류코드) | itemKey(팝빌 관리번호) | invoiceNum(문서고유번호) | mgtKey(문서관리번호) | taxType(세금형태) | ';
+        tmp := tmp + 'writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | ' ;
+        tmp := tmp + 'senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | ';
+        tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | ';
+        tmp := tmp + 'issueDT(발행일시) | stateCode(상태코드) | stateDT(상태 변경일시) | stateMemo(상태메모) | ';
+        tmp := tmp + 'openYN(개봉 여부) | openDT(개봉 일시)' + #13 + #13;
 
         for i := 0 to Length(InfoList) -1 do
         begin
-            tmp := tmp + InfoList[i].ItemKey + ' | '
-                        + IntToStr(InfoList[i].StateCode) + ' | '
-                        + InfoList[i].TaxType + ' | '
-                        + InfoList[i].WriteDate + ' | '
-                        + InfoList[i].RegDT + ' | '
-                        + BoolToStr(InfoList[i].senderPrintYN) + ' | '
-                        + BoolToStr(InfoList[i].receiverPrintYN) +  #13;
+            tmp := tmp + IntToStr(InfoList[i].itemCode) + ' | '
+                   + InfoList[i].itemKey + ' | '
+                   + InfoList[i].invoiceNum + ' | '
+                   + InfoList[i].mgtKey + ' | '
+                   + InfoList[i].taxType + ' | '
+                   + InfoList[i].writeDate + ' | '
+                   + InfoList[i].regDT + ' | '
+                   + InfoList[i].senderCorpName + ' | '
+                   + InfoList[i].senderCorpNum + ' | '
+                   + BoolToStr(InfoList[i].senderPrintYN) + ' | '
+                   + InfoList[i].receiverCorpName + ' | '
+                   + InfoList[i].receiverCorpNum + ' | '
+                   + BoolToStr(InfoList[i].receiverPrintYN) + ' | '
+                   + InfoList[i].supplyCostTotal + ' | '
+                   + InfoList[i].taxTotal + ' | '
+                   + InfoList[i].purposeType + ' | '
+                   + InfoList[i].issueDT + ' | '
+                   + IntToStr(InfoList[i].stateCode) + ' | '
+                   + InfoList[i].stateDT + ' | '
+                   + InfoList[i].stateMemo + ' | '
+                   + BoolToStr(InfoList[i].openYN) + ' | '
+                   + InfoList[i].openDT + #13 + #13;
         end;
-
         ShowMessage(tmp);
-
 end;
 
 procedure TfrmExample.btnGetLogsClick(Sender: TObject);
@@ -780,10 +816,9 @@ begin
         {**********************************************************************}
         { 전자명세서 상태 변경이력을 확인합니다.                               }
         { - 상태 변경이력 확인(GetLogs API) 응답항목에 대한 자세한 정보는      }
-        {  "[전자명세서 API 연동매뉴얼] > 3.3.4 상태 변경이력 확인" 을 참조    }
+        {  "[전자명세서 API 연동매뉴얼] > 3.2.5 상태 변경이력 확인" 을 참조    }
         {   하시기 바랍니다.                                                   }
         {**********************************************************************}
-
         try
                 LogList := statementService.getLogs(txtCorpNum.text, ItemCode, tbMgtKey.Text);
         except
@@ -794,7 +829,7 @@ begin
         end;
 
         tmp := 'DocLogType(로그타입) | Log(이력정보) | ProcType(처리형태) | ProcMemo(처리메모) | RegDT(등록일시) | IP(아이피)' + #13;
-        
+
         for i := 0 to Length(LogList) -1 do
         begin
             tmp := tmp + IntToStr(LogList[i].DocLogType) + ' | '
@@ -804,7 +839,6 @@ begin
                         + LogList[i].RegDT + ' | '
                         + LogList[i].IP + ' | ' + #13;
         end;
-
         ShowMessage(tmp);
 end;
 
@@ -883,7 +917,7 @@ begin
         {**********************************************************************}
         { 알림문자를 전송합니다. (단문/SMS- 한글 최대 45자)                    }
         { - 알림문자 전송시 포인트가 차감됩니다. (전송실패시 환불처리)         }
-        { - 전송내역 확인은 "팝빌 로그인" > [문자 팩스] > [문자] >  [전송내역] }
+        { - 전송내역 확인은 "팝빌 로그인" > [문자 팩스] > [문자] > [전송내역]  }
         {   메뉴에서 전송결과를 확인할 수 있습니다.                            }
         {**********************************************************************}
 
@@ -892,10 +926,10 @@ begin
 
         // 수신번호
         receivenUm := '010-000-111';
-        
-        // 안내문자 내용, 90byte 초과하는 경우 길이가 조정되어 전송됨.
+
+        // 안내문자 내용, 90byte 초과하는 경우 초과된 내용은 삭제 됩니다.
         contents := '거래명세서가 발행되었습니다. 메일 확인 바랍니다.';
-        
+
         try
                 response := statementService.SendSMS(txtCorpNum.text, ItemCode, tbMgtKey.Text,
                                         sendNum, receiveNum, contents);
@@ -905,7 +939,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -917,8 +950,8 @@ begin
         {**********************************************************************}
         { 수신자에게 발행 안내메일을 재전송합니다.                             }
         {**********************************************************************}
-        
-        // 수신 메일주소
+
+        // 수신자 메일주소
         email := 'test@test.com';
 
         try
@@ -930,7 +963,6 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -962,11 +994,8 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
-
-
 
 procedure TfrmExample.btnGetURL1Click(Sender: TObject);
 var
@@ -1173,6 +1202,8 @@ begin
         // 발신자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
+        // 발신자 담당자 팩스
+        statement.senderFAX := '070-000-111';
 
         {**********************************************************************}
         {                             수신자 정보                              }
@@ -1211,7 +1242,10 @@ begin
         // 수신자 담당자 휴대폰번호
         statement.receiverHP := '010-111-222';
 
+        // 수신자 담당자 팩스
+        statement.receiverFAX := '070-000-111';
 
+        
         //[필수] 공급가액 합계
         statement.supplyCostTotal := '200000';
 
@@ -1330,6 +1364,7 @@ begin
 
         tmp := tmp +'itemCode(문서종류 코드) : ' +  IntToStr(statement.itemCode) + #13;
         tmp := tmp +'mgtKey(문서관리번호) : ' +  statement.mgtKey + #13;
+        tmp := tmp +'invoiceNum(문서고유번호) : ' +  statement.invoiceNum + #13;
         tmp := tmp +'formCode(맞춤양식 코드) : ' +  statement.formCode + #13;
         tmp := tmp +'writeDate(작성일자) : ' +  statement.WriteDate + #13;
         tmp := tmp +'taxType(세금형태) : ' +  statement.TaxType + #13;
@@ -1354,6 +1389,7 @@ begin
         tmp := tmp +'senderTEL(발신자 연락처) : ' +  statement.SenderTEL + #13;
         tmp := tmp +'senderHP(발신자 휴대전화) : ' +  statement.SenderHP + #13;
         tmp := tmp +'senderEmail(발신자 이메일) : ' +  statement.SenderEmail + #13;
+        tmp := tmp +'senderFAX(발신자 팩스) : ' +  statement.senderFAX + #13;
 
         tmp := tmp +'receiverCorpNum(수신자 사업자번호) : ' +  statement.ReceiverCorpNum + #13;
         tmp := tmp +'receiverTaxRegID(수신자 종사업장번호) : ' +  statement.ReceiverTaxRegID + #13;
@@ -1367,6 +1403,7 @@ begin
         tmp := tmp +'receiverTEL(수신자 연락처) : ' +  statement.ReceiverTEL + #13;
         tmp := tmp +'receiverHP(수신자 휴대전화) : ' +  statement.ReceiverHP + #13;
         tmp := tmp +'receiverEmail(수신자 이메일) : ' +  statement.ReceiverEmail + #13;
+        tmp := tmp +'receiverFAX(수신자 팩스) : ' +  statement.receiverFAX + #13;
 
         tmp := tmp + '-----상세항목-----' + #13;
         tmp := tmp + 'serialNum(일련번호) | purchaseDT(거래일자) | itemName(품목명) | spec(규격) | qty(수량) | ';
@@ -1383,16 +1420,13 @@ begin
                          statement.detailList[i].tax + ' | ' +
                          statement.detailList[i].remark + ' | ' +
                          statement.detailList[i].spare1 + #13 ;
-
         end;
 
         tmp := tmp + '-----추가속성-----' + #13;
-
         for i:= 0 to Length(statement.propertyBag)-1 do
         begin
             tmp := tmp + statement.propertyBag[i].name + ' : ' +
-                         statement.propertyBag[i].value + #13 ;
-
+                         statement.propertyBag[i].value + #13;
         end;
 
         tmp := tmp +'businessLicenseYN(사업자등록증 첨부 여부) : ' +  IfThen(statement.businessLicenseYN,'true','false') + #13;
@@ -1411,7 +1445,7 @@ begin
         { 전자명세서를 등록하기전 문서관리번호(mgtKey) 중복여부를 확인합니다.   }
         { - 관리번호는 1~24자리 숫자, 영문, '-', '_' 조합으로 구성할수 있습니다.}
         {***********************************************************************}
-        
+
         try
                 InUse := statementService.CheckMgtKeyInUse(txtCorpNum.text, ItemCode, tbMgtKey.Text);
         except
@@ -1732,6 +1766,9 @@ begin
         // 발신자 담당자 휴대폰번호
         statement.senderHP := '010-000-2222';
 
+        // 발신자 담당자 팩스
+        statement.senderFAX := '070-000-111';
+
         {**********************************************************************}
         {                            수신자 정보                               }
         {**********************************************************************}
@@ -1768,6 +1805,10 @@ begin
 
         // 수신자 담당자 휴대폰번호
         statement.receiverHP := '010-111-222';
+
+        // 수신자 담당자 팩스
+        statement.receiverFAX := '070-000-111';
+
 
         //[필수] 공급가액 합계
         statement.supplyCostTotal := '200000';
@@ -1972,7 +2013,6 @@ begin
         // 수신팩스번호
         receiveNum := '02-000-111';
 
-
         // 전자명세서 객체 초기화
         statement := TStatement.Create;
 
@@ -2002,7 +2042,6 @@ begin
         // 거래명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
         // 사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
-
 
         {**********************************************************************}
         {                             발신자 정보                              }
@@ -2112,36 +2151,34 @@ begin
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
         statement.detailList[0].purchaseDT := '20190114';      //거래일자
-        statement.detailList[0].itemName := '품목명';
-        statement.detailList[0].spec := '규격';
+        statement.detailList[0].itemName := '품목명';          //품목명
+        statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
         statement.detailList[0].unitCost := '100000';          //단가
         statement.detailList[0].supplyCost := '100000';        //공급가액
         statement.detailList[0].tax := '10000';                //세액
-        statement.detailList[0].remark := '품목비고';
-        statement.detailList[0]._unit := '';                   //단위
-        statement.detailList[0].spare1 := '';
-        statement.detailList[0].spare2 := '';
-        statement.detailList[0].spare3 := '';
-        statement.detailList[0].spare4 := '';
-        statement.detailList[0].spare5 := '';
+        statement.detailList[0].remark := '품목비고';          //비고
+        statement.detailList[0].spare1 := '여분1';             //여분1
+        statement.detailList[0].spare2 := '여분2';             //여분2
+        statement.detailList[0].spare3 := '여분3';             //여분3
+        statement.detailList[0].spare4 := '여분4';             //여분4
+        statement.detailList[0].spare5 := '여분5';             //여분5
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
         statement.detailList[1].purchaseDT := '20190114';      //거래일자
-        statement.detailList[1].itemName := '품목명';
-        statement.detailList[1].spec := '규격';
+        statement.detailList[1].itemName := '품목명';          //품목명
+        statement.detailList[1].spec := '규격';                //규격
         statement.detailList[1].qty := '1';                    //수량
         statement.detailList[1].unitCost := '100000';          //단가
         statement.detailList[1].supplyCost := '100000';        //공급가액
         statement.detailList[1].tax := '10000';                //세액
-        statement.detailList[1].remark := '품목비고';
-        statement.detailList[1]._unit := '';                   //단위
-        statement.detailList[1].spare1 := '';
-        statement.detailList[1].spare2 := '';
-        statement.detailList[1].spare3 := '';
-        statement.detailList[1].spare4 := '';
-        statement.detailList[1].spare5 := '';
+        statement.detailList[1].remark := '품목비고';          //비고
+        statement.detailList[1].spare1 := '여분1';             //여분1
+        statement.detailList[1].spare2 := '여분2';             //여분2
+        statement.detailList[1].spare3 := '여분3';             //여분3
+        statement.detailList[1].spare4 := '여분4';             //여분4
+        statement.detailList[1].spare5 := '여분5';             //여분5
 
         {**********************************************************************}
         {                           추가속성 항목                              }
@@ -2152,17 +2189,16 @@ begin
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
-        statement.propertyBag[0].name := 'Balance';
-        statement.propertyBag[0].value := '10000';
+        statement.propertyBag[0].name := 'Balance';     //전잔액
+        statement.propertyBag[0].value := '30000';
 
         statement.propertyBag[1] := TProperty.Create;
-        statement.propertyBag[1].name := 'CBalance';
+        statement.propertyBag[1].name := 'CBalance';    //현금액
         statement.propertyBag[1].value := '20000';
 
         statement.propertyBag[2] := TProperty.Create;
-        statement.propertyBag[2].name := 'Deposit';
+        statement.propertyBag[2].name := 'Deposit';    //현잔액
         statement.propertyBag[2].value := '10000';
-
 
         try
                 response := statementService.FAXSend(txtCorpNum.text, statement, sendNum, receiveNum);
@@ -2172,9 +2208,7 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('팩스접수번호(receiptNum) : '+ response);
-
 end;
 
 procedure TfrmExample.btnSearchClick(Sender: TObject);
@@ -2192,11 +2226,11 @@ var
         i : integer;
         SearchList : TStatementSearchList;
 begin
-        {**********************************************************************}
-        { 검색조건들을 이용해 전자명세서 목록을 조회합니다.                    }
-        { - 응답항목에 대한 자세한 사항은 "[전자명세서 API 연동매뉴얼] >       }
-        {   4.2. 전자명세서 상태정보 구성" 을 참조하시기 바랍니다.             }
-        {**********************************************************************}
+        {********************************************************************}
+        { 검색조건들을 이용해 전자명세서 목록을 조회합니다.                  }
+        { - 응답항목에 대한 자세한 사항은 "[전자명세서 API 연동매뉴얼] >     }
+        {   3.2.4. Search(목록 조회)" 를 참조하시기 바랍니다.                }
+        {********************************************************************}
 
         // [필수] 일자유형 { R: 등록일자, W:작성일자, I:발행일자 }
         DType := 'W';
@@ -2208,18 +2242,15 @@ begin
         EDate := '20190114';
 
         // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
+        // 상태코드에 대한 자세한 사항은 "[전자명세서 API연동매뉴얼] > 5.1 전자명세서 상태코드" 를 참조하시기 바랍니다.
         SetLength(StateList, 2);
         StateList[0] := '2**';
         StateList[1] := '3**';
 
-
         { 문서종류 코드배열
-         121 - 거래명세서
-         122 - 청구서
-         123 - 견적서
-         124 - 발주서
-         125 - 입금표
-         126 - 영수증  }
+         121 - 거래명세서, 122 - 청구서
+         123 - 견적서, 124 - 발주서
+         125 - 입금표, 126 - 영수증 }
         SetLength(ItemCodeList, 6);
         ItemCodeList[0] := 121;
         ItemCodeList[1] := 122;
@@ -2257,33 +2288,40 @@ begin
         tmp := tmp + 'pageCount(페이지 개수) : '+ IntToStr(SearchList.pageCount) + #13;
         tmp := tmp + 'message(응답메시지) : '+ SearchList.message + #13#13;
 
-        tmp := tmp + 'ItemCode(문서종류코드) | ItemKey(팝빌 관리번호) | StateCode(상태코드) | TaxType(세금형태) | WriteDate(작성일자) |';
-        tmp := tmp + 'SenderCorpName(발신자 상호) | SenderCorpNum(발신자 사업자번호) |  ReceiverCorpName(수신자 상호) |';
-        tmp := tmp + 'ReceiverCorpNum(수신자 사업자번호) | SupplyCostTotal(공급가액 합계) | TaxTotal(세액 합계) |';
-        tmp := tmp + 'RegDT(임시저장일시) | SenderPrintYN(발신자 인쇄여부) | ReceiverPrintYN(수신자인쇄여부) ' + #13;
+        tmp := tmp + 'itemCode(문서종류코드) | itemKey(팝빌 관리번호) | invoiceNum(문서고유번호) | mgtKey(문서관리번호) | taxType(세금형태) | ';
+        tmp := tmp + 'writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | ' ;
+        tmp := tmp + 'senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | ';
+        tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | ';
+        tmp := tmp + 'issueDT(발행일시) | stateCode(상태코드) | stateDT(상태 변경일시) | stateMemo(상태메모) | ';
+        tmp := tmp + 'openYN(개봉 여부) | openDT(개봉 일시)' + #13 + #13;
 
         for i := 0 to Length(SearchList.list) -1 do
         begin
-            tmp := tmp + IntToStr(SearchList.list[i].ItemCode) + ' | '
-                + SearchList.list[i].ItemKey + ' | '
-                + IntToStr(SearchList.list[i].StateCode) + ' | '
-                + SearchList.list[i].TaxType + ' | '
-                + SearchList.list[i].WriteDate + ' | '
-                + SearchList.list[i].SenderCorpName + ' | '
-                + SearchList.list[i].SenderCorpNum + ' | '
-                + SearchList.list[i].ReceiverCorpName + ' | '
-                + SearchList.list[i].ReceiverCorpNum + ' | '
-                + SearchList.list[i].SupplyCostTotal + ' | '
-                + SearchList.list[i].TaxTotal + ' | '
-                + SearchList.list[i].RegDT + ' | '
-                + BoolToStr(SearchList.list[i].SenderPrintYN) + ' | '
-                + BoolToStr(SearchList.list[i].receiverPrintYN) + ' | ' + #13;
+            tmp := tmp + IntToStr(SearchList.list[i].itemCode) + ' | '
+                   + SearchList.list[i].itemKey + ' | '
+                   + SearchList.list[i].invoiceNum + ' | '
+                   + SearchList.list[i].mgtKey + ' | '
+                   + SearchList.list[i].taxType + ' | '
+                   + SearchList.list[i].writeDate + ' | '
+                   + SearchList.list[i].regDT + ' | '
+                   + SearchList.list[i].senderCorpName + ' | '
+                   + SearchList.list[i].senderCorpNum + ' | '
+                   + BoolToStr(SearchList.list[i].senderPrintYN) + ' | '
+                   + SearchList.list[i].receiverCorpName + ' | '
+                   + SearchList.list[i].receiverCorpNum + ' | '
+                   + BoolToStr(SearchList.list[i].receiverPrintYN) + ' | '
+                   + SearchList.list[i].supplyCostTotal + ' | '
+                   + SearchList.list[i].taxTotal + ' | '
+                   + SearchList.list[i].purposeType + ' | '
+                   + SearchList.list[i].issueDT + ' | '
+                   + IntToStr(SearchList.list[i].stateCode) + ' | '
+                   + SearchList.list[i].stateDT + ' | '
+                   + SearchList.list[i].stateMemo + ' | '
+                   + BoolToStr(SearchList.list[i].openYN) + ' | '
+                   + SearchList.list[i].openDT + #13 + #13;;
         end;
-
         SearchList.Free;
-
         ShowMessage(tmp);
-
 end;
 
 procedure TfrmExample.btnAttachStatementClick(Sender: TObject);
@@ -2293,7 +2331,7 @@ var
         SubMgtKey : String;
 begin
         {**********************************************************************}
-        { 다른 전자명세서를 첨부합니다.                                        }
+        { 전자명세서에 다른 전자명세서를 첨부합니다.                           }
         {**********************************************************************}
 
         // 첨부할 전자명세서 문서종류코드, 121-거래명세서, 122-청구서 123-견적서, 124-발주서, 125-입금표, 126-영수증
@@ -2310,10 +2348,7 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
-
-
 end;
 
 procedure TfrmExample.btnDetachStatementClick(Sender: TObject);
@@ -2340,10 +2375,7 @@ begin
                         Exit;
                 end;
         end;
-
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
-
-
 end;
 
 procedure TfrmExample.btnGetChargeInfoClick(Sender: TObject);
