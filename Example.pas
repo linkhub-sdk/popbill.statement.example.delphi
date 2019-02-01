@@ -316,8 +316,7 @@ begin
         statement.itemCode := ItemCode;
 
         // 맞춤양식코드, 기본값(공백처리)
-        // 별도의 양식으로 전송하고자 하는경우 링크허브로 문의하여 주시면
-        // 맞춤양식을 제작하여 양식코드를 발급하여 드립니다.
+        // 별도의 양식으로 전송하고자 하는경우 파트너센터(1600-8536)로 문의주시기 바랍니다.
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자, 작성양식 yyyyMMdd
@@ -419,7 +418,7 @@ begin
         // 수신자 담당자 팩스
         statement.receiverFAX := '070-000-111';
 
-        
+
         //[필수] 공급가액 합계
         statement.supplyCostTotal := '200000';
 
@@ -445,8 +444,7 @@ begin
 
         {**********************************************************************}
         {                     전자명세서 상세항목(품목) 정보                   }
-        { 상세항목은 0~99개까지 작성이 가능하며, 일련번호(serialNum)은 1부터 99}
-        { 까지 순차적으로 기재하시기 바랍니다.                                 }
+        { 일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다.          }
         {**********************************************************************}
 
         //SetLength로 초기화 한후 기재.
@@ -1101,7 +1099,7 @@ var
         resultURL : String;
 begin
        {**********************************************************************}
-       { 다수건의 전자명세서 인쇄 팝업 URL을 반환합니다.                      }
+       { 다수건의 전자명세서 인쇄 팝업 URL을 반환합니다. (최대 100건)         }
        { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.              }
        {**********************************************************************}
 
@@ -1141,8 +1139,7 @@ begin
         statement.itemCode := ItemCode;
 
         // 맞춤양식코드, 기본값(공백처리)
-        // 별도의 양식으로 전송하고자 하는경우 링크허브로 문의하여 주시면
-        // 맞춤양식을 제작하여 양식코드를 발급하여 드립니다.
+        // 별도의 양식으로 전송하고자 하는경우 파트너센터(1600-8536)로 문의주시기 바랍니다.
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
@@ -1245,7 +1242,7 @@ begin
         // 수신자 담당자 팩스
         statement.receiverFAX := '070-000-111';
 
-        
+
         //[필수] 공급가액 합계
         statement.supplyCostTotal := '200000';
 
@@ -1270,9 +1267,8 @@ begin
         statement.bankBookYN := false ;
 
         {**********************************************************************}
-        {                        상세항목(품목) 정보                           }
-        { 상세항목은 0~99개까지 작성이 가능하며, 일련번호(serialNum)은 1부터 99}
-        { 까지 순차적으로 기재하시기 바랍니다.                                 }
+        {                     전자명세서 상세항목(품목) 정보                   }
+        { 일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다.          }
         {**********************************************************************}
 
         //SetLength로 초기화 한후 기재.
@@ -1407,7 +1403,8 @@ begin
 
         tmp := tmp + '-----상세항목-----' + #13;
         tmp := tmp + 'serialNum(일련번호) | purchaseDT(거래일자) | itemName(품목명) | spec(규격) | qty(수량) | ';
-        tmp := tmp + 'unitCost(단가) | supplyCost(공급가액) | tax(세액) | remark(비고) | spare1(여분1)' + #13;
+        tmp := tmp + 'unitCost(단가) | supplyCost(공급가액) | tax(세액) | remark(비고) | spare1(여분1) |';
+        tmp := tmp + 'spare1(여분2) | spare1(여분3) | spare1(여분4) | spare1(여분5) |' + #13;
         for i:= 0 to Length(statement.detailList)-1 do
         begin
             tmp := tmp + IntToStr(statement.detailList[i].serialNum) + ' | ' +
@@ -1419,7 +1416,11 @@ begin
                          statement.detailList[i].supplyCost + ' | ' +
                          statement.detailList[i].tax + ' | ' +
                          statement.detailList[i].remark + ' | ' +
-                         statement.detailList[i].spare1 + #13 ;
+                         statement.detailList[i].spare1 + ' | ' +
+                         statement.detailList[i].spare2 + ' | ' +
+                         statement.detailList[i].spare3 + ' | ' +
+                         statement.detailList[i].spare4 + ' | ' +
+                         statement.detailList[i].spare5 + #13 ;
         end;
 
         tmp := tmp + '-----추가속성-----' + #13;
@@ -1706,8 +1707,7 @@ begin
         statement.itemCode := ItemCode;
 
         // 맞춤양식코드, 기본값(공백처리)
-        // 별도의 양식으로 전송하고자 하는경우 링크허브로 문의하여 주시면
-        // 맞춤양식을 제작하여 양식코드를 발급하여 드립니다.
+        // 별도의 양식으로 전송하고자 하는경우 파트너센터(1600-8536)로 문의주시기 바랍니다.
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
@@ -1835,8 +1835,7 @@ begin
 
         {**********************************************************************}
         {                     전자명세서 상세항목(품목) 정보                   }
-        { 상세항목은 0~99개까지 작성이 가능하며, 일련번호(serialNum)은 1부터 99}
-        { 까지 순차적으로 기재하시기 바랍니다.                                 }
+        { 일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다.          }
         {**********************************************************************}
 
         //SetLength로 초기화 한후 기재.
@@ -2020,8 +2019,7 @@ begin
         statement.itemCode := ItemCode;
 
         // 맞춤양식코드, 기본값(공백처리)
-        // 별도의 양식으로 전송하고자 하는경우 링크허브로 문의하여 주시면
-        // 맞춤양식을 제작하여 양식코드를 발급하여 드립니다.
+        // 별도의 양식으로 전송하고자 하는경우 파트너센터(1600-8536)로 문의주시기 바랍니다.
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자

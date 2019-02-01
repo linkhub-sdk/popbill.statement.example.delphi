@@ -1,7 +1,7 @@
 object frmExample: TfrmExample
-  Left = 0
-  Top = 102
-  Width = 1190
+  Left = 263
+  Top = 142
+  Width = 1160
   Height = 681
   Caption = 'ÆËºô ÀüÀÚ¸í¼¼¼­ SDK Example'
   Color = clBtnFace
