@@ -707,36 +707,29 @@ begin
                         Exit;
                 end;
         end;
-
-        tmp := 'itemCode(문서종류코드) | itemKey(팝빌 관리번호) | invoiceNum(문서고유번호) | mgtKey(문서관리번호) | taxType(세금형태) | ';
-        tmp := tmp + 'writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | ' ;
-        tmp := tmp + 'senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | ';
-        tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | ';
-        tmp := tmp + 'issueDT(발행일시) | stateCode(상태코드) | stateDT(상태 변경일시) | stateMemo(상태메모) | ';
-        tmp := tmp + 'openYN(개봉 여부) | openDT(개봉 일시)' + #13 + #13;
-
-        tmp := tmp + IntToStr(statementInfo.itemCode) + ' | '
-                   + statementInfo.itemKey + ' | '
-                   + statementInfo.invoiceNum + ' | '
-                   + statementInfo.mgtKey + ' | '
-                   + statementInfo.taxType + ' | '
-                   + statementInfo.writeDate + ' | '
-                   + statementInfo.regDT + ' | '
-                   + statementInfo.senderCorpName + ' | '
-                   + statementInfo.senderCorpNum + ' | '
-                   + BoolToStr(statementInfo.senderPrintYN) + ' | '
-                   + statementInfo.receiverCorpName + ' | '
-                   + statementInfo.receiverCorpNum + ' | '
-                   + BoolToStr(statementInfo.receiverPrintYN) + ' | '
-                   + statementInfo.supplyCostTotal + ' | '
-                   + statementInfo.taxTotal + ' | '
-                   + statementInfo.purposeType + ' | '
-                   + statementInfo.issueDT + ' | '
-                   + IntToStr(statementInfo.stateCode) + ' | '
-                   + statementInfo.stateDT + ' | '
-                   + statementInfo.stateMemo + ' | '
-                   + BoolToStr(statementInfo.openYN) + ' | '
-                   + statementInfo.openDT;
+        
+        tmp := tmp + 'itemCode(문서종류코드) :' + IntToStr(statementInfo.itemCode) + #13;
+        tmp := tmp + 'itemKey(팝빌 관리번호) :' + statementInfo.itemKey + #13;
+        tmp := tmp + 'invoiceNum(문서고유번호) :' + statementInfo.invoiceNum + #13;
+        tmp := tmp + 'mgtKey(문서관리번호) :' + statementInfo.mgtKey + #13;
+        tmp := tmp + 'taxType(세금형태) :' + statementInfo.taxType + #13;
+        tmp := tmp + 'writeDate(작성일자) :' + statementInfo.writeDate + #13;
+        tmp := tmp + 'regDT(임시저장일시) :' + statementInfo.regDT + #13;
+        tmp := tmp + 'senderCorpName(발신자 상호) :' + statementInfo.senderCorpName + #13;
+        tmp := tmp + 'senderCorpNum(발신자 사업자번호) :' + statementInfo.senderCorpNum + #13;
+        tmp := tmp + 'senderPrintYN(발신자 인쇄여부) :' + BoolToStr(statementInfo.senderPrintYN) + #13;
+        tmp := tmp + 'receiverCorpName(수신자 상호) :' + statementInfo.receiverCorpName + #13;
+        tmp := tmp + 'receiverCorpNum(수신자 사업자번호) :' + statementInfo.receiverCorpNum + #13;
+        tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) :' + BoolToStr(statementInfo.receiverPrintYN) + #13;
+        tmp := tmp + 'supplyCostTotal(공급가액 합계) :' + statementInfo.supplyCostTotal + #13;
+        tmp := tmp + 'taxTotal(세액 합계) :' + statementInfo.taxTotal + #13;
+        tmp := tmp + 'purposeType(영수/청구) :' + statementInfo.purposeType + #13;
+        tmp := tmp + 'issueDT(발행일시) :' + statementInfo.issueDT + #13;
+        tmp := tmp + 'stateCode(상태코드) :' + IntToStr(statementInfo.stateCode) + #13;
+        tmp := tmp + 'stateDT(상태 변경일시) :' + statementInfo.stateDT + #13;
+        tmp := tmp + 'stateMemo(상태메모) :' + statementInfo.stateMemo + #13;
+        tmp := tmp + 'openYN(개봉 여부) :' + BoolToStr(statementInfo.openYN) + #13;
+        tmp := tmp + 'openDT(개봉 일시) :' + statementInfo.openDT;
         ShowMessage(tmp);
 end;
 
@@ -1404,7 +1397,7 @@ begin
         tmp := tmp + '-----상세항목-----' + #13;
         tmp := tmp + 'serialNum(일련번호) | purchaseDT(거래일자) | itemName(품목명) | spec(규격) | qty(수량) | ';
         tmp := tmp + 'unitCost(단가) | supplyCost(공급가액) | tax(세액) | remark(비고) | spare1(여분1) |';
-        tmp := tmp + 'spare1(여분2) | spare1(여분3) | spare1(여분4) | spare1(여분5) |' + #13;
+        tmp := tmp + 'spare1(여분2) | spare1(여분3) | spare1(여분4) | spare1(여분5)' + #13;
         for i:= 0 to Length(statement.detailList)-1 do
         begin
             tmp := tmp + IntToStr(statement.detailList[i].serialNum) + ' | ' +
