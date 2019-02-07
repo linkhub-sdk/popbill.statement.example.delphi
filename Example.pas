@@ -2,7 +2,7 @@
 { 팝빌 전자명세서 API Delphi SDK Example                                       }
 {                                                                              }
 { - 델파이 SDK 적용방법 안내 : http://blog.linkhub.co.kr/572                   }
-{ - 업데이트 일자 : 2019-01-15                                                 }
+{ - 업데이트 일자 : 2019-02-07                                                 }
 { - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991                           }
 { - 연동 기술지원 이메일 : code@linkhub.co.kr                                  }
 {                                                                              }
@@ -230,7 +230,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnJoinMemberClick(Sender: TObject);
@@ -331,7 +331,7 @@ begin
         // 발행시 수신자 알림문자 전송여부
         statement.SMSSendYN := false;
 
-        // 수신자 승인없이 밸행시에 승인 처리여부.
+         // 발행시 자동승인 여부 (수신자의 승인여부와 관계없이 발행)
         statement.AutoAcceptYN := false;
 
         // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
@@ -1004,7 +1004,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnGetURL2Click(Sender: TObject);
@@ -1024,7 +1024,8 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnGetPopUpURLClick(Sender: TObject);
@@ -1044,7 +1045,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnGetPrintURLClick(Sender: TObject);
@@ -1064,7 +1065,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnGetMailURLClick(Sender: TObject);
@@ -1083,7 +1084,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnGetPrintsURLClick(Sender: TObject);
@@ -1109,7 +1110,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnUpdateClick(Sender: TObject);
@@ -1127,7 +1128,7 @@ begin
         
         statement.itemCode := ItemCode;
         statement.formCode := txtFormCode.Text;
-        
+
          // 전자명세서 문서종류코드, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표, 126-영수증
         statement.itemCode := ItemCode;
 
@@ -1147,7 +1148,7 @@ begin
         // 발행시 수신자 알림문자 전송여부
         statement.SMSSendYN := false;
 
-        // 수신자 승인없이 밸행시에 승인 처리여부.
+         // 발행시 자동승인 여부 (수신자의 승인여부와 관계없이 발행)
         statement.AutoAcceptYN := false;
 
         // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
@@ -1468,7 +1469,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnCheckIDClick(Sender: TObject);
@@ -1715,7 +1716,7 @@ begin
         // 발행시 수신자 알림문자 전송여부
         statement.SMSSendYN := false;
 
-        // 수신자 승인없이 밸행시에 승인 처리여부.
+         // 발행시 자동승인 여부 (수신자의 승인여부와 관계없이 발행)
         statement.AutoAcceptYN := false;
 
         // [필수] 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_'
@@ -1917,7 +1918,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnCheckIsMemberClick(Sender: TObject);
@@ -2027,7 +2028,7 @@ begin
         // 발행시 수신자 알림문자 전송여부
         statement.SMSSendYN := false;
 
-        // 수신자 승인없이 밸행시에 승인 처리여부.
+         // 발행시 자동승인 여부 (수신자의 승인여부와 관계없이 발행)
         statement.AutoAcceptYN := true;
 
         // 거래명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
@@ -2134,8 +2135,7 @@ begin
 
         {**********************************************************************}
         {                     전자명세서 상세항목(품목) 정보                   }
-        { 상세항목은 0~99개까지 작성이 가능하며, 일련번호(serialNum)은 1부터 99}
-        { 까지 순차적으로 기재하시기 바랍니다.                                 }
+        { 일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다.          }
         {**********************************************************************}
         setLength(statement.detailList, 2);
 
@@ -2268,6 +2268,7 @@ begin
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
+                        SearchList.Free;
                         Exit;
                 end;
         end;
@@ -2409,7 +2410,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnGetPartnerURL_CHRGClick(Sender: TObject);
@@ -2429,7 +2430,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('ResultURL is ' + #13 + resultURL);
+        ShowMessage('URL : ' + #13 + resultURL);
 end;
 
 procedure TfrmExample.btnListEmailConfigClick(Sender: TObject);
@@ -2507,5 +2508,6 @@ begin
         end;
         ShowMessage('응답코드 : '+ IntToStr(response.code) + #10#13 +'응답메시지 : '+  response.Message);
 end;
+
 
 end.
