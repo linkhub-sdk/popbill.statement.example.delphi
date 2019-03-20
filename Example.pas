@@ -2,7 +2,7 @@
 { 팝빌 전자명세서 API Delphi SDK Example                                       }
 {                                                                              }
 { - 델파이 SDK 적용방법 안내 : http://blog.linkhub.co.kr/572                   }
-{ - 업데이트 일자 : 2019-02-07                                                 }
+{ - 업데이트 일자 : 2019-03-19                                                 }
 { - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991                           }
 { - 연동 기술지원 이메일 : code@linkhub.co.kr                                  }
 {                                                                              }
@@ -320,7 +320,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자, 작성양식 yyyyMMdd
-        statement.writeDate := '20190114';
+        statement.writeDate := '20190319';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -512,6 +512,7 @@ begin
                         Exit;
                 end;
         end;
+        
         ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
 end;
 
@@ -553,7 +554,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage(cbItemCode.Text +' 발행단가 : '+ FloatToStr(unitcost));
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage(cbItemCode.Text +' 발행단가 : '+ FloatToStr(unitcost));
+        end;
 end;
 
 procedure TfrmExample.btnGetPartnerBalanceClick(Sender: TObject);
@@ -649,17 +658,25 @@ begin
                 end;
         end;
 
-        tmp := 'SerialNum(첨부파일 일련번호) | DisplayName(첨부파일명) | AttachedFile(파일아이디) | RegDT(첨부일시)' + #13;
-        
-        for i := 0 to Length(fileList) -1 do
+        if statementService.LastErrCode <> 0 then
         begin
-            tmp := tmp +  IntToStr(fileList[i].SerialNum) + ' | '
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                tmp := 'SerialNum(첨부파일 일련번호) | DisplayName(첨부파일명) | AttachedFile(파일아이디) | RegDT(첨부일시)' + #13;
+
+                for i := 0 to Length(fileList) -1 do
+                begin
+                    tmp := tmp +  IntToStr(fileList[i].SerialNum) + ' | '
                         + fileList[i].DisplayName + ' | '
                         + fileList[i].AttachedFile + ' | '
                         + fileList[i].RegDT + #13;
-            tbFileIndexID.text := fileList[i].AttachedFile;
+                    tbFileIndexID.text := fileList[i].AttachedFile;
+                end;
+                ShowMessage(tmp);
         end;
-        ShowMessage(tmp);
+
 end;
 
 procedure TfrmExample.btnDeleteFileClick(Sender: TObject);
@@ -707,30 +724,39 @@ begin
                         Exit;
                 end;
         end;
-        
-        tmp := tmp + 'itemCode(문서종류코드) :' + IntToStr(statementInfo.itemCode) + #13;
-        tmp := tmp + 'itemKey(팝빌 관리번호) :' + statementInfo.itemKey + #13;
-        tmp := tmp + 'invoiceNum(문서고유번호) :' + statementInfo.invoiceNum + #13;
-        tmp := tmp + 'mgtKey(문서관리번호) :' + statementInfo.mgtKey + #13;
-        tmp := tmp + 'taxType(세금형태) :' + statementInfo.taxType + #13;
-        tmp := tmp + 'writeDate(작성일자) :' + statementInfo.writeDate + #13;
-        tmp := tmp + 'regDT(임시저장일시) :' + statementInfo.regDT + #13;
-        tmp := tmp + 'senderCorpName(발신자 상호) :' + statementInfo.senderCorpName + #13;
-        tmp := tmp + 'senderCorpNum(발신자 사업자번호) :' + statementInfo.senderCorpNum + #13;
-        tmp := tmp + 'senderPrintYN(발신자 인쇄여부) :' + BoolToStr(statementInfo.senderPrintYN) + #13;
-        tmp := tmp + 'receiverCorpName(수신자 상호) :' + statementInfo.receiverCorpName + #13;
-        tmp := tmp + 'receiverCorpNum(수신자 사업자번호) :' + statementInfo.receiverCorpNum + #13;
-        tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) :' + BoolToStr(statementInfo.receiverPrintYN) + #13;
-        tmp := tmp + 'supplyCostTotal(공급가액 합계) :' + statementInfo.supplyCostTotal + #13;
-        tmp := tmp + 'taxTotal(세액 합계) :' + statementInfo.taxTotal + #13;
-        tmp := tmp + 'purposeType(영수/청구) :' + statementInfo.purposeType + #13;
-        tmp := tmp + 'issueDT(발행일시) :' + statementInfo.issueDT + #13;
-        tmp := tmp + 'stateCode(상태코드) :' + IntToStr(statementInfo.stateCode) + #13;
-        tmp := tmp + 'stateDT(상태 변경일시) :' + statementInfo.stateDT + #13;
-        tmp := tmp + 'stateMemo(상태메모) :' + statementInfo.stateMemo + #13;
-        tmp := tmp + 'openYN(개봉 여부) :' + BoolToStr(statementInfo.openYN) + #13;
-        tmp := tmp + 'openDT(개봉 일시) :' + statementInfo.openDT;
-        ShowMessage(tmp);
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+                exit;
+        end
+        else
+        begin        
+                tmp := tmp + 'itemCode(문서종류코드) :' + IntToStr(statementInfo.itemCode) + #13;
+                tmp := tmp + 'itemKey(팝빌 관리번호) :' + statementInfo.itemKey + #13;
+                tmp := tmp + 'invoiceNum(문서고유번호) :' + statementInfo.invoiceNum + #13;
+                tmp := tmp + 'mgtKey(문서관리번호) :' + statementInfo.mgtKey + #13;
+                tmp := tmp + 'taxType(세금형태) :' + statementInfo.taxType + #13;
+                tmp := tmp + 'writeDate(작성일자) :' + statementInfo.writeDate + #13;
+                tmp := tmp + 'regDT(임시저장일시) :' + statementInfo.regDT + #13;
+                tmp := tmp + 'senderCorpName(발신자 상호) :' + statementInfo.senderCorpName + #13;
+                tmp := tmp + 'senderCorpNum(발신자 사업자번호) :' + statementInfo.senderCorpNum + #13;
+                tmp := tmp + 'senderPrintYN(발신자 인쇄여부) :' + BoolToStr(statementInfo.senderPrintYN) + #13;
+                tmp := tmp + 'receiverCorpName(수신자 상호) :' + statementInfo.receiverCorpName + #13;
+                tmp := tmp + 'receiverCorpNum(수신자 사업자번호) :' + statementInfo.receiverCorpNum + #13;
+                tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) :' + BoolToStr(statementInfo.receiverPrintYN) + #13;
+                tmp := tmp + 'supplyCostTotal(공급가액 합계) :' + statementInfo.supplyCostTotal + #13;
+                tmp := tmp + 'taxTotal(세액 합계) :' + statementInfo.taxTotal + #13;
+                tmp := tmp + 'purposeType(영수/청구) :' + statementInfo.purposeType + #13;
+                tmp := tmp + 'issueDT(발행일시) :' + statementInfo.issueDT + #13;
+                tmp := tmp + 'stateCode(상태코드) :' + IntToStr(statementInfo.stateCode) + #13;
+                tmp := tmp + 'stateDT(상태 변경일시) :' + statementInfo.stateDT + #13;
+                tmp := tmp + 'stateMemo(상태메모) :' + statementInfo.stateMemo + #13;
+                tmp := tmp + 'openYN(개봉 여부) :' + BoolToStr(statementInfo.openYN) + #13;
+                tmp := tmp + 'openDT(개봉 일시) :' + statementInfo.openDT;
+                ShowMessage(tmp);
+        end;
+
 end;
 
 procedure TfrmExample.btnGetInfosClick(Sender: TObject);
@@ -749,10 +775,10 @@ begin
 
         //전자명세서 문서관리번호 배열 (최대 1000건)
         SetLength(KeyList,4);
-        KeyList[0] := '20190114-001';
-        KeyList[1] := '20190114-002';
-        KeyList[2] := '20190114-003';
-        KeyList[3] := '20190114-004';
+        KeyList[0] := '20190320-01';
+        KeyList[1] := '20190320-02';
+        KeyList[2] := '20190320-03';
+        KeyList[3] := '20190320-04';
 
         try
                 InfoList := statementService.getInfos(txtCorpNum.text, ItemCode, KeyList);
@@ -763,39 +789,47 @@ begin
                 end;
         end;
 
-        tmp := 'itemCode(문서종류코드) | itemKey(팝빌 관리번호) | invoiceNum(문서고유번호) | mgtKey(문서관리번호) | taxType(세금형태) | ';
-        tmp := tmp + 'writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | ' ;
-        tmp := tmp + 'senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | ';
-        tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | ';
-        tmp := tmp + 'issueDT(발행일시) | stateCode(상태코드) | stateDT(상태 변경일시) | stateMemo(상태메모) | ';
-        tmp := tmp + 'openYN(개봉 여부) | openDT(개봉 일시)' + #13 + #13;
-
-        for i := 0 to Length(InfoList) -1 do
+        if statementService.LastErrCode <> 0 then
         begin
-            tmp := tmp + IntToStr(InfoList[i].itemCode) + ' | '
-                   + InfoList[i].itemKey + ' | '
-                   + InfoList[i].invoiceNum + ' | '
-                   + InfoList[i].mgtKey + ' | '
-                   + InfoList[i].taxType + ' | '
-                   + InfoList[i].writeDate + ' | '
-                   + InfoList[i].regDT + ' | '
-                   + InfoList[i].senderCorpName + ' | '
-                   + InfoList[i].senderCorpNum + ' | '
-                   + BoolToStr(InfoList[i].senderPrintYN) + ' | '
-                   + InfoList[i].receiverCorpName + ' | '
-                   + InfoList[i].receiverCorpNum + ' | '
-                   + BoolToStr(InfoList[i].receiverPrintYN) + ' | '
-                   + InfoList[i].supplyCostTotal + ' | '
-                   + InfoList[i].taxTotal + ' | '
-                   + InfoList[i].purposeType + ' | '
-                   + InfoList[i].issueDT + ' | '
-                   + IntToStr(InfoList[i].stateCode) + ' | '
-                   + InfoList[i].stateDT + ' | '
-                   + InfoList[i].stateMemo + ' | '
-                   + BoolToStr(InfoList[i].openYN) + ' | '
-                   + InfoList[i].openDT + #13 + #13;
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+                exit;
+        end
+        else
+        begin
+                tmp := 'itemCode(문서종류코드) | itemKey(팝빌 관리번호) | invoiceNum(문서고유번호) | mgtKey(문서관리번호) | taxType(세금형태) | ';
+                tmp := tmp + 'writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | ' ;
+                tmp := tmp + 'senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | ';
+                tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | ';
+                tmp := tmp + 'issueDT(발행일시) | stateCode(상태코드) | stateDT(상태 변경일시) | stateMemo(상태메모) | ';
+                tmp := tmp + 'openYN(개봉 여부) | openDT(개봉 일시)' + #13 + #13;
+
+                for i := 0 to Length(InfoList) -1 do
+                begin
+                    tmp := tmp + IntToStr(InfoList[i].itemCode) + ' | '
+                           + InfoList[i].itemKey + ' | '
+                           + InfoList[i].invoiceNum + ' | '
+                           + InfoList[i].mgtKey + ' | '
+                           + InfoList[i].taxType + ' | '
+                           + InfoList[i].writeDate + ' | '
+                           + InfoList[i].regDT + ' | '
+                           + InfoList[i].senderCorpName + ' | '
+                           + InfoList[i].senderCorpNum + ' | '
+                           + BoolToStr(InfoList[i].senderPrintYN) + ' | '
+                           + InfoList[i].receiverCorpName + ' | '
+                           + InfoList[i].receiverCorpNum + ' | '
+                           + BoolToStr(InfoList[i].receiverPrintYN) + ' | '
+                           + InfoList[i].supplyCostTotal + ' | '
+                           + InfoList[i].taxTotal + ' | '
+                           + InfoList[i].purposeType + ' | '
+                           + InfoList[i].issueDT + ' | '
+                           + IntToStr(InfoList[i].stateCode) + ' | '
+                           + InfoList[i].stateDT + ' | '
+                           + InfoList[i].stateMemo + ' | '
+                           + BoolToStr(InfoList[i].openYN) + ' | '
+                           + InfoList[i].openDT + #13 + #13;
+                end;
+                ShowMessage(tmp);
         end;
-        ShowMessage(tmp);
 end;
 
 procedure TfrmExample.btnGetLogsClick(Sender: TObject);
@@ -819,18 +853,26 @@ begin
                 end;
         end;
 
-        tmp := 'DocLogType(로그타입) | Log(이력정보) | ProcType(처리형태) | ProcMemo(처리메모) | RegDT(등록일시) | IP(아이피)' + #13;
-
-        for i := 0 to Length(LogList) -1 do
+        if statementService.LastErrCode <> 0 then
         begin
-            tmp := tmp + IntToStr(LogList[i].DocLogType) + ' | '
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+                exit;        
+        end
+        else
+        begin
+                tmp := 'DocLogType(로그타입) | Log(이력정보) | ProcType(처리형태) | ProcMemo(처리메모) | RegDT(등록일시) | IP(아이피)' + #13;
+
+                for i := 0 to Length(LogList) -1 do
+                begin
+                    tmp := tmp + IntToStr(LogList[i].DocLogType) + ' | '
                         + LogList[i].Log + ' | '
                         + LogList[i].ProcType + ' | '
                         + LogList[i].ProcMemo + ' | '
                         + LogList[i].RegDT + ' | '
                         + LogList[i].IP + ' | ' + #13;
+                end;
+                ShowMessage(tmp);
         end;
-        ShowMessage(tmp);
 end;
 
 procedure TfrmExample.cbItemCodeChange(Sender: TObject);
@@ -1004,7 +1046,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL : ' + #13 + resultURL);
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
 end;
 
 procedure TfrmExample.btnGetURL2Click(Sender: TObject);
@@ -1024,8 +1074,15 @@ begin
                         Exit;
                 end;
         end;
-
-        ShowMessage('URL : ' + #13 + resultURL);
+        
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
 end;
 
 procedure TfrmExample.btnGetPopUpURLClick(Sender: TObject);
@@ -1045,7 +1102,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL : ' + #13 + resultURL);
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
 end;
 
 procedure TfrmExample.btnGetPrintURLClick(Sender: TObject);
@@ -1065,7 +1130,16 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL : ' + #13 + resultURL);
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
+
 end;
 
 procedure TfrmExample.btnGetMailURLClick(Sender: TObject);
@@ -1084,7 +1158,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL : ' + #13 + resultURL);
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
 end;
 
 procedure TfrmExample.btnGetPrintsURLClick(Sender: TObject);
@@ -1110,7 +1192,16 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL : ' + #13 + resultURL);
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
+
 end;
 
 procedure TfrmExample.btnUpdateClick(Sender: TObject);
@@ -1137,7 +1228,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20190114';
+        statement.writeDate := '20190319';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -1352,56 +1443,63 @@ begin
                 end;
         end;
 
-        tmp := tmp +'itemCode(문서종류 코드) : ' +  IntToStr(statement.itemCode) + #13;
-        tmp := tmp +'mgtKey(문서관리번호) : ' +  statement.mgtKey + #13;
-        tmp := tmp +'invoiceNum(문서고유번호) : ' +  statement.invoiceNum + #13;
-        tmp := tmp +'formCode(맞춤양식 코드) : ' +  statement.formCode + #13;
-        tmp := tmp +'writeDate(작성일자) : ' +  statement.WriteDate + #13;
-        tmp := tmp +'taxType(세금형태) : ' +  statement.TaxType + #13;
-        tmp := tmp +'purposeType(영수/청구) : ' +  statement.purposeType + #13;
-        tmp := tmp +'serialNum(일련번호) : ' +  statement.serialNum + #13;
-        tmp := tmp +'taxTotal(세액 합계) : ' +  statement.taxTotal + #13;
-        tmp := tmp +'supplyCostTotal(공급가액 합계) : ' +  statement.supplyCostTotal + #13;
-        tmp := tmp +'totalAmount(합계금액) : ' +  statement.totalAmount + #13;
-        tmp := tmp +'remark1(비고1) : ' +  statement.remark1 + #13;
-        tmp := tmp +'remark2(비고2) : ' +  statement.remark2 + #13;
-        tmp := tmp +'remark3(비고3) : ' +  statement.remark3 + #13;
-
-        tmp := tmp +'senderCorpNum(발신자 사업자번호) : ' +  statement.SenderCorpNum + #13;
-        tmp := tmp +'senderTaxRegID(발신자 종사업장번호) : ' +  statement.SenderTaxRegID + #13;
-        tmp := tmp +'senderCorpName(발신자 상호) : ' +  statement.SenderCorpName + #13;
-        tmp := tmp +'senderCEOName(발신자 대표자성명) : ' +  statement.SenderCEOName + #13;
-        tmp := tmp +'senderAddr(발신자 주소) : ' +  statement.SenderAddr + #13;
-        tmp := tmp +'senderBizClass(발신자 종목) : ' +  statement.SenderBizClass + #13;
-        tmp := tmp +'senderBizType(발신자 업태) : ' +  statement.SenderBizType + #13;
-        tmp := tmp +'senderContactName(발신자 성명) : ' +  statement.SenderContactName + #13;
-        tmp := tmp +'senderDeptName(발신자 부서) : ' +  statement.SenderDeptName + #13;
-        tmp := tmp +'senderTEL(발신자 연락처) : ' +  statement.SenderTEL + #13;
-        tmp := tmp +'senderHP(발신자 휴대전화) : ' +  statement.SenderHP + #13;
-        tmp := tmp +'senderEmail(발신자 이메일) : ' +  statement.SenderEmail + #13;
-        tmp := tmp +'senderFAX(발신자 팩스) : ' +  statement.senderFAX + #13;
-
-        tmp := tmp +'receiverCorpNum(수신자 사업자번호) : ' +  statement.ReceiverCorpNum + #13;
-        tmp := tmp +'receiverTaxRegID(수신자 종사업장번호) : ' +  statement.ReceiverTaxRegID + #13;
-        tmp := tmp +'receiverCorpName(수신자 상호) : ' +  statement.ReceiverCorpName + #13;
-        tmp := tmp +'receiverCEOName(수신자 대표자성명) : ' +  statement.ReceiverCEOName + #13;
-        tmp := tmp +'receiverAddr(수신자 주소) : ' +  statement.ReceiverAddr + #13;
-        tmp := tmp +'receiverBizClass(수신자 종목) : ' +  statement.ReceiverBizClass + #13;
-        tmp := tmp +'receiverBizType(수신자 업태) : ' +  statement.ReceiverBizType + #13;
-        tmp := tmp +'receiverContactName(수신자 성명) : ' +  statement.ReceiverContactName + #13;
-        tmp := tmp +'receiverDeptName(수신자 부서) : ' +  statement.ReceiverDeptName + #13;
-        tmp := tmp +'receiverTEL(수신자 연락처) : ' +  statement.ReceiverTEL + #13;
-        tmp := tmp +'receiverHP(수신자 휴대전화) : ' +  statement.ReceiverHP + #13;
-        tmp := tmp +'receiverEmail(수신자 이메일) : ' +  statement.ReceiverEmail + #13;
-        tmp := tmp +'receiverFAX(수신자 팩스) : ' +  statement.receiverFAX + #13;
-
-        tmp := tmp + '-----상세항목-----' + #13;
-        tmp := tmp + 'serialNum(일련번호) | purchaseDT(거래일자) | itemName(품목명) | spec(규격) | qty(수량) | ';
-        tmp := tmp + 'unitCost(단가) | supplyCost(공급가액) | tax(세액) | remark(비고) | spare1(여분1) |';
-        tmp := tmp + 'spare1(여분2) | spare1(여분3) | spare1(여분4) | spare1(여분5)' + #13;
-        for i:= 0 to Length(statement.detailList)-1 do
+        if statementService.LastErrCode <> 0 then
         begin
-            tmp := tmp + IntToStr(statement.detailList[i].serialNum) + ' | ' +
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+                exit;
+        end
+        else
+        begin
+                tmp := tmp +'itemCode(문서종류 코드) : ' +  IntToStr(statement.itemCode) + #13;
+                tmp := tmp +'mgtKey(문서관리번호) : ' +  statement.mgtKey + #13;
+                tmp := tmp +'invoiceNum(문서고유번호) : ' +  statement.invoiceNum + #13;
+                tmp := tmp +'formCode(맞춤양식 코드) : ' +  statement.formCode + #13;
+                tmp := tmp +'writeDate(작성일자) : ' +  statement.WriteDate + #13;
+                tmp := tmp +'taxType(세금형태) : ' +  statement.TaxType + #13;
+                tmp := tmp +'purposeType(영수/청구) : ' +  statement.purposeType + #13;
+                tmp := tmp +'serialNum(일련번호) : ' +  statement.serialNum + #13;
+                tmp := tmp +'taxTotal(세액 합계) : ' +  statement.taxTotal + #13;
+                tmp := tmp +'supplyCostTotal(공급가액 합계) : ' +  statement.supplyCostTotal + #13;
+                tmp := tmp +'totalAmount(합계금액) : ' +  statement.totalAmount + #13;
+                tmp := tmp +'remark1(비고1) : ' +  statement.remark1 + #13;
+                tmp := tmp +'remark2(비고2) : ' +  statement.remark2 + #13;
+                tmp := tmp +'remark3(비고3) : ' +  statement.remark3 + #13;
+
+                tmp := tmp +'senderCorpNum(발신자 사업자번호) : ' +  statement.SenderCorpNum + #13;
+                tmp := tmp +'senderTaxRegID(발신자 종사업장번호) : ' +  statement.SenderTaxRegID + #13;
+                tmp := tmp +'senderCorpName(발신자 상호) : ' +  statement.SenderCorpName + #13;
+                tmp := tmp +'senderCEOName(발신자 대표자성명) : ' +  statement.SenderCEOName + #13;
+                tmp := tmp +'senderAddr(발신자 주소) : ' +  statement.SenderAddr + #13;
+                tmp := tmp +'senderBizClass(발신자 종목) : ' +  statement.SenderBizClass + #13;
+                tmp := tmp +'senderBizType(발신자 업태) : ' +  statement.SenderBizType + #13;
+                tmp := tmp +'senderContactName(발신자 성명) : ' +  statement.SenderContactName + #13;
+                tmp := tmp +'senderDeptName(발신자 부서) : ' +  statement.SenderDeptName + #13;
+                tmp := tmp +'senderTEL(발신자 연락처) : ' +  statement.SenderTEL + #13;
+                tmp := tmp +'senderHP(발신자 휴대전화) : ' +  statement.SenderHP + #13;
+                tmp := tmp +'senderEmail(발신자 이메일) : ' +  statement.SenderEmail + #13;
+                tmp := tmp +'senderFAX(발신자 팩스) : ' +  statement.senderFAX + #13;
+
+                tmp := tmp +'receiverCorpNum(수신자 사업자번호) : ' +  statement.ReceiverCorpNum + #13;
+                tmp := tmp +'receiverTaxRegID(수신자 종사업장번호) : ' +  statement.ReceiverTaxRegID + #13;
+                tmp := tmp +'receiverCorpName(수신자 상호) : ' +  statement.ReceiverCorpName + #13;
+                tmp := tmp +'receiverCEOName(수신자 대표자성명) : ' +  statement.ReceiverCEOName + #13;
+                tmp := tmp +'receiverAddr(수신자 주소) : ' +  statement.ReceiverAddr + #13;
+                tmp := tmp +'receiverBizClass(수신자 종목) : ' +  statement.ReceiverBizClass + #13;
+                tmp := tmp +'receiverBizType(수신자 업태) : ' +  statement.ReceiverBizType + #13;
+                tmp := tmp +'receiverContactName(수신자 성명) : ' +  statement.ReceiverContactName + #13;
+                tmp := tmp +'receiverDeptName(수신자 부서) : ' +  statement.ReceiverDeptName + #13;
+                tmp := tmp +'receiverTEL(수신자 연락처) : ' +  statement.ReceiverTEL + #13;
+                tmp := tmp +'receiverHP(수신자 휴대전화) : ' +  statement.ReceiverHP + #13;
+                tmp := tmp +'receiverEmail(수신자 이메일) : ' +  statement.ReceiverEmail + #13;
+                tmp := tmp +'receiverFAX(수신자 팩스) : ' +  statement.receiverFAX + #13;
+
+                tmp := tmp + '-----상세항목-----' + #13;
+                tmp := tmp + 'serialNum(일련번호) | purchaseDT(거래일자) | itemName(품목명) | spec(규격) | qty(수량) | ';
+                tmp := tmp + 'unitCost(단가) | supplyCost(공급가액) | tax(세액) | remark(비고) | spare1(여분1) |';
+                tmp := tmp + 'spare1(여분2) | spare1(여분3) | spare1(여분4) | spare1(여분5)' + #13;
+                for i:= 0 to Length(statement.detailList)-1 do
+                begin
+                    tmp := tmp + IntToStr(statement.detailList[i].serialNum) + ' | ' +
                          statement.detailList[i].purchaseDT + ' | ' +
                          statement.detailList[i].itemName + ' | ' +
                          statement.detailList[i].spec + ' | ' +
@@ -1415,21 +1513,24 @@ begin
                          statement.detailList[i].spare3 + ' | ' +
                          statement.detailList[i].spare4 + ' | ' +
                          statement.detailList[i].spare5 + #13 ;
+                end;
+
+                tmp := tmp + '-----추가속성-----' + #13;
+                for i:= 0 to Length(statement.propertyBag)-1 do
+                begin
+                    tmp := tmp + statement.propertyBag[i].name + ' : ' +
+                                 statement.propertyBag[i].value + #13;
+                end;
+
+                tmp := tmp +'businessLicenseYN(사업자등록증 첨부 여부) : ' +  IfThen(statement.businessLicenseYN,'true','false') + #13;
+                tmp := tmp +'bankBookYN(통장사본 첨부 여부) : ' +  IfThen(statement.bankBookYN,'true','false') + #13;
+                tmp := tmp +'SMSSendYN(문자 자동전송 여부) : ' +  IfThen(statement.SMSSendYN,'true','false') + #13;
+                tmp := tmp +'AutoAcceptYN(발행시 자동승인 여부) : ' +  IfThen(statement.AutoAcceptYN,'true','false') + #13;
+
+                ShowMessage(tmp);
         end;
 
-        tmp := tmp + '-----추가속성-----' + #13;
-        for i:= 0 to Length(statement.propertyBag)-1 do
-        begin
-            tmp := tmp + statement.propertyBag[i].name + ' : ' +
-                         statement.propertyBag[i].value + #13;
-        end;
 
-        tmp := tmp +'businessLicenseYN(사업자등록증 첨부 여부) : ' +  IfThen(statement.businessLicenseYN,'true','false') + #13;
-        tmp := tmp +'bankBookYN(통장사본 첨부 여부) : ' +  IfThen(statement.bankBookYN,'true','false') + #13;
-        tmp := tmp +'SMSSendYN(문자 자동전송 여부) : ' +  IfThen(statement.SMSSendYN,'true','false') + #13;
-        tmp := tmp +'AutoAcceptYN(발행시 자동승인 여부) : ' +  IfThen(statement.AutoAcceptYN,'true','false') + #13;
-
-        ShowMessage(tmp);
 end;
 
 procedure TfrmExample.btnCheckMgtKeyInUseClick(Sender: TObject);
@@ -1449,7 +1550,15 @@ begin
                         Exit;
                 end;
         end;
-        if InUse then ShowMessage('사용중') else ShowMessage('미 사용중.');
+        
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                if InUse then ShowMessage('사용중') else ShowMessage('미 사용중.');
+        end;
 end;
 
 procedure TfrmExample.Button1Click(Sender: TObject);
@@ -1469,7 +1578,16 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL : ' + #13 + resultURL);
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
+
 end;
 
 procedure TfrmExample.btnCheckIDClick(Sender: TObject);
@@ -1705,7 +1823,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20190114';
+        statement.writeDate := '20190319';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -2199,7 +2317,16 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('팩스접수번호(receiptNum) : '+ response);
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('팩스접수번호(receiptNum) : '+ response);
+        end;
+        
 end;
 
 procedure TfrmExample.btnSearchClick(Sender: TObject);
@@ -2379,6 +2506,7 @@ begin
         { 연동회원의 전자명세서 API 서비스 과금정보를 확인합니다.              }
         { - 전자명세서 종류코드(ItemCode) 별 과금정보를 확인할 수 있습니다.    }
         {**********************************************************************}
+        
         try
                 chargeInfo := statementService.GetChargeInfo(txtCorpNum.text, ItemCode);
         except
@@ -2388,10 +2516,17 @@ begin
                 end;
         end;
 
-        tmp := 'unitCost (단가) : ' + chargeInfo.unitCost + #13;
-        tmp := tmp + 'chargeMethod (과금유형) : ' + chargeInfo.chargeMethod + #13;
-        tmp := tmp + 'rateSystem (과금제도) : ' + chargeInfo.rateSystem + #13;
-        ShowMessage(tmp);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                tmp := 'unitCost (단가) : ' + chargeInfo.unitCost + #13;
+                tmp := tmp + 'chargeMethod (과금유형) : ' + chargeInfo.chargeMethod + #13;
+                tmp := tmp + 'rateSystem (과금제도) : ' + chargeInfo.rateSystem + #13;
+                ShowMessage(tmp);
+        end;
 end;
 
 procedure TfrmExample.btnGetSealURLClick(Sender: TObject);
@@ -2410,7 +2545,16 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL : ' + #13 + resultURL);
+        
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
+
 end;
 
 procedure TfrmExample.btnGetPartnerURL_CHRGClick(Sender: TObject);
@@ -2452,28 +2596,28 @@ begin
                 end;
         end;
 
-        tmp := 'emailType(메일전송유형) | sendYN(전송여부)' + #13;
-
-        for i := 0 to Length(EmailConfigList) -1 do
+        if statementService.LastErrCode <> 0 then
         begin
-            if EmailConfigList[i].EmailType = 'SMT_ISSUE' then
-                tmp := tmp + 'SMT_ISSUE (수신자에게 전자명세서가 발행 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
-
-            if EmailConfigList[i].EmailType = 'SMT_ACCEPT' then
-                tmp := tmp + 'SMT_ACCEPT (발신자에게 전자명세서가 승인 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
-
-            if EmailConfigList[i].EmailType = 'SMT_DENY' then
-                tmp := tmp + 'SMT_DENY (발신자에게 전자명세서가 거부 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
-
-            if EmailConfigList[i].EmailType = 'SMT_CANCEL' then
-                tmp := tmp + 'SMT_CANCEL (수신자에게 전자명세서가 취소 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
-
-            if EmailConfigList[i].EmailType = 'SMT_CANCEL_ISSUE' then
-                tmp := tmp + 'SMT_CANCEL_ISSUE (수신자에게 전자명세서가 발행취소 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
-
+                ShowMessage('응답코드 : '+ IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+  statementService.LastErrMessage);
+        end
+        else
+        begin
+                tmp := 'emailType(메일전송유형) | sendYN(전송여부)' + #13;
+                for i := 0 to Length(EmailConfigList) -1 do
+                begin
+                    if EmailConfigList[i].EmailType = 'SMT_ISSUE' then
+                        tmp := tmp + 'SMT_ISSUE (수신자에게 전자명세서가 발행 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+                    if EmailConfigList[i].EmailType = 'SMT_ACCEPT' then
+                        tmp := tmp + 'SMT_ACCEPT (발신자에게 전자명세서가 승인 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+                    if EmailConfigList[i].EmailType = 'SMT_DENY' then
+                        tmp := tmp + 'SMT_DENY (발신자에게 전자명세서가 거부 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+                    if EmailConfigList[i].EmailType = 'SMT_CANCEL' then
+                        tmp := tmp + 'SMT_CANCEL (수신자에게 전자명세서가 취소 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+                    if EmailConfigList[i].EmailType = 'SMT_CANCEL_ISSUE' then
+                        tmp := tmp + 'SMT_CANCEL_ISSUE (수신자에게 전자명세서가 발행취소 되었음을 알려주는 메일입니다.) | ' + BoolToStr(EmailConfigList[i].SendYN) + #13;
+                end;
+                ShowMessage(tmp);
         end;
-
-        ShowMessage(tmp);
 end;
 
 procedure TfrmExample.btnUpdateEmailConfigClick(Sender: TObject);
