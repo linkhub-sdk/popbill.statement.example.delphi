@@ -1514,7 +1514,22 @@ begin
                          statement.detailList[i].spare2 + ' | ' +
                          statement.detailList[i].spare3 + ' | ' +
                          statement.detailList[i].spare4 + ' | ' +
-                         statement.detailList[i].spare5 + #13 ;
+                         statement.detailList[i].spare5 + ' | ' +
+                         statement.detailList[i].spare6 + ' | ' +
+                         statement.detailList[i].spare7 + ' | ' +
+                         statement.detailList[i].spare8 + ' | ' +
+                         statement.detailList[i].spare9 + ' | ' +
+                         statement.detailList[i].spare10 + ' | ' +
+                         statement.detailList[i].spare11 + ' | ' +
+                         statement.detailList[i].spare12 + ' | ' +
+                         statement.detailList[i].spare13 + ' | ' +
+                         statement.detailList[i].spare14 + ' | ' +
+                         statement.detailList[i].spare15 + ' | ' +
+                         statement.detailList[i].spare16 + ' | ' +
+                         statement.detailList[i].spare17 + ' | ' +
+                         statement.detailList[i].spare18 + ' | ' +
+                         statement.detailList[i].spare19 + ' | ' +
+                         statement.detailList[i].spare20 + #13 ;
                 end;
 
                 tmp := tmp + '-----추가속성-----' + #13;
