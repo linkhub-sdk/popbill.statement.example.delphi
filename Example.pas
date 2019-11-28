@@ -1912,7 +1912,7 @@ begin
         statement.receiverContactName := '수신자 담당자명';
 
         // 수신자 담당자 메일주소
-        statement.receiverEmail := 'code@linkhub.co.kr';
+        statement.receiverEmail := 'test@test.com';
 
         // 수신자 담당자 연락처
         statement.receiverTEL := '070-1234-1234';
