@@ -1,7 +1,7 @@
 {******************************************************************************}
 { 팝빌 전자명세서 API Delphi SDK Example                                       }
 {                                                                              }
-{ - 업데이트 일자 : 2019-09-25                                                 }
+{ - 업데이트 일자 : 2019-11-28                                                 }
 { - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991                           }
 { - 연동 기술지원 이메일 : code@linkhub.co.kr                                  }
 {                                                                              }
@@ -1807,7 +1807,7 @@ procedure TfrmExample.btnRegistIssueClick(Sender: TObject);
 var
         statement : TStatement;
         response : TResponse;
-        memo : String;
+        memo, emailSubject : String;
 begin
         {**********************************************************************}
         { 1건의 전자명세서를 즉시발행 처리합니다. (권장)                       }
@@ -1825,7 +1825,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20190319';
+        statement.writeDate := '20191128';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -1912,7 +1912,7 @@ begin
         statement.receiverContactName := '수신자 담당자명';
 
         // 수신자 담당자 메일주소
-        statement.receiverEmail := 'test@receiver.com';
+        statement.receiverEmail := 'code@linkhub.co.kr';
 
         // 수신자 담당자 연락처
         statement.receiverTEL := '070-1234-1234';
@@ -2009,8 +2009,11 @@ begin
 
         memo := '즉시발행 메모';
 
+        // 안내메일 제목, 미기재시 기본양식으로 전송
+        emailSubject := '';
+
         try
-                response := statementService.RegistIssue(txtCorpNum.text, statement, memo);
+                response := statementService.RegistIssue(txtCorpNum.text, statement, memo, txtUserID.text, emailSubject);
                 statement.Free;
         except
                 on le : EPopbillException do begin
