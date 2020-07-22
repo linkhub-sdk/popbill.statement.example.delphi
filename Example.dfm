@@ -169,7 +169,7 @@ object frmExample: TfrmExample
       Left = 16
       Top = 192
       Width = 177
-      Height = 193
+      Height = 217
       Caption = '첨부파일'
       TabOrder = 1
       object Label2: TLabel
@@ -220,7 +220,7 @@ object frmExample: TfrmExample
       Left = 200
       Top = 192
       Width = 177
-      Height = 193
+      Height = 217
       Caption = '문서 정보'
       TabOrder = 2
       object btnGetDetailInfo: TButton
@@ -273,7 +273,7 @@ object frmExample: TfrmExample
       Left = 384
       Top = 192
       Width = 345
-      Height = 193
+      Height = 217
       Caption = '부가서비스'
       TabOrder = 3
       object btnSendEmail: TButton
@@ -370,7 +370,7 @@ object frmExample: TfrmExample
       Left = 920
       Top = 192
       Width = 177
-      Height = 193
+      Height = 217
       Caption = '기타  URL'
       TabOrder = 6
       object btnGetURL1: TButton
@@ -481,7 +481,7 @@ object frmExample: TfrmExample
       Left = 736
       Top = 192
       Width = 177
-      Height = 193
+      Height = 217
       Caption = ' 문서관련 URL기능'
       TabOrder = 10
       object btnGetPopUpURL: TButton
@@ -528,6 +528,15 @@ object frmExample: TfrmExample
         Caption = '수신자 인쇄 URL'
         TabOrder = 4
         OnClick = Button1Click
+      end
+      object btnGetPDFURL: TButton
+        Left = 8
+        Top = 184
+        Width = 161
+        Height = 25
+        Caption = '보기 URL (메뉴/버튼 제외)'
+        TabOrder = 5
+        OnClick = btnGetPDFURLClick
       end
     end
   end

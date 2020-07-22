@@ -1,7 +1,7 @@
 {******************************************************************************}
 { 팝빌 전자명세서 API Delphi SDK Example
 {
-{ - 업데이트 일자 : 2020-01-29
+{ - 업데이트 일자 : 2020-07-22
 { - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991
 { - 연동 기술지원 이메일 : code@linkhub.co.kr
 { - SDK 튜토리얼 : https://docs.popbill.com/statement/tutorial/delphi
@@ -121,6 +121,7 @@ type
     Button1: TButton;
     btnListEmailConfig: TButton;
     btnUpdateEmailConfig: TButton;
+    btnGetPDFURL: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action:TCloseAction);
     procedure btnGetAccessURLClick(Sender: TObject);
@@ -172,6 +173,7 @@ type
     procedure btnGetPartnerURL_CHRGClick(Sender: TObject);
     procedure btnListEmailConfigClick(Sender: TObject);
     procedure btnUpdateEmailConfigClick(Sender: TObject);
+    procedure btnGetPDFURLClick(Sender: TObject);
 public
   end;
 
@@ -2699,5 +2701,34 @@ begin
         ShowMessage('응답코드 : '+ IntToStr(response.code) + #10#13 +'응답메시지 : '+  response.Message);
 end;
 
+
+procedure TfrmExample.btnGetPDFURLClick(Sender: TObject);
+var
+        resultURL : String;
+begin
+        {*******************************************************************}
+        { 1건의 전자명세서 보기 팝업 URL을 반환합니다.(메뉴,버튼 제외)
+        { - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.
+        {*******************************************************************}
+        
+        try
+                resultURL := statementService.getViewURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
+        except
+                on le : EPopbillException do begin
+                        ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
+                        Exit;
+                end;
+        end;
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
+
+end;
 
 end.
