@@ -341,8 +341,6 @@ begin
         // 발행시 수신자 알림문자 전송여부
         statement.SMSSendYN := false;
 
-         // 발행시 자동승인 여부 (수신자의 승인여부와 관계없이 발행)
-        statement.AutoAcceptYN := false;
 
         // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
         // 사업자별로 중복되지 않도록 구성
@@ -1258,9 +1256,6 @@ begin
         // 발행시 수신자 알림문자 전송여부
         statement.SMSSendYN := false;
 
-         // 발행시 자동승인 여부 (수신자의 승인여부와 관계없이 발행)
-        statement.AutoAcceptYN := false;
-
         // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
         // 사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
@@ -1558,7 +1553,6 @@ begin
                 tmp := tmp +'businessLicenseYN(사업자등록증 첨부 여부) : ' +  IfThen(statement.businessLicenseYN,'true','false') + #13;
                 tmp := tmp +'bankBookYN(통장사본 첨부 여부) : ' +  IfThen(statement.bankBookYN,'true','false') + #13;
                 tmp := tmp +'SMSSendYN(문자 자동전송 여부) : ' +  IfThen(statement.SMSSendYN,'true','false') + #13;
-                tmp := tmp +'AutoAcceptYN(발행시 자동승인 여부) : ' +  IfThen(statement.AutoAcceptYN,'true','false') + #13;
 
                 ShowMessage(tmp);
         end;
@@ -1839,7 +1833,7 @@ end;
 procedure TfrmExample.btnRegistIssueClick(Sender: TObject);
 var
         statement : TStatement;
-        response : TResponse;
+        response : TIssueResponse;
         memo, emailSubject : String;
 begin
         {**********************************************************************}
@@ -1857,7 +1851,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20191128';
+        statement.writeDate := '20210615';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -1867,9 +1861,6 @@ begin
 
         // 발행시 수신자 알림문자 전송여부
         statement.SMSSendYN := false;
-
-         // 발행시 자동승인 여부 (수신자의 승인여부와 관계없이 발행)
-        statement.AutoAcceptYN := false;
 
         // [필수] 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_'
         // 조합으로 구성사업자별로 중복되지 않도록 구성
@@ -2054,7 +2045,7 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message + #10#13 +'팝빌 승인번호 : '+  response.invoiceNum);
 end;
 
 procedure TfrmExample.btnGetChargeURLClick(Sender: TObject);
@@ -2187,9 +2178,6 @@ begin
 
         // 발행시 수신자 알림문자 전송여부
         statement.SMSSendYN := false;
-
-         // 발행시 자동승인 여부 (수신자의 승인여부와 관계없이 발행)
-        statement.AutoAcceptYN := true;
 
         // 거래명세서 문서번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
         // 사업자별로 중복되지 않도록 구성
