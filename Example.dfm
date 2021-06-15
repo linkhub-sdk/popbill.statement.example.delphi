@@ -30,9 +30,9 @@ object frmExample: TfrmExample
   end
   object GroupBox1: TGroupBox
     Left = 16
-    Top = 216
+    Top = 232
     Width = 1113
-    Height = 417
+    Height = 401
     Caption = '전자명세서 관련 API'
     TabOrder = 0
     object Label1: TLabel
@@ -167,7 +167,7 @@ object frmExample: TfrmExample
     end
     object GroupBox3: TGroupBox
       Left = 16
-      Top = 192
+      Top = 176
       Width = 177
       Height = 217
       Caption = '첨부파일'
@@ -218,7 +218,7 @@ object frmExample: TfrmExample
     end
     object GroupBox5: TGroupBox
       Left = 200
-      Top = 192
+      Top = 176
       Width = 177
       Height = 217
       Caption = '문서 정보'
@@ -271,7 +271,7 @@ object frmExample: TfrmExample
     end
     object GroupBox6: TGroupBox
       Left = 384
-      Top = 192
+      Top = 176
       Width = 345
       Height = 217
       Caption = '부가서비스'
@@ -368,7 +368,7 @@ object frmExample: TfrmExample
     end
     object GroupBox10: TGroupBox
       Left = 920
-      Top = 192
+      Top = 176
       Width = 177
       Height = 217
       Caption = '기타  URL'
@@ -479,7 +479,7 @@ object frmExample: TfrmExample
     end
     object GroupBox7: TGroupBox
       Left = 736
-      Top = 192
+      Top = 176
       Width = 177
       Height = 217
       Caption = ' 문서관련 URL기능'
@@ -544,7 +544,7 @@ object frmExample: TfrmExample
     Left = 16
     Top = 40
     Width = 1113
-    Height = 163
+    Height = 185
     Caption = '팝빌 기본 API'
     TabOrder = 1
     object GroupBox9: TGroupBox
@@ -638,7 +638,7 @@ object frmExample: TfrmExample
       Left = 816
       Top = 24
       Width = 145
-      Height = 123
+      Height = 153
       Caption = '담당자 관련'
       TabOrder = 3
       object btnRegistContact: TButton
@@ -652,7 +652,7 @@ object frmExample: TfrmExample
       end
       object btnListContact: TButton
         Left = 8
-        Top = 56
+        Top = 88
         Width = 129
         Height = 25
         Caption = '담당자 목록 조회'
@@ -661,12 +661,21 @@ object frmExample: TfrmExample
       end
       object btnUpdateContact: TButton
         Left = 8
-        Top = 88
+        Top = 120
         Width = 129
         Height = 25
         Caption = '담당자 정보 수정'
         TabOrder = 2
         OnClick = btnUpdateContactClick
+      end
+      object btnGetContactInfo: TButton
+        Left = 8
+        Top = 56
+        Width = 129
+        Height = 25
+        Caption = '담당자 정보 확인'
+        TabOrder = 3
+        OnClick = btnGetContactInfoClick
       end
     end
     object GroupBox14: TGroupBox
@@ -744,7 +753,7 @@ object frmExample: TfrmExample
     Left = 480
     Top = 64
     Width = 145
-    Height = 124
+    Height = 153
     Caption = '파트너과금 포인트'
     TabOrder = 5
     object btnGetPartnerBalance: TButton
@@ -764,6 +773,24 @@ object frmExample: TfrmExample
       Caption = '포인트 충전 URL'
       TabOrder = 1
       OnClick = btnGetPartnerURL_CHRGClick
+    end
+    object btnGetPaymentURL: TButton
+      Left = 8
+      Top = 88
+      Width = 129
+      Height = 25
+      Caption = '포인트 결제내역 URL'
+      TabOrder = 2
+      OnClick = btnGetPaymentURLClick
+    end
+    object btnGetUseHistoryURL: TButton
+      Left = 8
+      Top = 120
+      Width = 129
+      Height = 25
+      Caption = '포인트 사용내역 URL'
+      TabOrder = 3
+      OnClick = btnGetUseHistoryURLClick
     end
   end
   object OpenDialog1: TOpenDialog
