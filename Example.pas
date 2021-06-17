@@ -332,7 +332,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자, 작성양식 yyyyMMdd
-        statement.writeDate := '20190319';
+        statement.writeDate := '20210615';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -462,7 +462,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20190114';      //거래일자
+        statement.detailList[0].purchaseDT := '20210615';      //거래일자
         statement.detailList[0].itemName := '품목명';          //품목명
         statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
@@ -478,7 +478,7 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20190114';      //거래일자
+        statement.detailList[1].purchaseDT := '20210615';      //거래일자
         statement.detailList[1].itemName := '품목명';          //품목명
         statement.detailList[1].spec := '규격';                //규격
         statement.detailList[1].qty := '1';                    //수량
@@ -788,10 +788,10 @@ begin
 
         //전자명세서 문서관리번호 배열 (최대 1000건)
         SetLength(KeyList,4);
-        KeyList[0] := '20190320-01';
-        KeyList[1] := '20190320-02';
-        KeyList[2] := '20190320-03';
-        KeyList[3] := '20190320-04';
+        KeyList[0] := '20210615-01';
+        KeyList[1] := '20210615-02';
+        KeyList[2] := '20210615-03';
+        KeyList[3] := '20210615-04';
 
         try
                 InfoList := statementService.getInfos(txtCorpNum.text, ItemCode, KeyList);
@@ -1201,8 +1201,8 @@ begin
 
         // 전자명세서 문서관리번호 배열, 최대 100건
         SetLength(KeyList,2);
-        KeyList[0] := '20190114-001';
-        KeyList[1] := '20190114-002';
+        KeyList[0] := '20210615-001';
+        KeyList[1] := '20210615-002';
 
         try
                 resultURL := statementService.getMassPrintURL(txtCorpNum.text, ItemCode, KeyList);
@@ -1247,7 +1247,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20190319';
+        statement.writeDate := '20210615';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -1377,7 +1377,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20190114';      //거래일자
+        statement.detailList[0].purchaseDT := '20210615';      //거래일자
         statement.detailList[0].itemName := '품목명';          //품목명
         statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
@@ -1393,7 +1393,7 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20190114';      //거래일자
+        statement.detailList[1].purchaseDT := '20210615';      //거래일자
         statement.detailList[1].itemName := '품목명';          //품목명
         statement.detailList[1].spec := '규격';                //규격
         statement.detailList[1].qty := '1';                    //수량
@@ -1982,7 +1982,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20190114';      //거래일자
+        statement.detailList[0].purchaseDT := '20210615';      //거래일자
         statement.detailList[0].itemName := '품목명';          //품목명
         statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
@@ -1998,7 +1998,7 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20190114';      //거래일자
+        statement.detailList[1].purchaseDT := '20210615';      //거래일자
         statement.detailList[1].itemName := '품목명';          //품목명
         statement.detailList[1].spec := '규격';                //규격
         statement.detailList[1].qty := '1';                    //수량
@@ -2170,7 +2170,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20190114';
+        statement.writeDate := '20210615';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
@@ -2291,7 +2291,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20190114';      //거래일자
+        statement.detailList[0].purchaseDT := '20210615';      //거래일자
         statement.detailList[0].itemName := '품목명';          //품목명
         statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
@@ -2307,7 +2307,7 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20190114';      //거래일자
+        statement.detailList[1].purchaseDT := '20210615';      //거래일자
         statement.detailList[1].itemName := '품목명';          //품목명
         statement.detailList[1].spec := '규격';                //규격
         statement.detailList[1].qty := '1';                    //수량
@@ -2385,10 +2385,10 @@ begin
         DType := 'W';
 
         // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
-        SDate := '20190101';
+        SDate := '20210601';
 
         // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
-        EDate := '20190114';
+        EDate := '20210615';
 
         // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
         // 상태코드에 대한 자세한 사항은 "[전자명세서 API연동매뉴얼] > 5.1 전자명세서 상태코드" 를 참조하시기 바랍니다.
@@ -2489,7 +2489,7 @@ begin
         SubItemCode := 121;
 
         // 첨부할 전자명세서 문서번호
-        SubMgtKey := '20190114-002';
+        SubMgtKey := '20210615-002';
 
         try
                 response := statementService.AttachStatement(txtCorpNum.text, ItemCode, tbMgtKey.Text, SubItemCode, SubMgtKey);
@@ -2517,7 +2517,7 @@ begin
         SubItemCode := 121;
 
         // 첨부해제할 전자명세서 문서번호
-        SubMgtKey := '20190114-002';
+        SubMgtKey := '20210615-002';
 
         try
                 response := statementService.DetachStatement(txtCorpNum.text, ItemCode, tbMgtKey.Text, SubItemCode, SubMgtKey);
