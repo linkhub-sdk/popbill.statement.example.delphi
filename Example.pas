@@ -201,7 +201,7 @@ begin
         statementService.IsTest := true;
 
         //Exception 처리 설정값, true(기본값)
-        statementService.IsThrowException := true;
+        statementService.IsThrowException := false;
 
         //인증토큰 IP제한기능 사용여부, true(권장)
         statementService.IPRestrictOnOff := true;
@@ -244,7 +244,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL : ' + #13 + resultURL);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
+
 end;
 
 procedure TfrmExample.btnJoinMemberClick(Sender: TObject);
@@ -308,7 +316,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnRegisterClick(Sender: TObject);
@@ -522,8 +537,15 @@ begin
                         Exit;
                 end;
         end;
-        
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
+
 end;
 
 procedure TfrmExample.btnGetBalanceClick(Sender: TObject);
@@ -545,7 +567,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('잔여포인트 : ' + FloatToStr(balance));
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('잔여포인트 : ' + FloatToStr(balance));
+        end;
 end;
 
 procedure TfrmExample.btnGetUnitCostClick(Sender: TObject);
@@ -596,7 +625,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('잔여포인트 : ' + FloatToStr(balance));
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('잔여포인트 : ' + FloatToStr(balance));
+        end;
+
 end;
 
 procedure TfrmExample.btnDeleteClick(Sender: TObject);
@@ -618,7 +655,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnAttachFileClick(Sender: TObject);
@@ -649,7 +693,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;                                                 
 
 procedure TfrmExample.btnGetFileListClick(Sender: TObject);
@@ -716,7 +767,14 @@ begin
                 end;
         end;
 
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 
@@ -922,7 +980,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnIssueClick(Sender: TObject);
@@ -948,7 +1013,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnSendSMSClick(Sender: TObject);
@@ -984,7 +1056,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnSendEmailClick(Sender: TObject);
@@ -1009,7 +1088,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnSendFaxClick(Sender: TObject);
@@ -1041,7 +1127,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnGetURL1Click(Sender: TObject);
@@ -1434,7 +1527,14 @@ begin
                 end;
         end;
 
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 
@@ -1637,7 +1737,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnRegistContactClick(Sender: TObject);
@@ -1682,7 +1789,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
+
 end;
 
 procedure TfrmExample.btnListContactClick(Sender: TObject);
@@ -1704,24 +1819,30 @@ begin
                         Exit;
                 end;
         end;
-
-        tmp := 'id(아이디) | email(이메일) | hp(휴대폰) | personName(성명) | searchRole(담당자 조회 권한) | ';
-        tmp := tmp + 'tel(연락처) | fax(팩스) | mgrYN(관리자 여부) | regDT(등록일시) | state(상태)' + #13;
-
-        for i := 0 to Length(InfoList) -1 do
+        if statementService.LastErrCode <> 0 then
         begin
-            tmp := tmp + InfoList[i].id + ' | ';
-            tmp := tmp + InfoList[i].email + ' | ';
-            tmp := tmp + InfoList[i].hp + ' | ';
-            tmp := tmp + InfoList[i].personName + ' | ';
-            tmp := tmp + InfoList[i].searchRole + ' | ';
-            tmp := tmp + InfoList[i].tel + ' | ';
-            tmp := tmp + InfoList[i].fax + ' | ';
-            tmp := tmp + BoolToStr(InfoList[i].mgrYN) + ' | ';
-            tmp := tmp + InfoList[i].regDT + ' | ';
-            tmp := tmp + IntToStr(InfoList[i].state) + #13;
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                tmp := 'id(아이디) | email(이메일) | hp(휴대폰) | personName(성명) | searchRole(담당자 조회 권한) | ';
+                tmp := tmp + 'tel(연락처) | fax(팩스) | mgrYN(관리자 여부) | regDT(등록일시) | state(상태)' + #13;
+
+                for i := 0 to Length(InfoList) -1 do
+                begin
+                    tmp := tmp + InfoList[i].id + ' | ';
+                    tmp := tmp + InfoList[i].email + ' | ';
+                    tmp := tmp + InfoList[i].hp + ' | ';
+                    tmp := tmp + InfoList[i].personName + ' | ';
+                    tmp := tmp + InfoList[i].searchRole + ' | ';
+                    tmp := tmp + InfoList[i].tel + ' | ';
+                    tmp := tmp + InfoList[i].fax + ' | ';
+                    tmp := tmp + BoolToStr(InfoList[i].mgrYN) + ' | ';
+                    tmp := tmp + InfoList[i].regDT + ' | ';
+                    tmp := tmp + IntToStr(InfoList[i].state) + #13;
+                end;
+                ShowMessage(tmp);
         end;
-        ShowMessage(tmp);
 end;
 
 procedure TfrmExample.btnUpdateContactClick(Sender: TObject);
@@ -1765,7 +1886,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+               ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
+
 end;
 
 procedure TfrmExample.btnGetCorpInfoClick(Sender: TObject);
@@ -1786,12 +1915,20 @@ begin
                 end;
         end;
 
-        tmp := 'CorpName (상호) : ' + corpInfo.CorpName + #13;
-        tmp := tmp + 'CeoName (대표자 성명) : ' + corpInfo.CeoName + #13;
-        tmp := tmp + 'BizType (업태) : ' + corpInfo.BizType + #13;
-        tmp := tmp + 'BizClass (종목) : ' + corpInfo.BizClass + #13;
-        tmp := tmp + 'Addr (주소) : ' + corpInfo.Addr + #13;
-        ShowMessage(tmp);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                tmp := 'CorpName (상호) : ' + corpInfo.CorpName + #13;
+                tmp := tmp + 'CeoName (대표자 성명) : ' + corpInfo.CeoName + #13;
+                tmp := tmp + 'BizType (업태) : ' + corpInfo.BizType + #13;
+                tmp := tmp + 'BizClass (종목) : ' + corpInfo.BizClass + #13;
+                tmp := tmp + 'Addr (주소) : ' + corpInfo.Addr + #13;
+                ShowMessage(tmp);
+        end;
+
 end;
 
 procedure TfrmExample.btnUpdateCorpInfoClick(Sender: TObject);
@@ -1829,7 +1966,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnRegistIssueClick(Sender: TObject);
@@ -2047,7 +2191,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message + #10#13 +'팝빌 승인번호 : '+  response.invoiceNum);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message + #10#13 +'팝빌 승인번호 : '+  response.invoiceNum);
+        end;
+
 end;
 
 procedure TfrmExample.btnGetChargeURLClick(Sender: TObject);
@@ -2067,7 +2219,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL : ' + #13 + resultURL);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
+
 end;
 
 procedure TfrmExample.btnCheckIsMemberClick(Sender: TObject);
@@ -2087,7 +2247,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnCancelClick(Sender: TObject);
@@ -2113,7 +2280,14 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnDelete_registIssueClick(Sender: TObject);
@@ -2135,7 +2309,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnFaxSendClick(Sender: TObject);
@@ -2431,47 +2613,55 @@ begin
                 end;
         end;
 
-        tmp := 'code(응답코드) : '+IntToStr(SearchList.code) + #13;
-        tmp := tmp + 'total(총 검색결과 건수) : '+ IntToStr(SearchList.total) + #13;
-        tmp := tmp + 'perPage(페이지당 검색개수) : '+ IntToStr(SearchList.perPage) + #13;
-        tmp := tmp + 'pageNum(페이지 번호) : '+ IntToStr(SearchList.pageNum) + #13;
-        tmp := tmp + 'pageCount(페이지 개수) : '+ IntToStr(SearchList.pageCount) + #13;
-        tmp := tmp + 'message(응답메시지) : '+ SearchList.message + #13#13;
-
-        tmp := tmp + 'itemCode(문서종류코드) | itemKey(팝빌번호) | invoiceNum(문서고유번호) | mgtKey(문서번호) | taxType(세금형태) | ';
-        tmp := tmp + 'writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | ' ;
-        tmp := tmp + 'senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | ';
-        tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | ';
-        tmp := tmp + 'issueDT(발행일시) | stateCode(상태코드) | stateDT(상태 변경일시) | stateMemo(상태메모) | ';
-        tmp := tmp + 'openYN(개봉 여부) | openDT(개봉 일시)' + #13 + #13;
-
-        for i := 0 to Length(SearchList.list) -1 do
+        if statementService.LastErrCode <> 0 then
         begin
-            tmp := tmp + IntToStr(SearchList.list[i].itemCode) + ' | '
-                   + SearchList.list[i].itemKey + ' | '
-                   + SearchList.list[i].invoiceNum + ' | '
-                   + SearchList.list[i].mgtKey + ' | '
-                   + SearchList.list[i].taxType + ' | '
-                   + SearchList.list[i].writeDate + ' | '
-                   + SearchList.list[i].regDT + ' | '
-                   + SearchList.list[i].senderCorpName + ' | '
-                   + SearchList.list[i].senderCorpNum + ' | '
-                   + BoolToStr(SearchList.list[i].senderPrintYN) + ' | '
-                   + SearchList.list[i].receiverCorpName + ' | '
-                   + SearchList.list[i].receiverCorpNum + ' | '
-                   + BoolToStr(SearchList.list[i].receiverPrintYN) + ' | '
-                   + SearchList.list[i].supplyCostTotal + ' | '
-                   + SearchList.list[i].taxTotal + ' | '
-                   + SearchList.list[i].purposeType + ' | '
-                   + SearchList.list[i].issueDT + ' | '
-                   + IntToStr(SearchList.list[i].stateCode) + ' | '
-                   + SearchList.list[i].stateDT + ' | '
-                   + SearchList.list[i].stateMemo + ' | '
-                   + BoolToStr(SearchList.list[i].openYN) + ' | '
-                   + SearchList.list[i].openDT + #13 + #13;;
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                tmp := 'code(응답코드) : '+IntToStr(SearchList.code) + #13;
+                tmp := tmp + 'total(총 검색결과 건수) : '+ IntToStr(SearchList.total) + #13;
+                tmp := tmp + 'perPage(페이지당 검색개수) : '+ IntToStr(SearchList.perPage) + #13;
+                tmp := tmp + 'pageNum(페이지 번호) : '+ IntToStr(SearchList.pageNum) + #13;
+                tmp := tmp + 'pageCount(페이지 개수) : '+ IntToStr(SearchList.pageCount) + #13;
+                tmp := tmp + 'message(응답메시지) : '+ SearchList.message + #13#13;
+
+                tmp := tmp + 'itemCode(문서종류코드) | itemKey(팝빌번호) | invoiceNum(문서고유번호) | mgtKey(문서번호) | taxType(세금형태) | ';
+                tmp := tmp + 'writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | ' ;
+                tmp := tmp + 'senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | ';
+                tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | ';
+                tmp := tmp + 'issueDT(발행일시) | stateCode(상태코드) | stateDT(상태 변경일시) | stateMemo(상태메모) | ';
+                tmp := tmp + 'openYN(개봉 여부) | openDT(개봉 일시)' + #13 + #13;
+
+                for i := 0 to Length(SearchList.list) -1 do
+                begin
+                    tmp := tmp + IntToStr(SearchList.list[i].itemCode) + ' | '
+                           + SearchList.list[i].itemKey + ' | '
+                           + SearchList.list[i].invoiceNum + ' | '
+                           + SearchList.list[i].mgtKey + ' | '
+                           + SearchList.list[i].taxType + ' | '
+                           + SearchList.list[i].writeDate + ' | '
+                           + SearchList.list[i].regDT + ' | '
+                           + SearchList.list[i].senderCorpName + ' | '
+                           + SearchList.list[i].senderCorpNum + ' | '
+                           + BoolToStr(SearchList.list[i].senderPrintYN) + ' | '
+                           + SearchList.list[i].receiverCorpName + ' | '
+                           + SearchList.list[i].receiverCorpNum + ' | '
+                           + BoolToStr(SearchList.list[i].receiverPrintYN) + ' | '
+                           + SearchList.list[i].supplyCostTotal + ' | '
+                           + SearchList.list[i].taxTotal + ' | '
+                           + SearchList.list[i].purposeType + ' | '
+                           + SearchList.list[i].issueDT + ' | '
+                           + IntToStr(SearchList.list[i].stateCode) + ' | '
+                           + SearchList.list[i].stateDT + ' | '
+                           + SearchList.list[i].stateMemo + ' | '
+                           + BoolToStr(SearchList.list[i].openYN) + ' | '
+                           + SearchList.list[i].openDT + #13 + #13;;
+                end;
+                SearchList.Free;
+                ShowMessage(tmp);
         end;
-        SearchList.Free;
-        ShowMessage(tmp);
+
 end;
 
 procedure TfrmExample.btnAttachStatementClick(Sender: TObject);
@@ -2499,7 +2689,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
 end;
 
 procedure TfrmExample.btnDetachStatementClick(Sender: TObject);
@@ -2527,7 +2725,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(response.code) + #10#13 + '응답메시지 : '+ response.Message);
+        end;
+
 end;
 
 procedure TfrmExample.btnGetChargeInfoClick(Sender: TObject);
@@ -2609,7 +2815,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL : ' + #13 + resultURL);
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
+
 end;
 
 procedure TfrmExample.btnListEmailConfigClick(Sender: TObject);
@@ -2688,7 +2902,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('응답코드 : '+ IntToStr(response.code) + #10#13 +'응답메시지 : '+  response.Message);
+
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('응답코드 : '+ IntToStr(response.code) + #10#13 +'응답메시지 : '+  response.Message);
+        end;
 end;
 
 
@@ -2739,7 +2961,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL :  ' + #13 + resultURL);
+        
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
 end;
 
 procedure TfrmExample.btnGetUseHistoryURLClick(Sender: TObject);
@@ -2760,7 +2990,15 @@ begin
                         Exit;
                 end;
         end;
-        ShowMessage('URL :  ' + #13 + resultURL);
+        
+        if statementService.LastErrCode <> 0 then
+        begin
+                ShowMessage('응답코드 : ' + IntToStr(statementService.LastErrCode) + #10#13 +'응답메시지 : '+ statementService.LastErrMessage);
+        end
+        else
+        begin
+                ShowMessage('URL : ' + #13 + resultURL);
+        end;
 
 end;
 
