@@ -344,7 +344,7 @@ begin
         statement.SMSSendYN := false;
 
 
-        // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
+        // 전자명세서 문서번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
         // 사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
 
@@ -605,7 +605,7 @@ var
 begin
         {**********************************************************************}
         { 1건의 전자명세서를 [삭제]합니다. 전자명세서가 삭제된 경우에만
-        { 문서관리번호(mgtKey)를 재사용 할 수 있습니다.
+        { 문서번호(mgtKey)를 재사용 할 수 있습니다.
         { - 삭제가능한 문서 상태 : [임시저장], [발행취소], [거부]
         { - https://docs.popbill.com/statement/delphi/api#Delete
         {**********************************************************************}
@@ -748,9 +748,9 @@ begin
         else
         begin        
                 tmp := tmp + 'itemCode(문서종류코드) :' + IntToStr(statementInfo.itemCode) + #13;
-                tmp := tmp + 'itemKey(팝빌 관리번호) :' + statementInfo.itemKey + #13;
+                tmp := tmp + 'itemKey(팝빌번호) :' + statementInfo.itemKey + #13;
                 tmp := tmp + 'invoiceNum(문서고유번호) :' + statementInfo.invoiceNum + #13;
-                tmp := tmp + 'mgtKey(문서관리번호) :' + statementInfo.mgtKey + #13;
+                tmp := tmp + 'mgtKey(문서번호) :' + statementInfo.mgtKey + #13;
                 tmp := tmp + 'taxType(세금형태) :' + statementInfo.taxType + #13;
                 tmp := tmp + 'writeDate(작성일자) :' + statementInfo.writeDate + #13;
                 tmp := tmp + 'regDT(임시저장일시) :' + statementInfo.regDT + #13;
@@ -786,7 +786,7 @@ begin
         { - https://docs.popbill.com/statement/delphi/api#GetInfos
         {**********************************************************************}
 
-        //전자명세서 문서관리번호 배열 (최대 1000건)
+        //전자명세서 문서번호 배열 (최대 1000건)
         SetLength(KeyList,4);
         KeyList[0] := '20210615-01';
         KeyList[1] := '20210615-02';
@@ -809,7 +809,7 @@ begin
         end
         else
         begin
-                tmp := 'itemCode(문서종류코드) | itemKey(팝빌 관리번호) | invoiceNum(문서고유번호) | mgtKey(문서관리번호) | taxType(세금형태) | ';
+                tmp := 'itemCode(문서종류코드) | itemKey(팝빌번호) | invoiceNum(문서고유번호) | mgtKey(문서번호) | taxType(세금형태) | ';
                 tmp := tmp + 'writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | ' ;
                 tmp := tmp + 'senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | ';
                 tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | ';
@@ -1199,7 +1199,7 @@ begin
        { - https://docs.popbill.com/statement/delphi/api#GetPrintURL
        {**********************************************************************}
 
-        // 전자명세서 문서관리번호 배열, 최대 100건
+        // 전자명세서 문서번호 배열, 최대 100건
         SetLength(KeyList,2);
         KeyList[0] := '20210615-001';
         KeyList[1] := '20210615-002';
@@ -1258,7 +1258,7 @@ begin
         // 발행시 수신자 알림문자 전송여부
         statement.SMSSendYN := false;
 
-        // 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
+        // 전자명세서 문서번호, 1~24자리, 영문, 숫자, '-', '_' 조합으로 구성
         // 사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
 
@@ -1466,7 +1466,7 @@ begin
         else
         begin
                 tmp := tmp +'itemCode(문서종류 코드) : ' +  IntToStr(statement.itemCode) + #13;
-                tmp := tmp +'mgtKey(문서관리번호) : ' +  statement.mgtKey + #13;
+                tmp := tmp +'mgtKey(문서번호) : ' +  statement.mgtKey + #13;
                 tmp := tmp +'invoiceNum(문서고유번호) : ' +  statement.invoiceNum + #13;
                 tmp := tmp +'formCode(맞춤양식 코드) : ' +  statement.formCode + #13;
                 tmp := tmp +'writeDate(작성일자) : ' +  statement.WriteDate + #13;
@@ -1864,7 +1864,7 @@ begin
         // 발행시 수신자 알림문자 전송여부
         statement.SMSSendYN := false;
 
-        // [필수] 전자명세서 문서관리번호, 1~24자리, 영문, 숫자, '-', '_'
+        // [필수] 전자명세서 문서번호, 1~24자리, 영문, 숫자, '-', '_'
         // 조합으로 구성사업자별로 중복되지 않도록 구성
         statement.MgtKey := tbMgtKey.Text;
 
@@ -2438,7 +2438,7 @@ begin
         tmp := tmp + 'pageCount(페이지 개수) : '+ IntToStr(SearchList.pageCount) + #13;
         tmp := tmp + 'message(응답메시지) : '+ SearchList.message + #13#13;
 
-        tmp := tmp + 'itemCode(문서종류코드) | itemKey(팝빌 관리번호) | invoiceNum(문서고유번호) | mgtKey(문서번호) | taxType(세금형태) | ';
+        tmp := tmp + 'itemCode(문서종류코드) | itemKey(팝빌번호) | invoiceNum(문서고유번호) | mgtKey(문서번호) | taxType(세금형태) | ';
         tmp := tmp + 'writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | ' ;
         tmp := tmp + 'senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | ';
         tmp := tmp + 'receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | ';
