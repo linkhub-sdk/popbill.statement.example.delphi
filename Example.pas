@@ -201,7 +201,7 @@ begin
         statementService.IsTest := true;
 
         //Exception 처리 설정값, true(기본값)
-        statementService.IsThrowException := false;
+        statementService.IsThrowException := true;
 
         //인증토큰 IP제한기능 사용여부, true(권장)
         statementService.IPRestrictOnOff := true;
