@@ -1979,7 +1979,7 @@ end;
 procedure TfrmExample.btnRegistIssueClick(Sender: TObject);
 var
         statement : TStatement;
-        response : TIssueResponse;
+        response : TSMTIssueResponse;
         memo, emailSubject : String;
 begin
         {**********************************************************************}
@@ -1997,7 +1997,7 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20210615';
+        statement.writeDate := '20210625';
 
         // [필수] {영수, 청구} 중 기재
         statement.purposeType := '영수';
