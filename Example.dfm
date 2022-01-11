@@ -41,7 +41,7 @@ object frmExample: TfrmExample
       Width = 129
       Height = 13
       AutoSize = False
-      Caption = '문서관리번호(MgtKey) :'
+      Caption = '문서번호(MgtKey) :'
     end
     object Label5: TLabel
       Left = 48
@@ -362,7 +362,7 @@ object frmExample: TfrmExample
       Top = 114
       Width = 160
       Height = 23
-      Caption = '관리번호 사용여부 확인'
+      Caption = '문서번호 사용여부 확인'
       TabOrder = 5
       OnClick = btnCheckMgtKeyInUseClick
     end

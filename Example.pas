@@ -1,15 +1,14 @@
 {******************************************************************************}
 { 팝빌 전자명세서 API Delphi SDK Example
 {
-{ - 업데이트 일자 : 2021-06-15
-{ - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991
-{ - 연동 기술지원 이메일 : code@linkhub.co.kr
+{ - 업데이트 일자 : 2021-01-10
+{ - 연동 기술지원 연락처 : 1600-8536
+{ - 연동 기술지원 이메일 : code@linkhubcorp.com
 { - SDK 튜토리얼 : https://docs.popbill.com/statement/tutorial/delphi
 {
 { <테스트 연동개발 준비사항>
-{ (1) 32, 35번 라인에 선언된 링크아이디(LinkID)와 비밀키(SecretKey)를
+{ (1) 31, 34번 라인에 선언된 링크아이디(LinkID)와 비밀키(SecretKey)를
 {    링크허브 가입시 메일로 발급받은 인증정보로 수정
-{ (2) 팝빌 개발용 사이트(test.popbill.com)에 연동회원으로 가입
 {                                                                              
 {******************************************************************************}
 unit Example;
@@ -347,9 +346,9 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자, 작성양식 yyyyMMdd
-        statement.writeDate := '20210615';
+        statement.writeDate := '20220101';
 
-        // [필수] {영수, 청구} 중 기재
+        // [필수] {영수, 청구, 없음} 중 기재
         statement.purposeType := '영수';
 
         // [필수] {과세, 영세, 면세} 중 기재
@@ -477,7 +476,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20210615';      //거래일자
+        statement.detailList[0].purchaseDT := '20220101';      //거래일자
         statement.detailList[0].itemName := '품목명';          //품목명
         statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
@@ -493,7 +492,7 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20210615';      //거래일자
+        statement.detailList[1].purchaseDT := '20220101';      //거래일자
         statement.detailList[1].itemName := '품목명';          //품목명
         statement.detailList[1].spec := '규격';                //규격
         statement.detailList[1].qty := '1';                    //수량
@@ -509,8 +508,8 @@ begin
 
         {**********************************************************************}
         {                           추가속성 항목                              }
-        { - 추가속성 항목에 대한 자세한 사항은 "[전자명세서 api 연동매뉴얼] >  }
-        {   5.2. 기본양식 추가속성 테이블" 참조하시기 바랍니다.                }
+        { -추가속성에 관한 자세한 사항은 아래의 URL을 참조.                     }
+        { - https://docs.popbill.com/statement/propertyBag?lang=delphi         }
         {**********************************************************************}
 
         setLength(statement.propertyBag,3);
@@ -846,10 +845,10 @@ begin
 
         //전자명세서 문서번호 배열 (최대 1000건)
         SetLength(KeyList,4);
-        KeyList[0] := '20210615-01';
-        KeyList[1] := '20210615-02';
-        KeyList[2] := '20210615-03';
-        KeyList[3] := '20210615-04';
+        KeyList[0] := '20220101-01';
+        KeyList[1] := '20220101-02';
+        KeyList[2] := '20220101-03';
+        KeyList[3] := '20220101-04';
 
         try
                 InfoList := statementService.getInfos(txtCorpNum.text, ItemCode, KeyList);
@@ -1294,8 +1293,8 @@ begin
 
         // 전자명세서 문서번호 배열, 최대 100건
         SetLength(KeyList,2);
-        KeyList[0] := '20210615-001';
-        KeyList[1] := '20210615-002';
+        KeyList[0] := '20220101-001';
+        KeyList[1] := '20220101-002';
 
         try
                 resultURL := statementService.getMassPrintURL(txtCorpNum.text, ItemCode, KeyList);
@@ -1340,9 +1339,9 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20210615';
+        statement.writeDate := '20220101';
 
-        // [필수] {영수, 청구} 중 기재
+        // [필수] {영수, 청구, 없음} 중 기재
         statement.purposeType := '영수';
 
         // [필수] {과세, 영세, 면세} 중 기재
@@ -1470,7 +1469,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20210615';      //거래일자
+        statement.detailList[0].purchaseDT := '20220101';      //거래일자
         statement.detailList[0].itemName := '품목명';          //품목명
         statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
@@ -1486,7 +1485,7 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20210615';      //거래일자
+        statement.detailList[1].purchaseDT := '20220101';      //거래일자
         statement.detailList[1].itemName := '품목명';          //품목명
         statement.detailList[1].spec := '규격';                //규격
         statement.detailList[1].qty := '1';                    //수량
@@ -1500,7 +1499,12 @@ begin
         statement.detailList[1].spare4 := '여분4';             //여분4
         statement.detailList[1].spare5 := '여분5';             //여분5
 
-        //추가속성항목, 자세한 사항은 "[전자명세서 api 연동매뉴얼] > 5.2. 기본양식 추가속성 테이블" 참조
+
+        {**********************************************************************}
+        {                           추가속성 항목                              }
+        { -추가속성에 관한 자세한 사항은 아래의 URL을 참조.                     }
+        { - https://docs.popbill.com/statement/propertyBag?lang=delphi         }
+        {**********************************************************************}
         setLength(statement.propertyBag,3);
 
         statement.propertyBag[0] := TProperty.Create;
@@ -1997,9 +2001,9 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20210625';
+        statement.writeDate := '20220101';
 
-        // [필수] {영수, 청구} 중 기재
+        // [필수] {영수, 청구, 없음} 중 기재
         statement.purposeType := '영수';
 
         // [필수] {과세, 영세, 면세} 중 기재
@@ -2126,7 +2130,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20210615';      //거래일자
+        statement.detailList[0].purchaseDT := '20220101';      //거래일자
         statement.detailList[0].itemName := '품목명';          //품목명
         statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
@@ -2142,7 +2146,7 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20210615';      //거래일자
+        statement.detailList[1].purchaseDT := '20220101';      //거래일자
         statement.detailList[1].itemName := '품목명';          //품목명
         statement.detailList[1].spec := '규격';                //규격
         statement.detailList[1].qty := '1';                    //수량
@@ -2158,8 +2162,8 @@ begin
 
         {**********************************************************************}
         {                           추가속성 항목                              }
-        { - 추가속성 항목에 대한 자세한 사항은 "[전자명세서 api 연동매뉴얼] >  }
-        {   5.2. 기본양식 추가속성 테이블" 참조하시기 바랍니다.                }
+        { -추가속성에 관한 자세한 사항은 아래의 URL을 참조.                     }
+        { - https://docs.popbill.com/statement/propertyBag?lang=delphi         }
         {**********************************************************************}
 
         setLength(statement.propertyBag,3);
@@ -2352,9 +2356,9 @@ begin
         statement.formCode := txtFormCode.Text;
 
         // [필수] 작성일자
-        statement.writeDate := '20210615';
+        statement.writeDate := '20220101';
 
-        // [필수] {영수, 청구} 중 기재
+        // [필수] {영수, 청구, 없음} 중 기재
         statement.purposeType := '영수';
 
         // [필수] {과세, 영세, 면세} 중 기재
@@ -2473,7 +2477,7 @@ begin
 
         statement.detailList[0] := TStatementDetail.Create;
         statement.detailList[0].serialNum := 1;                //일련번호
-        statement.detailList[0].purchaseDT := '20210615';      //거래일자
+        statement.detailList[0].purchaseDT := '20220101';      //거래일자
         statement.detailList[0].itemName := '품목명';          //품목명
         statement.detailList[0].spec := '규격';                //규격
         statement.detailList[0].qty := '1';                    //수량
@@ -2489,7 +2493,7 @@ begin
 
         statement.detailList[1] := TStatementDetail.Create;
         statement.detailList[1].serialNum := 2;                //일련번호
-        statement.detailList[1].purchaseDT := '20210615';      //거래일자
+        statement.detailList[1].purchaseDT := '20220101';      //거래일자
         statement.detailList[1].itemName := '품목명';          //품목명
         statement.detailList[1].spec := '규격';                //규격
         statement.detailList[1].qty := '1';                    //수량
@@ -2505,8 +2509,8 @@ begin
 
         {**********************************************************************}
         {                           추가속성 항목                              }
-        { - 추가속성 항목에 대한 자세한 사항은 "[전자명세서 api 연동매뉴얼] >  }
-        {   5.2. 기본양식 추가속성 테이블" 참조하시기 바랍니다.                }
+        { -추가속성에 관한 자세한 사항은 아래의 URL을 참조.                     }
+        { - https://docs.popbill.com/statement/propertyBag?lang=delphi         }
         {**********************************************************************}
 
         setLength(statement.propertyBag,3);
@@ -2567,13 +2571,12 @@ begin
         DType := 'W';
 
         // [필수] 검색 시작일자, 작성형태(yyyyMMdd)
-        SDate := '20210601';
+        SDate := '20220101';
 
         // [필수] 검색 종료일자, 작성형태(yyyyMMdd)
-        EDate := '20210615';
+        EDate := '20220110';
 
         // 전송상태값 배열. 미기재시 전체조회, 문서상태 값 3자리의 배열, 2,3번째 자리 와일드 카드 사용가능
-        // 상태코드에 대한 자세한 사항은 "[전자명세서 API연동매뉴얼] > 5.1 전자명세서 상태코드" 를 참조하시기 바랍니다.
         SetLength(StateList, 2);
         StateList[0] := '2**';
         StateList[1] := '3**';
@@ -2679,7 +2682,7 @@ begin
         SubItemCode := 121;
 
         // 첨부할 전자명세서 문서번호
-        SubMgtKey := '20210615-002';
+        SubMgtKey := '20220101-002';
 
         try
                 response := statementService.AttachStatement(txtCorpNum.text, ItemCode, tbMgtKey.Text, SubItemCode, SubMgtKey);
@@ -2715,7 +2718,7 @@ begin
         SubItemCode := 121;
 
         // 첨부해제할 전자명세서 문서번호
-        SubMgtKey := '20210615-002';
+        SubMgtKey := '20220101-002';
 
         try
                 response := statementService.DetachStatement(txtCorpNum.text, ItemCode, tbMgtKey.Text, SubItemCode, SubMgtKey);
