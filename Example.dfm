@@ -28,6 +28,13 @@ object frmExample: TfrmExample
     Height = 13
     Caption = 'ÆËºôÈ¸¿ø ¾ÆÀÌµð : '
   end
+  object Label8: TLabel
+    Left = 792
+    Top = 12
+    Width = 31
+    Height = 13
+    Caption = 'URL : '
+  end
   object GroupBox1: TGroupBox
     Left = 16
     Top = 232
@@ -792,6 +799,14 @@ object frmExample: TfrmExample
       TabOrder = 3
       OnClick = btnGetUseHistoryURLClick
     end
+  end
+  object txtURL: TEdit
+    Left = 824
+    Top = 9
+    Width = 305
+    Height = 21
+    ImeName = 'Microsoft IME 2010'
+    TabOrder = 6
   end
   object OpenDialog1: TOpenDialog
     Left = 728
