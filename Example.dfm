@@ -1,8 +1,8 @@
 object frmExample: TfrmExample
   Left = 575
-  Top = 211
+  Top = 210
   Width = 1160
-  Height = 681
+  Height = 682
   Caption = 'ÆËºô ÀüÀÚ¸í¼¼¼­ SDK Example'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,14 +17,14 @@ object frmExample: TfrmExample
   object Label3: TLabel
     Left = 16
     Top = 12
-    Width = 120
+    Width = 111
     Height = 13
     Caption = 'ÆËºôÈ¸¿ø »ç¾÷ÀÚ¹øÈ£ : '
   end
   object Label4: TLabel
     Left = 304
     Top = 12
-    Width = 96
+    Width = 89
     Height = 13
     Caption = 'ÆËºôÈ¸¿ø ¾ÆÀÌµð : '
   end

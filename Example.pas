@@ -1125,7 +1125,7 @@ begin
         { - https://docs.popbill.com/statement/delphi/api#GetURL
         {**********************************************************************}
         try
-                resultURL := statementService.GetURL(txtCorpNum.Text, 'TBOX');
+                resultURL := statementService.GetURL(txtCorpNum.Text, txtUserID.Text, 'TBOX');
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1154,7 +1154,7 @@ begin
         {**********************************************************************}
         
         try
-                resultURL := statementService.GetURL(txtCorpNum.Text, 'SBOX');
+                resultURL := statementService.GetURL(txtCorpNum.Text, txtUserID.Text, 'SBOX');
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1183,7 +1183,7 @@ begin
         {**********************************************************************}
 
         try
-                resultURL := statementService.getPopupURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
+                resultURL := statementService.getPopupURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1213,7 +1213,7 @@ begin
         {*******************************************************************}
         
         try
-                resultURL := statementService.getPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
+                resultURL := statementService.getPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1242,7 +1242,7 @@ begin
         { - https://docs.popbill.com/statement/delphi/api#GetMailURL
         {**********************************************************************}
         try
-                resultURL := statementService.getMailURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
+                resultURL := statementService.getMailURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1278,7 +1278,7 @@ begin
         KeyList[1] := '20220101-002';
 
         try
-                resultURL := statementService.getMassPrintURL(txtCorpNum.text, ItemCode, KeyList);
+                resultURL := statementService.getMassPrintURL(txtCorpNum.text, ItemCode, KeyList, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -1688,7 +1688,7 @@ begin
        {******************************************************************}
 
         try
-                resultURL := statementService.getEPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
+                resultURL := statementService.getEPrintURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -2896,7 +2896,7 @@ begin
         {*******************************************************************}
         
         try
-                resultURL := statementService.getViewURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text);
+                resultURL := statementService.getViewURL(txtCorpNum.Text, ItemCode, tbMgtKey.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -2926,7 +2926,7 @@ begin
         {**********************************************************************}
         
         try
-                resultURL := statementService.getPaymentURL(txtCorpNum.Text);
+                resultURL := statementService.getPaymentURL(txtCorpNum.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
@@ -2955,7 +2955,7 @@ begin
         {**********************************************************************}
 
         try
-                resultURL := statementService.getUseHistoryURL(txtCorpNum.Text);
+                resultURL := statementService.getUseHistoryURL(txtCorpNum.Text, txtUserID.Text);
         except
                 on le : EPopbillException do begin
                         ShowMessage('응답코드 : ' + IntToStr(le.code) + #10#13 +'응답메시지 : '+ le.Message);
