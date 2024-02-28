@@ -1,14 +1,21 @@
 {******************************************************************************}
-{ 팝빌 전자명세서 API Delphi SDK Example
 {
-{ - 업데이트 일자 : 2022-07-25
-{ - 연동 기술지원 연락처 : 1600-8536
-{ - 연동 기술지원 이메일 : code@linkhubcorp.com
-{ - SDK 튜토리얼 : https://developers.popbill.com/guide/statement/delphi/getting-started/tutorial
+{ 팝빌 전자명세서 API Delphi SDK Example
+{ Delphi 연동 튜토리얼 안내 : https://developers.popbill.com/guide/statement/java/getting-started/tutorial?fwn=jsp
+{
+{ 업데이트 일자 : 2024-02-27
+{ 연동기술지원 연락처 : 1600-9854
+{ 연동기술지원 이메일 : code@linkhubcorp.com
 {
 { <테스트 연동개발 준비사항>
-{ (1) 31, 34번 라인에 선언된 링크아이디(LinkID)와 비밀키(SecretKey)를
-{    링크허브 가입시 메일로 발급받은 인증정보로 수정
+{ 1) API Key 변경 (연동신청 시 메일로 전달된 정보)
+{    - LinkID : 링크허브에서 발급한 링크아이디
+{    - SecretKey : 링크허브에서 발급한 비밀키
+{ 2) SDK 환경설정 옵션 설정
+{    - IsTest : 연동환경 설정, true-테스트, false-운영(Production), (기본값:true)
+{    - IsThrowException : 예외 처리 설정, true-사용, false-미사용, (기본값:true)
+{    - IPRestrictOnOff : 인증토큰 IP 검증 설정, true-사용, false-미사용, (기본값:true)
+{    - UseLocalTimeYN : 로컬시스템 시간 사용여부, true-사용, false-미사용, (기본값:true)정
 {                                                                              
 {******************************************************************************}
 unit Example;
@@ -21,16 +28,11 @@ uses
   Popbill, PopbillStatement, ExtCtrls;
 
 const
-        {**********************************************************************}
-        { - 인증정보(링크아이디, 비밀키)는 파트너의 연동회원을 식별하는        }
-        {   인증에 사용되므로 유출되지 않도록 주의하시기 바랍니다              }
-        { - 상업용 전환이후에도 인증정보는 변경되지 않습니다.                  }
-        {**********************************************************************}
-        
-        //링크아이디.
+
+        // 링크아이디
         LinkID = 'TESTER';
-        
-        // 파트너 통신용 비밀키. 유출 주의.
+
+        // 비밀키
         SecretKey = 'SwWxqU+0TErBXy/9TVjIPEnI0VTUMMSQZtJf3Ed8q3I=';
 
 type
@@ -195,19 +197,19 @@ implementation
 procedure TfrmExample.FormCreate(Sender: TObject);
 begin
         ItemCode := 121;
-        //전자명세서 모듈 초기화.
+        // 전자명세서 모듈 초기화.
         statementService := TStatementService.Create(LinkID,SecretKey);
 
-        // 연동환경 설정, true-개발용, false-상업용
+        // 연동환경 설정, true-테스트, false-운영(Production), (기본값:true)
         statementService.IsTest := true;
 
-        // Exception 처리 설정, true-사용, false-미사용, 기본값(true)
+        // 예외 처리 설정, true-사용, false-미사용, (기본값:true)
         statementService.IsThrowException := true;
 
-        // 인증토큰 IP제한기능 사용여부, true-사용, false-미사용, 기본값(true)
+        // 인증토큰 IP 검증 설정, true-사용, false-미사용, (기본값:true)
         statementService.IPRestrictOnOff := true;
 
-        //로컬시스템 시간 사용여부, true-사용, false-미사용, 기본값(true)
+        // 로컬시스템 시간 사용여부, true-사용, false-미사용, (기본값:true)
         statementService.UseLocalTimeYN := false;
 end;
 
